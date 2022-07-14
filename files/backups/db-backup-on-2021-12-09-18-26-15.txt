@@ -1,0 +1,1565 @@
+#
+# TABLE STRUCTURE FOR: accountant
+#
+
+DROP TABLE IF EXISTS `accountant`;
+
+CREATE TABLE `accountant` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(200) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+
+INSERT INTO `accountant` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `x`, `ion_user_id`) VALUES (72, 'uploads/favicon7.png', 'Mr. Accountant', 'accountant@dms.com', 'New York, USA', '+880123456789', '', '112');
+
+
+#
+# TABLE STRUCTURE FOR: appointment
+#
+
+DROP TABLE IF EXISTS `appointment`;
+
+CREATE TABLE `appointment` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `time_slot` varchar(100) DEFAULT NULL,
+  `s_time` varchar(100) DEFAULT NULL,
+  `e_time` varchar(100) DEFAULT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
+  `add_date` varchar(100) DEFAULT NULL,
+  `registration_time` varchar(100) DEFAULT NULL,
+  `s_time_key` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `request` varchar(100) DEFAULT NULL,
+  `patientname` varchar(1000) DEFAULT NULL,
+  `doctorname` varchar(1000) DEFAULT NULL,
+  `room_id` varchar(500) DEFAULT NULL,
+  `live_meeting_link` varchar(500) DEFAULT NULL,
+  `app_time` varchar(500) DEFAULT NULL,
+  `app_time_full_format` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+INSERT INTO `appointment` (`id`, `patient`, `doctor`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `room_id`, `live_meeting_link`, `app_time`, `app_time_full_format`) VALUES (1, '1', '1', '1638230400', 'Not Selected', 'Not Selected', '', '', '11/30/21', '1638288643', '0', 'Confirmed', '709', '', 'Mr Patient', 'Mr Doctor', 'hms-meeting-+8801777024443-727830', 'https://meet.jit.si/hms-meeting-+8801777024443-727830', '0', '30-11-2021 Not Selected-');
+INSERT INTO `appointment` (`id`, `patient`, `doctor`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `room_id`, `live_meeting_link`, `app_time`, `app_time_full_format`) VALUES (2, '1', '1', '1640131200', 'Not Selected', 'Not Selected', '', '', '12/06/21', '1638803459', '0', 'Pending Confirmation', '1', '', 'Mr Patient', 'Mr Doctor', 'hms-meeting-+8801777024443-78875', 'https://meet.jit.si/hms-meeting-+8801777024443-78875', '0', '22-12-2021 Not Selected-');
+INSERT INTO `appointment` (`id`, `patient`, `doctor`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `room_id`, `live_meeting_link`, `app_time`, `app_time_full_format`) VALUES (3, '1', '1', '1639353600', '02:00 PM To 03:00 PM', '02:00 PM', '03:00 PM', 'teste', '12/06/21', '1638803570', '168', 'Pending Confirmation', '709', '', 'Mr Patient', 'Allan Nascimento', 'hms-meeting-+8801777024443-813061', 'https://meet.jit.si/hms-meeting-+8801777024443-813061', '1639404000', '13-12-2021 02:00 PM-03:00 PM');
+
+
+#
+# TABLE STRUCTURE FOR: autoemailshortcode
+#
+
+DROP TABLE IF EXISTS `autoemailshortcode`;
+
+CREATE TABLE `autoemailshortcode` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (1, '{firstname}', 'payment');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (2, '{lastname}', 'payment');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (3, '{name}', 'payment');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (4, '{amount}', 'payment');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (52, '{doctorname}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (42, '{firstname}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (51, '{name}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (50, '{lastname}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (49, '{firstname}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (48, '{hospital_name}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (47, '{time_slot}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (46, '{appoinmentdate}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (45, '{doctorname}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (44, '{name}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (43, '{lastname}', 'appoinment_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (26, '{name}', 'doctor');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (27, '{firstname}', 'doctor');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (28, '{lastname}', 'doctor');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (29, '{company}', 'doctor');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (41, '{doctor}', 'patient');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (40, '{company}', 'patient');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (39, '{lastname}', 'patient');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (38, '{firstname}', 'patient');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (37, '{name}', 'patient');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (36, '{department}', 'doctor');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (53, '{appoinmentdate}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (54, '{time_slot}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (55, '{hospital_name}', 'appoinment_confirmation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (56, '{start_time}', 'meeting_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (57, '{patient_name}', 'meeting_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (58, '{doctor_name}', 'meeting_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (59, '{hospital_name}', 'meeting_creation');
+INSERT INTO `autoemailshortcode` (`id`, `name`, `type`) VALUES (60, '{meeting_link}', 'meeting_creation');
+
+
+#
+# TABLE STRUCTURE FOR: autoemailtemplate
+#
+
+DROP TABLE IF EXISTS `autoemailtemplate`;
+
+CREATE TABLE `autoemailtemplate` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (1, 'Payment successful email to patient', '<p>Dear {name}, Your paying amount - Tk {amount} was successful.</p>\r\n\r\n<p>Thank You</p>\r\n', 'payment', 'Active');
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (9, 'Appointment creation email to patient', 'Dear {name},<br />\r\nYou have an &nbsp;appointment with {doctorname} on {appoinmentdate} at {time_slot} .Please confirm your appointment.<br />\r\nFor more information contact with {hospital_name}<br />\r\nRegards', 'appoinment_creation', 'Active');
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (10, 'Appointment Confirmation email  to patient', 'Dear {name},<br />\r\nYour appointment with {doctorname} on {appoinmentdate} at {time_slot} is confirmed.<br />\r\nFor more information contact with {hospital_name}<br />\r\nRegards', 'appoinment_confirmation', 'Active');
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (11, 'Meeting Schedule Notification To Patient', '<p>Dear {patient_name},</p>\r\n\r\n<p>You have a Live Video Meeting with {doctor_name} on {start_time}.<br />\r\nPlease click on this link to join the meeting&nbsp; {meeting_link} .<br />\r\nFor more information please contact with {hospital_name} .</p>\r\n\r\n<p>Regards</p>\r\n', 'meeting_creation', 'Active');
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (6, 'send joining confirmation to Doctor', '<p>Dear {name},<br />\r\nYou are appointed as a doctor&nbsp; in {department}.<br />\r\nThank You</p>\r\n\r\n<p>{company}</p>\r\n', 'doctor', 'Active');
+INSERT INTO `autoemailtemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (8, 'Patient Registration Confirmation ', '<p>Dear {name},</p>\r\n\r\n<p>You are registered to {company} as a patient to {doctor}.</p>\r\n\r\n<p>Regards</p>\r\n', 'patient', 'Active');
+
+
+#
+# TABLE STRUCTURE FOR: autosmsshortcode
+#
+
+DROP TABLE IF EXISTS `autosmsshortcode`;
+
+CREATE TABLE `autosmsshortcode` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (1, '{name}', 'payment');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (2, '{firstname}', 'payment');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (3, '{lastname}', 'payment');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (4, '{amount}', 'payment');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (55, '{appoinmentdate}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (54, '{doctorname}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (53, '{name}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (52, '{lastname}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (51, '{firstname}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (50, '{time_slot}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (49, '{appoinmentdate}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (48, '{hospital_name}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (47, '{doctorname}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (46, '{name}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (45, '{lastname}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (44, '{firstname}', 'appoinment_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (28, '{firstname}', 'doctor');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (29, '{lastname}', 'doctor');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (30, '{name}', 'doctor');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (31, '{company}', 'doctor');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (43, '{doctor}', 'patient');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (42, '{company}', 'patient');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (41, '{lastname}', 'patient');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (40, '{firstname}', 'patient');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (39, '{name}', 'patient');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (38, '{department}', 'doctor');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (56, '{time_slot}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (57, '{hospital_name}', 'appoinment_confirmation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (58, '{start_time}', 'meeting_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (59, '{patient_name}', 'meeting_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (60, '{doctor_name}', 'meeting_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (61, '{hospital_name}', 'meeting_creation');
+INSERT INTO `autosmsshortcode` (`id`, `name`, `type`) VALUES (62, '{meeting_link}', 'meeting_creation');
+
+
+#
+# TABLE STRUCTURE FOR: autosmstemplate
+#
+
+DROP TABLE IF EXISTS `autosmstemplate`;
+
+CREATE TABLE `autosmstemplate` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (1, 'Payment successful sms to patient', 'Dear {name},\r\n Your paying amount - Tk {amount} was successful.\r\nThank You\r\nPlease contact our support for further queries.', 'payment', 'Active');
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (12, 'Appointment Confirmation sms to patient', 'Dear {name},\r\nYour appointment with {doctorname} on {appoinmentdate} at {time_slot} is confirmed.\r\nFor more information contact with {hospital_name}\r\nRegards', 'appoinment_confirmation', 'Active');
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (13, 'Appointment creation sms to patient', 'Dear {name},\r\nYou have an  appointment with {doctorname} on {appoinmentdate} at {time_slot} .Please confirm your appointment.\r\nFor more information contact with {hospital_name}\r\nRegards', 'appoinment_creation', 'Active');
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (14, 'Meeting Schedule Notification To Patient', 'Dear {patient_name}, You have a Live Video Meeting with {doctor_name} on {start_time}. Click on this link to join the meeting {meeting_link} . For more information contact with {hospital_name} .\r\nRegards ', 'meeting_creation', 'Active');
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (9, 'send appoint confirmation to Doctor', 'Dear {name},\nYou are appointed as a doctor in {department} .\nThank You\n{company}', 'doctor', 'Active');
+INSERT INTO `autosmstemplate` (`id`, `name`, `message`, `type`, `status`) VALUES (11, 'Patient Registration Confirmation ', 'Dear {name},\n You are registred to {company} as a patient to {doctor}. \nRegards', 'patient', 'Active');
+
+
+#
+# TABLE STRUCTURE FOR: bankb
+#
+
+DROP TABLE IF EXISTS `bankb`;
+
+CREATE TABLE `bankb` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `group` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (1, 'A+', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (2, 'A-', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (3, 'B+', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (4, 'B-', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (5, 'AB+', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (6, 'AB-', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (7, 'O+', '0 Bags');
+INSERT INTO `bankb` (`id`, `group`, `status`) VALUES (8, 'O-', '0 Bags');
+
+
+#
+# TABLE STRUCTURE FOR: diagnostic_report
+#
+
+DROP TABLE IF EXISTS `diagnostic_report`;
+
+CREATE TABLE `diagnostic_report` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `date` varchar(100) DEFAULT NULL,
+  `invoice` varchar(100) DEFAULT NULL,
+  `report` varchar(10000) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: doctor
+#
+
+DROP TABLE IF EXISTS `doctor`;
+
+CREATE TABLE `doctor` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `department` varchar(100) DEFAULT NULL,
+  `profile` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(10) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `doctor` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `department`, `profile`, `x`, `y`, `ion_user_id`) VALUES (1, '', 'Allan Nascimento', 'doctor@dms.com', 'Colegepara, Rajbari', '+880123456789', 'Cardiology', 'Cardiac Specialized', '', '', '709');
+
+
+#
+# TABLE STRUCTURE FOR: email
+#
+
+DROP TABLE IF EXISTS `email`;
+
+CREATE TABLE `email` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `message` varchar(10000) DEFAULT NULL,
+  `reciepient` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+
+INSERT INTO `email` (`id`, `subject`, `date`, `message`, `reciepient`, `user`) VALUES (53, 'adriano', '1638323679', '<p>dvdfvdfvdfvdasdasdasdasd</p>\r\n', 'adrianobr00@gmail.com', '1');
+INSERT INTO `email` (`id`, `subject`, `date`, `message`, `reciepient`, `user`) VALUES (54, 'adrianobr00@gmail.com', '1638323834', '<p>dvdfvdfvdfvd</p>\r\n\r\n<p>{email}{phone}{address}{lastname}{lastname}</p>\r\n', 'adrianobr00@gmail.com', '1');
+
+
+#
+# TABLE STRUCTURE FOR: email_settings
+#
+
+DROP TABLE IF EXISTS `email_settings`;
+
+CREATE TABLE `email_settings` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `admin_email` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `smtp_host` varchar(1000) DEFAULT NULL,
+  `smtp_port` varchar(1000) DEFAULT NULL,
+  `send_multipart` varchar(1000) DEFAULT NULL,
+  `mail_provider` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+INSERT INTO `email_settings` (`id`, `admin_email`, `type`, `user`, `password`, `smtp_host`, `smtp_port`, `send_multipart`, `mail_provider`) VALUES (1, 'shaibal@codearistos.net', 'Domain Email', '', '', '', '', '', NULL);
+INSERT INTO `email_settings` (`id`, `admin_email`, `type`, `user`, `password`, `smtp_host`, `smtp_port`, `send_multipart`, `mail_provider`) VALUES (6, NULL, 'Smtp', 'adriano14orama@gmail.com', 'MDMwNzE5OTIxNmFk', 'smtp.gmail.com', '587', '1', 'gmail');
+
+
+#
+# TABLE STRUCTURE FOR: expense
+#
+
+DROP TABLE IF EXISTS `expense`;
+
+CREATE TABLE `expense` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `datestring` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: expense_category
+#
+
+DROP TABLE IF EXISTS `expense_category`;
+
+CREATE TABLE `expense_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: featured
+#
+
+DROP TABLE IF EXISTS `featured`;
+
+CREATE TABLE `featured` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(1000) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `profile` varchar(100) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+INSERT INTO `featured` (`id`, `img_url`, `name`, `profile`, `description`) VALUES (1, 'uploads/images.jpg', 'Dr Momenuzzaman', 'Cardiac Specialized', 'Redantium, totam rem aperiam, eaque ipsa qu ab illo inventore veritatis et quasi architectos beatae vitae dicta sunt explicabo. Nemo enims sadips ipsums un.');
+INSERT INTO `featured` (`id`, `img_url`, `name`, `profile`, `description`) VALUES (2, 'uploads/doctor.png', 'Dr RahmatUllah Asif', 'Cardiac Specialized', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+INSERT INTO `featured` (`id`, `img_url`, `name`, `profile`, `description`) VALUES (3, 'uploads/download_(2)2.png', 'Dr A.R.M. Jamil', 'Cardiac Specialized', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+
+
+#
+# TABLE STRUCTURE FOR: groups
+#
+
+DROP TABLE IF EXISTS `groups`;
+
+CREATE TABLE `groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (1, 'admin', 'Administrator');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (2, 'members', 'General User');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (3, 'Accountant', 'For Financial Activities');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (4, 'Doctor', '');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (5, 'Patient', '');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (6, 'Nurse', '');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (7, 'Pharmacist', '');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (8, 'Laboratorist', '');
+INSERT INTO `groups` (`id`, `name`, `description`) VALUES (10, 'Receptionist', 'Receptionist');
+
+
+#
+# TABLE STRUCTURE FOR: holidays
+#
+
+DROP TABLE IF EXISTS `holidays`;
+
+CREATE TABLE `holidays` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
+
+INSERT INTO `holidays` (`id`, `doctor`, `date`, `x`, `y`) VALUES (76, '1', '1638403200', NULL, NULL);
+
+
+#
+# TABLE STRUCTURE FOR: lab
+#
+
+DROP TABLE IF EXISTS `lab`;
+
+CREATE TABLE `lab` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `category_name` varchar(1000) DEFAULT NULL,
+  `report` varchar(10000) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `patient_name` varchar(100) DEFAULT NULL,
+  `patient_phone` varchar(100) DEFAULT NULL,
+  `patient_address` varchar(100) DEFAULT NULL,
+  `doctor_name` varchar(100) DEFAULT NULL,
+  `date_string` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: lab_category
+#
+
+DROP TABLE IF EXISTS `lab_category`;
+
+CREATE TABLE `lab_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `reference_value` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
+
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (35, 'Troponin-I', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (36, 'CBC (DIGITAL)', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (37, 'Eosinophil', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (38, 'Platelets', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (39, 'Malarial Parasites (MP)', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (40, 'BT/ CT', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (41, 'ASO Titre', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (42, 'CRP', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (43, 'R/A test', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (44, 'VDRL', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (45, 'TPHA', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (46, 'HBsAg (Screening)', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (47, 'HBsAg (Confirmatory)', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (48, 'CFT for Kala Zar', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (49, 'CFT for Filaria', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (50, 'Pregnancy Test', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (51, 'Blood Grouping', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (52, 'Widal Test', 'Pathological Test', '(70-110)mg/dl');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (53, 'RBS', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (54, 'Blood Urea', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (55, 'S. Creatinine', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (56, 'S. cholesterol', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (57, 'Fasting Lipid Profile', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (58, 'S. Bilirubin', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (59, 'S. Alkaline Phosohare', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (61, 'S. Calcium', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (62, 'RBS with CUS', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (63, 'SGPT', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (64, 'SGOT', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (65, 'Urine for R/E', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (66, 'Urine C/S', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (67, 'Stool for R/E', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (68, 'Semen Analysis', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (69, 'S. Electrolyte', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (70, 'S. T3/ T4/ THS', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (71, 'MT', 'Pathological Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (106, 'ESR', 'Patho Test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (107, 'FBS CUS', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (108, 'Hb%', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (114, '2HABF', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (113, 'FBS', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (115, 'S. TSH', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (116, 'S. T3', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (117, 'DC', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (118, 'TC', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (120, 'S. Uric acid', 'Pathological test', '');
+INSERT INTO `lab_category` (`id`, `category`, `description`, `reference_value`) VALUES (126, 'eosinphil', 'Pathology Test', '');
+
+
+#
+# TABLE STRUCTURE FOR: laboratorist
+#
+
+DROP TABLE IF EXISTS `laboratorist`;
+
+CREATE TABLE `laboratorist` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+INSERT INTO `laboratorist` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `x`, `y`, `ion_user_id`) VALUES (3, 'uploads/favicon1.png', 'Mr Laboratorist', 'laboratorist@dms.com', 'Tampa, Florida, USA', '+880123456789', '', '', '111');
+
+
+#
+# TABLE STRUCTURE FOR: login_attempts
+#
+
+DROP TABLE IF EXISTS `login_attempts`;
+
+CREATE TABLE `login_attempts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES (1, '::1', 'doctor@gmail.com', 1639058390);
+
+
+#
+# TABLE STRUCTURE FOR: manual_email_template
+#
+
+DROP TABLE IF EXISTS `manual_email_template`;
+
+CREATE TABLE `manual_email_template` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+INSERT INTO `manual_email_template` (`id`, `name`, `message`, `type`) VALUES (7, 'vddfvdf', '<p>dvdfvdfvdfvd</p>\r\n{email}{phone}{address}{lastname}{lastname}', 'email');
+
+
+#
+# TABLE STRUCTURE FOR: manual_sms_template
+#
+
+DROP TABLE IF EXISTS `manual_sms_template`;
+
+CREATE TABLE `manual_sms_template` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+INSERT INTO `manual_sms_template` (`id`, `name`, `message`, `type`) VALUES (1, 'test', '{firstname} come to my offce {lastname}', 'sms');
+INSERT INTO `manual_sms_template` (`id`, `name`, `message`, `type`) VALUES (8, 'dsdsdss3wew454', '{firstname}{address}{phone}{address}{email}{name}{lastname}{firstname}', 'sms');
+INSERT INTO `manual_sms_template` (`id`, `name`, `message`, `type`) VALUES (3, 'sdgfgfdgfdgdf', '<p>{email}{instructor}{address} gfdgdfg</p>\r\n', 'email');
+INSERT INTO `manual_sms_template` (`id`, `name`, `message`, `type`) VALUES (7, 'test223', '<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 500px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td>dsfsf</td>\r\n			<td>sdfsdf</td>\r\n		</tr>\r\n		<tr>\r\n			<td>sdfdsf</td>\r\n			<td>dfdsf</td>\r\n		</tr>\r\n		<tr>\r\n			<td>dfdf</td>\r\n			<td>dfdfd</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n{email}{instructor}', 'email');
+INSERT INTO `manual_sms_template` (`id`, `name`, `message`, `type`) VALUES (9, 'zxcxzczx', ' {address}{phone}', 'sms');
+
+
+#
+# TABLE STRUCTURE FOR: manualemailshortcode
+#
+
+DROP TABLE IF EXISTS `manualemailshortcode`;
+
+CREATE TABLE `manualemailshortcode` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (1, '{firstname}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (2, '{lastname}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (3, '{name}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (6, '{address}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (7, '{company}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (8, '{email}', 'email');
+INSERT INTO `manualemailshortcode` (`id`, `name`, `type`) VALUES (9, '{phone}', 'email');
+
+
+#
+# TABLE STRUCTURE FOR: manualsmsshortcode
+#
+
+DROP TABLE IF EXISTS `manualsmsshortcode`;
+
+CREATE TABLE `manualsmsshortcode` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) DEFAULT NULL,
+  `type` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (1, '{firstname}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (2, '{lastname}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (3, '{name}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (4, '{email}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (5, '{phone}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (6, '{address}', 'sms');
+INSERT INTO `manualsmsshortcode` (`id`, `name`, `type`) VALUES (10, '{company}', 'sms');
+
+
+#
+# TABLE STRUCTURE FOR: medical_history
+#
+
+DROP TABLE IF EXISTS `medical_history`;
+
+CREATE TABLE `medical_history` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `patient_id` varchar(100) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `description` varchar(10000) DEFAULT NULL,
+  `patient_name` varchar(100) DEFAULT NULL,
+  `patient_address` varchar(500) DEFAULT NULL,
+  `patient_phone` varchar(100) DEFAULT NULL,
+  `img_url` varchar(500) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `registration_time` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: medicine
+#
+
+DROP TABLE IF EXISTS `medicine`;
+
+CREATE TABLE `medicine` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `price` varchar(100) DEFAULT NULL,
+  `box` varchar(100) DEFAULT NULL,
+  `s_price` varchar(100) DEFAULT NULL,
+  `quantity` int(100) DEFAULT NULL,
+  `generic` varchar(100) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `effects` varchar(100) DEFAULT NULL,
+  `e_date` varchar(70) DEFAULT NULL,
+  `add_date` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2880 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: medicine_category
+#
+
+DROP TABLE IF EXISTS `medicine_category`;
+
+CREATE TABLE `medicine_category` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: meeting
+#
+
+DROP TABLE IF EXISTS `meeting`;
+
+CREATE TABLE `meeting` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `topic` varchar(1000) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `start_time` varchar(100) DEFAULT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  `timezone` varchar(100) DEFAULT NULL,
+  `meeting_id` varchar(100) DEFAULT NULL,
+  `meeting_password` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `time_slot` varchar(100) DEFAULT NULL,
+  `s_time` varchar(100) DEFAULT NULL,
+  `e_time` varchar(100) DEFAULT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
+  `add_date` varchar(100) DEFAULT NULL,
+  `registration_time` varchar(100) DEFAULT NULL,
+  `s_time_key` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `request` varchar(100) DEFAULT NULL,
+  `patientname` varchar(1000) DEFAULT NULL,
+  `doctorname` varchar(1000) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  `doctor_ion_id` varchar(100) DEFAULT NULL,
+  `patient_ion_id` varchar(100) DEFAULT NULL,
+  `appointment_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=616 DEFAULT CHARSET=utf8;
+
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (597, '1', '147', 'Doctor Appointment', '2', '2020-08-31 05:57', '60', 'UTC', '78065502079', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598867830', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (596, '1', '147', 'Doctor Appointment', '2', '2020-08-31 05:55', '60', 'UTC', '73399002446', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598867708', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (594, '1', '147', 'Doctor Appointment', '2', '2020-08-31 05:52', '60', 'UTC', '76863762416', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598867523', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (595, '1', '147', 'Doctor Appointment', '2', '2020-08-31 05:53', '60', 'UTC', '76103574289', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598867627', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (593, '1', '147', 'Doctor Appointment', '2', '2020-08-31 05:50', '60', 'UTC', '78581884320', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598867418', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (592, '1', '147', 'Doctor Appointment', '2', '2020-08-31 03:01', '60', 'UTC', '71935056353', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598857283', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (590, '1', '147', 'Doctor Appointment', '2', '2020-08-31 02:47', '60', 'UTC', '73066856714', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598856455', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (591, '1', '147', 'Doctor Appointment', '2', '2020-08-31 03:01', '60', 'UTC', '73873024898', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598857264', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (589, '1', '147', 'Doctor Appointment', '2', '2020-08-31 02:46', '60', 'UTC', '71674039118', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598856418', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', NULL);
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (598, '1', '147', 'Doctor Appointment', '2', '2020-08-31 06:37', '60', 'UTC', '79952317532', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598870269', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (599, '1', '147', 'Doctor Appointment', '2', '2020-08-31 06:52', '60', 'UTC', '71430825323', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598871125', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (600, '1', '147', 'Doctor Appointment', '2', '2020-08-31 11:34', '60', 'UTC', '78873863945', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598888071', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (601, '1', '147', 'Doctor Appointment', '2', '2020-08-31 14:21', '60', 'UTC', '77058133464', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598898079', NULL, NULL, '709', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (602, '1', '147', 'Doctor Appointment', '2', '2020-08-31 14:35', '60', 'UTC', '76826440714', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598898940', NULL, NULL, '709', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (603, '1', '147', 'Doctor Appointment', '2', '2020-08-31 15:09', '60', 'UTC', '71324680797', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598900963', NULL, NULL, '1', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (604, '1', '147', 'Doctor Appointment', '2', '2020-08-31 17:51', '60', 'UTC', '72784087056', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598910684', NULL, NULL, '1', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (605, '1', '147', 'Doctor Appointment', '2', '2020-08-31 18:03', '60', 'UTC', '71781120129', '12345', NULL, NULL, NULL, NULL, NULL, '08/31/20', '1598911430', NULL, NULL, '1', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '455');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (606, '1', '147', 'Doctor Appointment', '2', '2020-09-01 05:21', '60', 'UTC', '73426854489', '12345', NULL, NULL, NULL, NULL, NULL, '09/01/20', '1598952101', NULL, NULL, '1', NULL, 'Rizvi Mahmud Plabon', 'Dr. Rahmatullah Asif', NULL, '709', '681', '456');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (607, '1', '147', 'Doctor Appointment', '2', '2020-09-10 14:13', '60', 'UTC', '73576408457', '12345', NULL, NULL, NULL, NULL, NULL, '09/10/20', '1599761627', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '464');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (608, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:47', '60', 'UTC', '75454341566', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846437', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '464');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (609, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:47', '60', 'UTC', '73157465436', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846468', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (610, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:48', '60', 'UTC', '78370052717', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846502', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (611, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:48', '60', 'UTC', '71877134261', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846505', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (612, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:48', '60', 'UTC', '75349390219', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846517', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (613, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:48', '60', 'UTC', '77947823088', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846518', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (614, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:49', '60', 'UTC', '75473785483', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846572', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+INSERT INTO `meeting` (`id`, `patient`, `doctor`, `topic`, `type`, `start_time`, `duration`, `timezone`, `meeting_id`, `meeting_password`, `date`, `time_slot`, `s_time`, `e_time`, `remarks`, `add_date`, `registration_time`, `s_time_key`, `status`, `user`, `request`, `patientname`, `doctorname`, `ion_user_id`, `doctor_ion_id`, `patient_ion_id`, `appointment_id`) VALUES (615, '1', '147', 'Doctor Appointment', '2', '2020-09-11 13:49', '60', 'UTC', '76165228124', '12345', NULL, NULL, NULL, NULL, NULL, '09/11/20', '1599846593', NULL, NULL, '1', NULL, 'Mr Patient', 'Mr Doctor', NULL, '709', '681', '465');
+
+
+#
+# TABLE STRUCTURE FOR: meeting_settings
+#
+
+DROP TABLE IF EXISTS `meeting_settings`;
+
+CREATE TABLE `meeting_settings` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `api_key` varchar(100) DEFAULT NULL,
+  `secret_key` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+INSERT INTO `meeting_settings` (`id`, `api_key`, `secret_key`, `ion_user_id`, `y`) VALUES (8, 'PEbvh2uESS6ryue3Kb3D0w', 'BZpvXJsvgqG6mN4Up1FuuWJQAY47w5QCWIAo', '709', NULL);
+
+
+#
+# TABLE STRUCTURE FOR: nurse
+#
+
+DROP TABLE IF EXISTS `nurse`;
+
+CREATE TABLE `nurse` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  `z` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+INSERT INTO `nurse` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `x`, `y`, `z`, `ion_user_id`) VALUES (8, 'uploads/favicon4.png', 'Mrs Nurse', 'nurse@dms.com', 'Uttara, Dhaka', '+880123456789', '', '', '', '109');
+
+
+#
+# TABLE STRUCTURE FOR: ot_payment
+#
+
+DROP TABLE IF EXISTS `ot_payment`;
+
+CREATE TABLE `ot_payment` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor_c_s` varchar(100) DEFAULT NULL,
+  `doctor_a_s_1` varchar(100) DEFAULT NULL,
+  `doctor_a_s_2` varchar(100) DEFAULT NULL,
+  `doctor_anaes` varchar(100) DEFAULT NULL,
+  `n_o_o` varchar(100) DEFAULT NULL,
+  `c_s_f` varchar(100) DEFAULT NULL,
+  `a_s_f_1` varchar(100) DEFAULT NULL,
+  `a_s_f_2` varchar(11) DEFAULT NULL,
+  `anaes_f` varchar(100) DEFAULT NULL,
+  `ot_charge` varchar(100) DEFAULT NULL,
+  `cab_rent` varchar(100) DEFAULT NULL,
+  `seat_rent` varchar(100) DEFAULT NULL,
+  `others` varchar(100) DEFAULT NULL,
+  `discount` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `doctor_fees` varchar(100) DEFAULT NULL,
+  `hospital_fees` varchar(100) DEFAULT NULL,
+  `gross_total` varchar(100) DEFAULT NULL,
+  `flat_discount` varchar(100) DEFAULT NULL,
+  `amount_received` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
+
+INSERT INTO `ot_payment` (`id`, `patient`, `doctor_c_s`, `doctor_a_s_1`, `doctor_a_s_2`, `doctor_anaes`, `n_o_o`, `c_s_f`, `a_s_f_1`, `a_s_f_2`, `anaes_f`, `ot_charge`, `cab_rent`, `seat_rent`, `others`, `discount`, `date`, `amount`, `doctor_fees`, `hospital_fees`, `gross_total`, `flat_discount`, `amount_received`, `status`, `user`) VALUES (85, '451', 'None', '123', 'None', '125', 'dbdbd', '', '1000', '0', '1000', '', '', '', '', '', '1506195494', '2000', '2000', '0', '2000', '', '1000', 'unpaid', '614');
+
+
+#
+# TABLE STRUCTURE FOR: patient
+#
+
+DROP TABLE IF EXISTS `patient`;
+
+CREATE TABLE `patient` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(1000) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `sex` varchar(100) DEFAULT NULL,
+  `birthdate` varchar(100) DEFAULT NULL,
+  `age` varchar(100) DEFAULT NULL,
+  `bloodgroup` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  `patient_id` varchar(100) DEFAULT NULL,
+  `add_date` varchar(100) DEFAULT NULL,
+  `registration_time` varchar(100) DEFAULT NULL,
+  `how_added` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `patient` (`id`, `img_url`, `name`, `email`, `doctor`, `address`, `phone`, `sex`, `birthdate`, `age`, `bloodgroup`, `ion_user_id`, `patient_id`, `add_date`, `registration_time`, `how_added`) VALUES (1, 'uploads/cardiology-patient-icon-vector-6244713.jpg', 'Mr Patient', 'patient@hms.com', ',1,202', 'Ka/5 Jagannathpur', '+8801777024443', 'Male', '01-01-1987', '', 'A+', '681', '101223', '01/30/19', '', '');
+
+
+#
+# TABLE STRUCTURE FOR: patient_deposit
+#
+
+DROP TABLE IF EXISTS `patient_deposit`;
+
+CREATE TABLE `patient_deposit` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `patient` varchar(100) DEFAULT NULL,
+  `payment_id` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `deposited_amount` varchar(100) DEFAULT NULL,
+  `amount_received_id` varchar(100) DEFAULT NULL,
+  `deposit_type` varchar(100) DEFAULT NULL,
+  `gateway` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1733 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: patient_material
+#
+
+DROP TABLE IF EXISTS `patient_material`;
+
+CREATE TABLE `patient_material` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `date` varchar(100) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `patient_name` varchar(100) DEFAULT NULL,
+  `patient_address` varchar(100) DEFAULT NULL,
+  `patient_phone` varchar(100) DEFAULT NULL,
+  `url` varchar(1000) DEFAULT NULL,
+  `date_string` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: payment
+#
+
+DROP TABLE IF EXISTS `payment`;
+
+CREATE TABLE `payment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `vat` varchar(100) NOT NULL DEFAULT '0',
+  `x_ray` varchar(100) DEFAULT NULL,
+  `flat_vat` varchar(100) DEFAULT NULL,
+  `discount` varchar(100) NOT NULL DEFAULT '0',
+  `flat_discount` varchar(100) DEFAULT NULL,
+  `gross_total` varchar(100) DEFAULT NULL,
+  `remarks` varchar(500) DEFAULT NULL,
+  `hospital_amount` varchar(100) DEFAULT NULL,
+  `doctor_amount` varchar(100) DEFAULT NULL,
+  `category_amount` varchar(1000) DEFAULT NULL,
+  `category_name` varchar(1000) DEFAULT NULL,
+  `amount_received` varchar(100) DEFAULT NULL,
+  `deposit_type` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `patient_name` varchar(100) DEFAULT NULL,
+  `patient_phone` varchar(100) DEFAULT NULL,
+  `patient_address` varchar(100) DEFAULT NULL,
+  `doctor_name` varchar(100) DEFAULT NULL,
+  `date_string` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: payment_category
+#
+
+DROP TABLE IF EXISTS `payment_category`;
+
+CREATE TABLE `payment_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `c_price` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `d_commission` int(100) DEFAULT NULL,
+  `h_commission` int(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: paymentgateway
+#
+
+DROP TABLE IF EXISTS `paymentgateway`;
+
+CREATE TABLE `paymentgateway` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `merchant_key` varchar(100) DEFAULT NULL,
+  `salt` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  `APIUsername` varchar(100) DEFAULT NULL,
+  `APIPassword` varchar(100) DEFAULT NULL,
+  `APISignature` varchar(100) DEFAULT NULL,
+  `status` varchar(1000) DEFAULT NULL,
+  `publish` varchar(1000) DEFAULT NULL,
+  `secret` varchar(1000) DEFAULT NULL,
+  `public_key` varchar(1000) DEFAULT NULL,
+  `store_id` varchar(1000) DEFAULT NULL,
+  `store_password` varchar(1000) DEFAULT NULL,
+  `merchant_mid` varchar(1000) DEFAULT NULL,
+  `merchant_website` varchar(1000) DEFAULT NULL,
+  `apiloginid` varchar(1000) DEFAULT NULL,
+  `transactionkey` varchar(1000) DEFAULT NULL,
+  `apikey` varchar(1000) DEFAULT NULL,
+  `merchantcode` varchar(1000) DEFAULT NULL,
+  `privatekey` varchar(1000) DEFAULT NULL,
+  `publishablekey` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (1, 'PayPal', '', '', '', '', 'sahashaibal19-facilitator_api1.gmail.com', 'B63U4VHDE8E8K8E2', 'AGVBtjcchZdpMmwaGJXMakrp-RyZAuNqRwECP9LNRref5tv0ZwZkllTN', 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (2, 'Pay U Money', 'HbimD3hk', 'BnuUHR1FDG', '', '', '', '', 'Aaw-Fd69z.JLuiq13ejMN-CsSMuuAPEXWUFPF5QW9sD22fp1hosGIFKo', 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (3, 'Stripe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', 'Publish key', 'Secret Key', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (5, 'SSLCOMMERZ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, 'vella5fe8cfbe4ed3a', 'vella5fe8cfbe4ed3a@ssl', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (6, 'Paytm', 'Merchant Key', NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, NULL, NULL, 'Merchant MID', 'Merchant Website', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (7, 'Authorize.Net', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2LJcUm497L2', '46u3b3AMd44sJX5w', NULL, NULL, NULL, NULL);
+INSERT INTO `paymentgateway` (`id`, `name`, `merchant_key`, `salt`, `x`, `y`, `APIUsername`, `APIPassword`, `APISignature`, `status`, `publish`, `secret`, `public_key`, `store_id`, `store_password`, `merchant_mid`, `merchant_website`, `apiloginid`, `transactionkey`, `apikey`, `merchantcode`, `privatekey`, `publishablekey`) VALUES (8, '2Checkout', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Merchant Code', 'Private key', 'Publishable Key');
+
+
+#
+# TABLE STRUCTURE FOR: pharmacist
+#
+
+DROP TABLE IF EXISTS `pharmacist`;
+
+CREATE TABLE `pharmacist` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+INSERT INTO `pharmacist` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `x`, `y`, `ion_user_id`) VALUES (7, 'uploads/favicon6.png', 'Mr. Pharmacist', 'pharmacist@dms.com', 'Pottersbar, Hertfordshire, UK', '+880123456789', '', '', '110');
+
+
+#
+# TABLE STRUCTURE FOR: pharmacy_expense
+#
+
+DROP TABLE IF EXISTS `pharmacy_expense`;
+
+CREATE TABLE `pharmacy_expense` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: pharmacy_expense_category
+#
+
+DROP TABLE IF EXISTS `pharmacy_expense_category`;
+
+CREATE TABLE `pharmacy_expense_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `y` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: pharmacy_payment
+#
+
+DROP TABLE IF EXISTS `pharmacy_payment`;
+
+CREATE TABLE `pharmacy_payment` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `vat` varchar(100) NOT NULL DEFAULT '0',
+  `x_ray` varchar(100) DEFAULT NULL,
+  `flat_vat` varchar(100) DEFAULT NULL,
+  `discount` varchar(100) NOT NULL DEFAULT '0',
+  `flat_discount` varchar(100) DEFAULT NULL,
+  `gross_total` varchar(100) DEFAULT NULL,
+  `hospital_amount` varchar(100) DEFAULT NULL,
+  `doctor_amount` varchar(100) DEFAULT NULL,
+  `category_amount` varchar(1000) DEFAULT NULL,
+  `category_name` varchar(1000) DEFAULT NULL,
+  `amount_received` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: pharmacy_payment_category
+#
+
+DROP TABLE IF EXISTS `pharmacy_payment_category`;
+
+CREATE TABLE `pharmacy_payment_category` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `c_price` varchar(100) DEFAULT NULL,
+  `d_commission` int(100) DEFAULT NULL,
+  `h_commission` int(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: plans
+#
+
+DROP TABLE IF EXISTS `plans`;
+
+CREATE TABLE `plans` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `img_url` varchar(500) DEFAULT NULL,
+  `price` varchar(100) DEFAULT NULL,
+  `free_installments` varchar(100) DEFAULT NULL,
+  `max_installments` varchar(100) DEFAULT NULL,
+  `interest_rate` varchar(100) DEFAULT NULL,
+  `enable_card_cred` varchar(100) DEFAULT NULL,
+  `enable_billet` varchar(100) DEFAULT NULL,
+  `paymentgateway_id` varchar(100) DEFAULT NULL,
+  `discounted_price` varchar(100) DEFAULT NULL,
+  `date_added` varchar(45) DEFAULT NULL,
+  `enable_warranty` varchar(100) DEFAULT NULL,
+  `enable_coupons` varchar(100) DEFAULT NULL,
+  `cod` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `plans` (`id`, `title`, `description`, `img_url`, `price`, `free_installments`, `max_installments`, `interest_rate`, `enable_card_cred`, `enable_billet`, `paymentgateway_id`, `discounted_price`, `date_added`, `enable_warranty`, `enable_coupons`, `cod`) VALUES (2, 'PLano 1', '<p>Plano muiito bom</p>\r\n', 'uploads/plans/2d4a29fd2b.jpg', '154.58', '10', '12', '0.33', 'Active', NULL, NULL, NULL, '0000', 'Active', NULL, NULL);
+INSERT INTO `plans` (`id`, `title`, `description`, `img_url`, `price`, `free_installments`, `max_installments`, `interest_rate`, `enable_card_cred`, `enable_billet`, `paymentgateway_id`, `discounted_price`, `date_added`, `enable_warranty`, `enable_coupons`, `cod`) VALUES (5, '123', '<p>asdasdasd</p>\r\n', 'uploads/plans/WhatsApp_Image_2021-12-06_at_16_36_29.jpeg', '123', '12', '12', '123', 'Active', 'Active', '1', '123', '1638835200', 'Active', NULL, NULL);
+
+
+#
+# TABLE STRUCTURE FOR: prescription
+#
+
+DROP TABLE IF EXISTS `prescription`;
+
+CREATE TABLE `prescription` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `date` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `symptom` varchar(100) DEFAULT NULL,
+  `advice` varchar(1000) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `dd` varchar(100) DEFAULT NULL,
+  `medicine` varchar(1000) DEFAULT NULL,
+  `validity` varchar(100) DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `patientname` varchar(1000) DEFAULT NULL,
+  `doctorname` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+
+INSERT INTO `prescription` (`id`, `date`, `patient`, `doctor`, `symptom`, `advice`, `state`, `dd`, `medicine`, `validity`, `note`, `patientname`, `doctorname`) VALUES (100, '1638489600', '1', '1', '<p>hgjg</p>\r\n', '<p>dfgdfgdfg</p>\r\n', NULL, NULL, '', NULL, '<p>jghj</p>\r\n', 'Mr Patient', 'Mr Doctor');
+
+
+#
+# TABLE STRUCTURE FOR: receptionist
+#
+
+DROP TABLE IF EXISTS `receptionist`;
+
+CREATE TABLE `receptionist` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(100) DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `ion_user_id` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+INSERT INTO `receptionist` (`id`, `img_url`, `name`, `email`, `address`, `phone`, `x`, `ion_user_id`) VALUES (7, '', 'Mr Receptionist', 'receptionist@dms.com', 'Collegepara, Rajbari', '+880123456789', '', '614');
+
+
+#
+# TABLE STRUCTURE FOR: report
+#
+
+DROP TABLE IF EXISTS `report`;
+
+CREATE TABLE `report` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `report_type` varchar(100) DEFAULT NULL,
+  `patient` varchar(100) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `doctor` varchar(100) DEFAULT NULL,
+  `date` varchar(100) DEFAULT NULL,
+  `add_date` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+
+INSERT INTO `report` (`id`, `report_type`, `patient`, `description`, `doctor`, `date`, `add_date`) VALUES (36, 'operation', 'Mr Patient*681', 'jhvvnbv', 'Mr Doctor', '07-12-2020', '12/13/20');
+
+
+#
+# TABLE STRUCTURE FOR: service
+#
+
+DROP TABLE IF EXISTS `service`;
+
+CREATE TABLE `service` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `img_url` varchar(1000) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+INSERT INTO `service` (`id`, `img_url`, `title`, `description`) VALUES (1, 'uploads/featured-icon-3.png', 'Cardiac Excellence', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+INSERT INTO `service` (`id`, `img_url`, `title`, `description`) VALUES (2, 'uploads/featured-icon-4.png', 'Cancer Treatment', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+INSERT INTO `service` (`id`, `img_url`, `title`, `description`) VALUES (3, 'uploads/featured-icon-1.png', 'Stroke Management', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+INSERT INTO `service` (`id`, `img_url`, `title`, `description`) VALUES (4, 'uploads/featured-icon-6.png', '24 / 7 Support', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+INSERT INTO `service` (`id`, `img_url`, `title`, `description`) VALUES (5, 'uploads/featured-icon-2.png', 'Care', 'Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence Cardiac Excellence');
+
+
+#
+# TABLE STRUCTURE FOR: settings
+#
+
+DROP TABLE IF EXISTS `settings`;
+
+CREATE TABLE `settings` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `system_vendor` varchar(100) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `facebook_id` varchar(100) DEFAULT NULL,
+  `currency` varchar(100) DEFAULT NULL,
+  `language` varchar(100) DEFAULT NULL,
+  `discount` varchar(100) DEFAULT NULL,
+  `live_appointment_type` varchar(100) DEFAULT NULL,
+  `vat` varchar(100) DEFAULT NULL,
+  `login_title` varchar(100) DEFAULT NULL,
+  `logo` varchar(500) DEFAULT NULL,
+  `invoice_logo` varchar(500) DEFAULT NULL,
+  `payment_gateway` varchar(100) DEFAULT NULL,
+  `sms_gateway` varchar(100) DEFAULT NULL,
+  `codec_username` varchar(100) DEFAULT NULL,
+  `codec_purchase_code` varchar(100) DEFAULT NULL,
+  `timezone` varchar(1000) DEFAULT NULL,
+  `emailtype` varchar(1000) DEFAULT NULL,
+  `appointment_subtitle` varchar(1000) NOT NULL,
+  `appointment_title` varchar(1000) NOT NULL,
+  `appointment_description` varchar(1000) NOT NULL,
+  `appointment_img_url` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `settings` (`id`, `system_vendor`, `title`, `address`, `phone`, `email`, `facebook_id`, `currency`, `language`, `discount`, `live_appointment_type`, `vat`, `login_title`, `logo`, `invoice_logo`, `payment_gateway`, `sms_gateway`, `codec_username`, `codec_purchase_code`, `timezone`, `emailtype`, `appointment_subtitle`, `appointment_title`, `appointment_description`, `appointment_img_url`) VALUES (1, 'Psicomob', 'Psicomob', 'Patos de minas', '5561986643917', 'admin@demo.com', '#', '$', 'portuguese', 'flat', 'jitsi', 'percentage', 'Login Title', 'uploads/Logo-Psicomob-PNG-Transparente-1-768x480.png', '', 'PayPal', 'Twilio', '', '', 'America/Buenos_Aires', 'Smtp', '', '', '', '');
+
+
+#
+# TABLE STRUCTURE FOR: site_gallery
+#
+
+DROP TABLE IF EXISTS `site_gallery`;
+
+CREATE TABLE `site_gallery` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `img` varchar(500) NOT NULL,
+  `position` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (1, 'uploads/gallery-img-1.png', '1', 'Active');
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (2, 'uploads/gallery-img-2.png', '2', 'Active');
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (3, 'uploads/gallery-img-3.png', '3', 'Active');
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (4, 'uploads/gallery-img-4.png', '4', 'Active');
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (5, 'uploads/gallery-img-5.png', '5', 'Active');
+INSERT INTO `site_gallery` (`id`, `img`, `position`, `status`) VALUES (6, 'uploads/gallery-img-6.png', '6', 'Active');
+
+
+#
+# TABLE STRUCTURE FOR: site_grid
+#
+
+DROP TABLE IF EXISTS `site_grid`;
+
+CREATE TABLE `site_grid` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) NOT NULL,
+  `title` varchar(500) NOT NULL,
+  `description` varchar(1000) NOT NULL,
+  `img` varchar(1000) NOT NULL,
+  `position` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+INSERT INTO `site_grid` (`id`, `category`, `title`, `description`, `img`, `position`, `status`) VALUES (3, 'FEATURED', 'Professional surgeons', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur, aut veritatis maxime ducimus modi delectus vero expedita illo ratione, eveniet laboriosam cupiditate reiciendis, repellat minima. Optio consectetur inventore ipsa!', 'uploads/frature-img-1.png', '1', 'Active');
+INSERT INTO `site_grid` (`id`, `category`, `title`, `description`, `img`, `position`, `status`) VALUES (4, 'FEATURED', 'Good Care', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum tenetur, aut veritatis maxime ducimus modi delectus vero expedita illo ratione, eveniet laboriosam cupiditate reiciendis, repellat minima. Optio consectetur inventore ipsa!', 'uploads/frature-img-2.png', '2', 'Active');
+
+
+#
+# TABLE STRUCTURE FOR: site_review
+#
+
+DROP TABLE IF EXISTS `site_review`;
+
+CREATE TABLE `site_review` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `designation` varchar(500) CHARACTER SET utf8 NOT NULL,
+  `review` varchar(1000) CHARACTER SET utf8 NOT NULL,
+  `img` varchar(1000) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+INSERT INTO `site_review` (`id`, `name`, `designation`, `review`, `img`, `status`) VALUES (1, 'Test Reviewer 1', 'Reviewer, XYZ', '“ Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero expedita cumque assumenda cum neque, atque nesciunt, molestiae architecto doloremque quis, placeat ipsam quidem provident in! Illum voluptas harum animi consequatur! ”', 'uploads/doctor-icon-avatar-white136162-581.jpg', 'Active');
+INSERT INTO `site_review` (`id`, `name`, `designation`, `review`, `img`, `status`) VALUES (3, 'Test Reviewer 2', 'Reviewer, ABC', '“ Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero expedita cumque assumenda cum neque, atque nesciunt, molestiae architecto doloremque quis, placeat ipsam quidem provident in! Illum voluptas harum animi consequatur! ”', 'uploads/doctor-icon-avatar-white136162-582.jpg', 'Active');
+INSERT INTO `site_review` (`id`, `name`, `designation`, `review`, `img`, `status`) VALUES (4, 'Test Reviewer 3', 'Reviewer, NMP', '“ Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero expedita cumque assumenda cum neque, atque nesciunt, molestiae architecto doloremque quis, placeat ipsam quidem provident in! Illum voluptas harum animi consequatur! ”', 'uploads/doctor-icon-avatar-white136162-583.jpg', 'Active');
+INSERT INTO `site_review` (`id`, `name`, `designation`, `review`, `img`, `status`) VALUES (5, 'Test Reviewer 4', 'Reviewer, TRP', '“ Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero expedita cumque assumenda cum neque, atque nesciunt, molestiae architecto doloremque quis, placeat ipsam quidem provident in! Illum voluptas harum animi consequatur! ”', 'uploads/doctor-icon-avatar-white136162-584.jpg', 'Active');
+INSERT INTO `site_review` (`id`, `name`, `designation`, `review`, `img`, `status`) VALUES (6, 'Test Reviewer 5', 'Reviewer, CVB', '“ Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero expedita cumque assumenda cum neque, atque nesciunt, molestiae architecto doloremque quis, placeat ipsam quidem provident in! Illum voluptas harum animi consequatur! ”', 'uploads/doctor-icon-avatar-white136162-585.jpg', 'Inactive');
+
+
+#
+# TABLE STRUCTURE FOR: slide
+#
+
+DROP TABLE IF EXISTS `slide`;
+
+CREATE TABLE `slide` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `img_url` varchar(1000) DEFAULT NULL,
+  `text1` varchar(500) DEFAULT NULL,
+  `text2` varchar(500) DEFAULT NULL,
+  `text3` varchar(500) DEFAULT NULL,
+  `position` varchar(100) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+INSERT INTO `slide` (`id`, `title`, `img_url`, `text1`, `text2`, `text3`, `position`, `status`) VALUES (1, 'Slider 1', 'uploads/1503411077revised-bhatia-homebanner-03.jpg', 'Welcome To Hospital', 'Hospital Management System', 'Hospital', '2', 'Active');
+INSERT INTO `slide` (`id`, `title`, `img_url`, `text1`, `text2`, `text3`, `position`, `status`) VALUES (2, 'Best Hospital management System', 'uploads/1707260345350542.jpg', 'Best Hospital management System', 'Best Hospital management System', 'Best Hospital management System', '1', 'Inactive');
+INSERT INTO `slide` (`id`, `title`, `img_url`, `text1`, `text2`, `text3`, `position`, `status`) VALUES (5, 'dbfbfjsbjfjbbsjfb', 'uploads/inlinePreview2.jpg', 'jbfjsbjdf', 'jbfjbjfbjsb', 'jbfjbjsbfj', 'jbfjbjbsjf', 'Inactive');
+INSERT INTO `slide` (`id`, `title`, `img_url`, `text1`, `text2`, `text3`, `position`, `status`) VALUES (6, 'Main BG', 'uploads/header-bg.png', 'The best doctors in Medicine!', 'in the world of modern medicine', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation', '1', 'Active');
+
+
+#
+# TABLE STRUCTURE FOR: sms
+#
+
+DROP TABLE IF EXISTS `sms`;
+
+CREATE TABLE `sms` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `date` varchar(100) DEFAULT NULL,
+  `message` varchar(1600) DEFAULT NULL,
+  `recipient` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: sms_settings
+#
+
+DROP TABLE IF EXISTS `sms_settings`;
+
+CREATE TABLE `sms_settings` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `api_id` varchar(100) DEFAULT NULL,
+  `sender` varchar(100) DEFAULT NULL,
+  `authkey` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `sid` varchar(1000) DEFAULT NULL,
+  `token` varchar(1000) DEFAULT NULL,
+  `sendernumber` varchar(1000) DEFAULT NULL,
+  `link` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+INSERT INTO `sms_settings` (`id`, `name`, `username`, `password`, `api_id`, `sender`, `authkey`, `user`, `sid`, `token`, `sendernumber`, `link`) VALUES (1, 'Clickatell', '', 'dmJiY3ZiY3Y=', '', NULL, NULL, '1', NULL, NULL, NULL, 'https://www.clickatell.com/');
+INSERT INTO `sms_settings` (`id`, `name`, `username`, `password`, `api_id`, `sender`, `authkey`, `user`, `sid`, `token`, `sendernumber`, `link`) VALUES (2, 'MSG91', '', '', NULL, 'Sender', 'Auth Key', '1', NULL, NULL, NULL, 'https://msg91.com/');
+INSERT INTO `sms_settings` (`id`, `name`, `username`, `password`, `api_id`, `sender`, `authkey`, `user`, `sid`, `token`, `sendernumber`, `link`) VALUES (5, 'Twilio', '', '', NULL, NULL, NULL, '1', 'AC20f426a9bbc9e05e689f5ad59e538270', '37a0cddb5c1f2d50882fa7149a99d119', '+13302949572', 'https://www.twilio.com/');
+INSERT INTO `sms_settings` (`id`, `name`, `username`, `password`, `api_id`, `sender`, `authkey`, `user`, `sid`, `token`, `sendernumber`, `link`) VALUES (6, 'Bulk Sms', 'VXNlcm5hbWU=', 'UGFzc3dvcmQ=', NULL, NULL, NULL, '1', NULL, NULL, NULL, 'https://www.bulksms.com/');
+INSERT INTO `sms_settings` (`id`, `name`, `username`, `password`, `api_id`, `sender`, `authkey`, `user`, `sid`, `token`, `sendernumber`, `link`) VALUES (8, 'Bd Bulk Sms', '', '', NULL, NULL, NULL, '1', NULL, 'Bd Bulk Sms Token Password', NULL, 'https://bdbulksms.net/');
+
+
+#
+# TABLE STRUCTURE FOR: template
+#
+
+DROP TABLE IF EXISTS `template`;
+
+CREATE TABLE `template` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `template` varchar(10000) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: time_schedule
+#
+
+DROP TABLE IF EXISTS `time_schedule`;
+
+CREATE TABLE `time_schedule` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `doctor` varchar(500) DEFAULT NULL,
+  `weekday` varchar(100) DEFAULT NULL,
+  `s_time` varchar(100) DEFAULT NULL,
+  `e_time` varchar(100) DEFAULT NULL,
+  `s_time_key` varchar(100) DEFAULT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+
+INSERT INTO `time_schedule` (`id`, `doctor`, `weekday`, `s_time`, `e_time`, `s_time_key`, `duration`) VALUES (116, '1', 'Friday', '08:00 PM', '09:00 PM', '240', '12');
+INSERT INTO `time_schedule` (`id`, `doctor`, `weekday`, `s_time`, `e_time`, `s_time_key`, `duration`) VALUES (117, '1', 'Monday', '08:00 AM', '08:00 PM', '96', '12');
+
+
+#
+# TABLE STRUCTURE FOR: time_slot
+#
+
+DROP TABLE IF EXISTS `time_slot`;
+
+CREATE TABLE `time_slot` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `doctor` varchar(100) DEFAULT NULL,
+  `s_time` varchar(100) DEFAULT NULL,
+  `e_time` varchar(100) DEFAULT NULL,
+  `weekday` varchar(100) DEFAULT NULL,
+  `s_time_key` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2460 DEFAULT CHARSET=utf8;
+
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2196, NULL, '01:30 PM', '01:45 PM', 'Tuesday', '162');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2197, NULL, '01:45 PM', '02:00 PM', 'Tuesday', '165');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2198, NULL, '02:00 PM', '02:15 PM', 'Tuesday', '168');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2199, NULL, '02:15 PM', '02:30 PM', 'Tuesday', '171');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2200, NULL, '02:30 PM', '02:45 PM', 'Tuesday', '174');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2201, NULL, '02:45 PM', '03:00 PM', 'Tuesday', '177');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2202, NULL, '03:00 PM', '03:15 PM', 'Tuesday', '180');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2203, NULL, '03:15 PM', '03:30 PM', 'Tuesday', '183');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2204, NULL, '03:30 PM', '03:45 PM', 'Tuesday', '186');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2205, NULL, '03:45 PM', '04:00 PM', 'Tuesday', '189');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2206, NULL, '04:00 PM', '04:15 PM', 'Tuesday', '192');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2207, NULL, '04:15 PM', '04:30 PM', 'Tuesday', '195');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2208, NULL, '04:30 PM', '04:45 PM', 'Tuesday', '198');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2209, NULL, '04:45 PM', '05:00 PM', 'Tuesday', '201');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2210, NULL, '05:00 PM', '05:15 PM', 'Tuesday', '204');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2211, NULL, '05:15 PM', '05:30 PM', 'Tuesday', '207');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2212, NULL, '05:30 PM', '05:45 PM', 'Tuesday', '210');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2213, NULL, '05:45 PM', '06:00 PM', 'Tuesday', '213');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2214, NULL, '06:00 PM', '06:15 PM', 'Tuesday', '216');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2215, NULL, '06:15 PM', '06:30 PM', 'Tuesday', '219');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2216, NULL, '06:30 PM', '06:45 PM', 'Tuesday', '222');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2217, NULL, '06:45 PM', '07:00 PM', 'Tuesday', '225');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2218, NULL, '07:00 PM', '07:15 PM', 'Tuesday', '228');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2219, NULL, '07:15 PM', '07:30 PM', 'Tuesday', '231');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2220, NULL, '07:30 PM', '07:45 PM', 'Tuesday', '234');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2221, NULL, '07:45 PM', '08:00 PM', 'Tuesday', '237');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2222, NULL, '08:00 PM', '08:15 PM', 'Tuesday', '240');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2223, NULL, '08:15 PM', '08:30 PM', 'Tuesday', '243');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2224, NULL, '08:30 PM', '08:45 PM', 'Tuesday', '246');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2225, NULL, '08:45 PM', '09:00 PM', 'Tuesday', '249');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2226, NULL, '09:00 PM', '09:15 PM', 'Tuesday', '252');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2227, NULL, '09:15 PM', '09:30 PM', 'Tuesday', '255');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2228, NULL, '09:30 PM', '09:45 PM', 'Tuesday', '258');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2229, NULL, '09:45 PM', '10:00 PM', 'Tuesday', '261');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2230, NULL, '10:00 PM', '10:15 PM', 'Tuesday', '264');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2231, NULL, '10:15 PM', '10:30 PM', 'Tuesday', '267');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2232, NULL, '10:30 PM', '10:45 PM', 'Tuesday', '270');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2233, NULL, '10:45 PM', '11:00 PM', 'Tuesday', '273');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2234, NULL, '11:00 PM', '11:15 PM', 'Tuesday', '276');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2235, NULL, '11:15 PM', '11:30 PM', 'Tuesday', '279');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2447, '1', '08:00 PM', '09:00 PM', 'Friday', '240');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2448, '1', '08:00 AM', '09:00 AM', 'Monday', '96');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2449, '1', '09:00 AM', '10:00 AM', 'Monday', '108');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2450, '1', '10:00 AM', '11:00 AM', 'Monday', '120');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2451, '1', '11:00 AM', '12:00 PM', 'Monday', '132');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2452, '1', '12:00 PM', '01:00 PM', 'Monday', '144');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2453, '1', '01:00 PM', '02:00 PM', 'Monday', '156');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2454, '1', '02:00 PM', '03:00 PM', 'Monday', '168');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2455, '1', '03:00 PM', '04:00 PM', 'Monday', '180');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2456, '1', '04:00 PM', '05:00 PM', 'Monday', '192');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2457, '1', '05:00 PM', '06:00 PM', 'Monday', '204');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2458, '1', '06:00 PM', '07:00 PM', 'Monday', '216');
+INSERT INTO `time_slot` (`id`, `doctor`, `s_time`, `e_time`, `weekday`, `s_time_key`) VALUES (2459, '1', '07:00 PM', '08:00 PM', 'Monday', '228');
+
+
+#
+# TABLE STRUCTURE FOR: users
+#
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `role_id` varchar(255) DEFAULT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `add_date` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=710 DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (1, '127.0.0.1', 'admin', '$2y$08$dxACPpnFozxfaNdOyKR8x.R4SwJwru2rFwG6BBfOpUnAoVfViQDs.', NULL, '', 'admin@dms.com', '', '9I3a7eezUv1a8d18622afe461fb4642993b27d1b', 1638287363, 'zCeJpcj78CKqJ4sVxVbxcO', 1268889823, 1639074366, 1, 'Admin', 'istrator', 'ADMIN', '0', NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (109, '113.11.74.192', 'Mrs Nurse', '$2y$08$CqxsVFewynbZi6UBOe481eJWbkNdOa/ehpmlGXJnrjq5mvpPDdzoO', NULL, NULL, 'nurse@dms.com', NULL, NULL, NULL, NULL, 1435082243, 1614599494, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (110, '113.11.74.192', 'Mr. Pharmacist', '$2y$08$uy2YnEG6kAADq8QLL2MS7OfvPs.ZLcWmAVJCj5LA4pNQTuuBWNZ4G', NULL, NULL, 'pharmacist@dms.com', NULL, NULL, NULL, 'mbeMop6vTuscFYmD2M4Iqu', 1435082359, 1614599460, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (111, '113.11.74.192', 'Mr Laboratorist', '$2y$08$hSHiFXnJZE4fusxX2WlfYeIVIYLH2H6ZfyINHRQLbrTAUcnVc572a', NULL, NULL, 'laboratorist@dms.com', NULL, NULL, NULL, NULL, 1435082438, 1585114573, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (112, '113.11.74.192', 'Mr. Accountant', '$2y$08$MeJQlgRC1AALgtvxfXwhuu5p1QOE9VAhXf7eM7llpt1TRRpNxVAFu', NULL, NULL, 'accountant@dms.com', NULL, NULL, NULL, NULL, 1435082637, 1638804657, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (614, '103.231.162.58', 'Mr Receptionist', '$2y$08$K2lK8Adt2whlJupWKZuPiuE7GIS.yI0ort8xgOGAERLqdwapGWszq', NULL, NULL, 'receptionist@dms.com', NULL, NULL, NULL, NULL, 1505800835, 1599736103, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (681, '103.231.161.30', 'Mr Patient', '$2y$08$i/UFBm2dH7YbaGnM8nByO.iO.09m.Fh9pIyn5aTH6XaD8w4CzUrZC', NULL, NULL, 'patient@dms.com', NULL, NULL, NULL, NULL, 1548872582, 1638804026, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `role_id`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `add_date`) VALUES (709, '103.231.160.47', 'Allan Nascimento', '$2y$08$ZX3ldfJn8L1CNcY4ESmXzu2UxHbLghv243x8kcq1lmRp2SjBapKZ.', '2', NULL, 'doctor@dms.com', NULL, NULL, NULL, NULL, 1558379920, 1639060288, 1, NULL, NULL, NULL, NULL, '12/02/21');
+
+
+#
+# TABLE STRUCTURE FOR: users_groups
+#
+
+DROP TABLE IF EXISTS `users_groups`;
+
+CREATE TABLE `users_groups` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`user_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`),
+  CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=712 DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (1, 1, 1);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (111, 109, 6);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (112, 110, 7);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (113, 111, 8);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (114, 112, 3);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (616, 614, 10);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (683, 681, 5);
+INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES (711, 709, 4);
+
+
+#
+# TABLE STRUCTURE FOR: website_settings
+#
+
+DROP TABLE IF EXISTS `website_settings`;
+
+CREATE TABLE `website_settings` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL,
+  `description` varchar(1000) NOT NULL,
+  `logo` varchar(1000) DEFAULT NULL,
+  `address` varchar(500) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `emergency` varchar(100) DEFAULT NULL,
+  `support` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `currency` varchar(100) DEFAULT NULL,
+  `block_1_text_under_title` varchar(500) DEFAULT NULL,
+  `service_block__text_under_title` varchar(500) DEFAULT NULL,
+  `doctor_block__text_under_title` varchar(500) DEFAULT NULL,
+  `facebook_id` varchar(100) DEFAULT NULL,
+  `twitter_id` varchar(100) DEFAULT NULL,
+  `google_id` varchar(100) DEFAULT NULL,
+  `youtube_id` varchar(100) DEFAULT NULL,
+  `skype_id` varchar(100) DEFAULT NULL,
+  `x` varchar(100) DEFAULT NULL,
+  `twitter_username` varchar(1000) DEFAULT NULL,
+  `appointment_title` varchar(1000) NOT NULL,
+  `appointment_subtitle` varchar(1000) NOT NULL,
+  `appointment_description` varchar(1000) NOT NULL,
+  `appointment_img_url` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `website_settings` (`id`, `title`, `description`, `logo`, `address`, `phone`, `emergency`, `support`, `email`, `currency`, `block_1_text_under_title`, `service_block__text_under_title`, `doctor_block__text_under_title`, `facebook_id`, `twitter_id`, `google_id`, `youtube_id`, `skype_id`, `x`, `twitter_username`, `appointment_title`, `appointment_subtitle`, `appointment_description`, `appointment_img_url`) VALUES (1, 'Psicomob', 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus deleniti mollitia quibusdam natus dolorum quae id libero rerum ullam maxime molestias exercitationem incidunt, sunt, delectus consequuntur dignissimos ab iste fuga?', 'uploads/Logo-Psicomob-PNG-Transparente-1-768x4801.png', 'Patos de Minas', '+5561986643917', '+5561986643917', '+5561986643917', 'admin@demo.com', 'R$', 'Best Hospital In The City', 'Aenean nibh ante, lacinia non tincidunt nec, lobortis ut tellus. Sed in porta diam.', 'We work with forward thinking clients to create beautiful, honest and amazing things that bring positive results.', 'https://www.facebook.com/rizvi.plabon', 'https://www.twitter.com/casoft', 'https://www.google.com/casoft', 'https://www.youtube.com/casoft', 'https://www.skype.com/casoft', NULL, 'codearistos', 'Why you should choose us?', 'WELCOME TO HOSPITAL MANAGEMENT', 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam nulla quibusdam nam autem, in quasi quae cumque, laborum optio nobis reprehenderit doloremque delectus voluptate. Maxime aliquam vitae adipisci sit numquam?', 'uploads/why-choose-us-doc.png');
+
+
