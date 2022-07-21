@@ -2,7 +2,7 @@ on:
  push : 
    branches:
       - main
-name: deploy plataforma  psicomob via  on push
+name: deploy plataforma  Quero Aulas via  on push
 jobs:
   web-deploy:
     name: 🎉 Deploy

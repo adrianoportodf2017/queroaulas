@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'keepec41_psicomob',
+	'hostname' => '162.241.62.177',
+	'username' => 'keepec41_quero_aulas',
 	'password' => '0307199216@Dr',
-	'database' => 'keepec41_psicomob',
+	'database' => 'keepec41_quero_aulas',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -2,7 +2,7 @@ on:
  push : 
    branches:
       - dev
-name: deploy plataforma  psicomob via  on push
+name: deploy plataforma  Quero Aulas via  on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -17,4 +17,4 @@ jobs:
         server: ${{ secrets.FTP_SERVER_TESTE }}
         username: ${{ secrets.FTP_USERNAME_TESTE}}
         password: ${{ secrets.FTP_PASSWORD_TESTE }}
-        server-dir: psicomob/
+        server-dir: Quero Aulas/

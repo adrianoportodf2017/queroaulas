@@ -304,7 +304,7 @@ class Patient extends MX_Controller
                                          <td align="center" valign="top" style="padding:0;Margin:0;width:560px"> 
                                           <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                                             <tr style="border-collapse:collapse"> 
-                                             <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://wfxwwh.stripocdn.email/content/guids/CABINET_ba1dc69d2f0c28d345af75441d95b415/images/logopsicomobpngtransparente1768x480.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td> 
+                                             <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://wfxwwh.stripocdn.email/content/guids/CABINET_ba1dc69d2f0c28d345af75441d95b415/images/logoQuero Aulaspngtransparente1768x480.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td> 
                                             </tr> 
                                             <tr style="border-collapse:collapse"> 
                                              <td align="center" style="padding:0;Margin:0;padding-bottom:10px;font-size:0"><img src="https://wfxwwh.stripocdn.email/content/guids/CABINET_23b09dc352206b9a3436692531aaf1f2/images/48401577371549314.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="41"></td> 
@@ -447,7 +447,7 @@ class Patient extends MX_Controller
                                         <td align="center" valign="top" style="padding:0;Margin:0;width:560px"> 
                                          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                                            <tr style="border-collapse:collapse"> 
-                                            <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://wfxwwh.stripocdn.email/content/guids/CABINET_ba1dc69d2f0c28d345af75441d95b415/images/logopsicomobpngtransparente1768x480.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td> 
+                                            <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://wfxwwh.stripocdn.email/content/guids/CABINET_ba1dc69d2f0c28d345af75441d95b415/images/logoQuero Aulaspngtransparente1768x480.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td> 
                                            </tr> 
                                            <tr style="border-collapse:collapse"> 
                                             <td align="center" style="padding:0;Margin:0;padding-bottom:10px;font-size:0"><img src="https://wfxwwh.stripocdn.email/content/guids/CABINET_23b09dc352206b9a3436692531aaf1f2/images/48401577371549314.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="41"></td> 
@@ -2159,8 +2159,8 @@ class Patient extends MX_Controller
         <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
         <div class="d-flex justify-content-between">
         <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
-        <a href="mailto:' . $patient->email . '?Subject=Psicomob%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
-        <a href="mailto:' . $patient->email . '?Subject=Psicomob%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+        <a href="mailto:' . $patient->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+        <a href="mailto:' . $patient->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
         </div>
         </div>
         <div class="card-body pt-0">

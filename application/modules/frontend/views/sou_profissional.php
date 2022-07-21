@@ -6,7 +6,7 @@
         <div class="card z-index-0">
           <div class="card-header text-center pt-4">
             <h5>Faça parte da maior comunidade de especialistas do Brasil
-              Conheça os benefícios de fazer parte da rede de especialistas Psicomob</h5>
+              Conheça os benefícios de fazer parte da rede de especialistas Quero Aulas</h5>
           </div>
           <ul>
             <li>Consultório virtual prático e seguro. </li><br>

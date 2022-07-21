@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19  Distrib 10.5.12-MariaDB, for Linux (x86_64)
 --
--- Host: localhost    Database: u347262100_psicomob
+-- Host: localhost    Database: u347262100_Quero Aulas
 -- ------------------------------------------------------
 -- Server version	10.5.12-MariaDB-cll-lve
 
@@ -1404,7 +1404,7 @@ CREATE TABLE `settings` (
 --
 
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (1,'Psicomob','Psicomob','Patos de minas','5561986643917','admin@demo.com','#','$','portuguese','flat','jitsi','percentage','Login Title','uploads/Logo-Psicomob-PNG-Transparente-1-768x480.png','','PayPal','Twilio','','','America/Buenos_Aires','Smtp','','','','');
+INSERT INTO `settings` VALUES (1,'Quero Aulas','Quero Aulas','Patos de minas','5561986643917','admin@demo.com','#','$','portuguese','flat','jitsi','percentage','Login Title','uploads/Logo-Quero Aulas-PNG-Transparente-1-768x480.png','','PayPal','Twilio','','','America/Buenos_Aires','Smtp','','','','');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 
 --
@@ -1753,11 +1753,11 @@ CREATE TABLE `website_settings` (
 --
 
 /*!40000 ALTER TABLE `website_settings` DISABLE KEYS */;
-INSERT INTO `website_settings` VALUES (1,'Psicomob','Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus deleniti mollitia quibusdam natus dolorum quae id libero rerum ullam maxime molestias exercitationem incidunt, sunt, delectus consequuntur dignissimos ab iste fuga?','uploads/Logo-Psicomob-PNG-Transparente-1-768x4801.png','Patos de Minas','+5561986643917','+5561986643917','+5561986643917','admin@demo.com','R$','Best Hospital In The City','Aenean nibh ante, lacinia non tincidunt nec, lobortis ut tellus. Sed in porta diam.','We work with forward thinking clients to create beautiful, honest and amazing things that bring positive results.','https://www.facebook.com/rizvi.plabon','https://www.twitter.com/casoft','https://www.google.com/casoft','https://www.youtube.com/casoft','https://www.skype.com/casoft',NULL,'codearistos','Why you should choose us?','WELCOME TO HOSPITAL MANAGEMENT','Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam nulla quibusdam nam autem, in quasi quae cumque, laborum optio nobis reprehenderit doloremque delectus voluptate. Maxime aliquam vitae adipisci sit numquam?','uploads/why-choose-us-doc.png');
+INSERT INTO `website_settings` VALUES (1,'Quero Aulas','Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus deleniti mollitia quibusdam natus dolorum quae id libero rerum ullam maxime molestias exercitationem incidunt, sunt, delectus consequuntur dignissimos ab iste fuga?','uploads/Logo-Quero Aulas-PNG-Transparente-1-768x4801.png','Patos de Minas','+5561986643917','+5561986643917','+5561986643917','admin@demo.com','R$','Best Hospital In The City','Aenean nibh ante, lacinia non tincidunt nec, lobortis ut tellus. Sed in porta diam.','We work with forward thinking clients to create beautiful, honest and amazing things that bring positive results.','https://www.facebook.com/rizvi.plabon','https://www.twitter.com/casoft','https://www.google.com/casoft','https://www.youtube.com/casoft','https://www.skype.com/casoft',NULL,'codearistos','Why you should choose us?','WELCOME TO HOSPITAL MANAGEMENT','Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam nulla quibusdam nam autem, in quasi quae cumque, laborum optio nobis reprehenderit doloremque delectus voluptate. Maxime aliquam vitae adipisci sit numquam?','uploads/why-choose-us-doc.png');
 /*!40000 ALTER TABLE `website_settings` ENABLE KEYS */;
 
 --
--- Dumping routines for database 'u347262100_psicomob'
+-- Dumping routines for database 'u347262100_Quero Aulas'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

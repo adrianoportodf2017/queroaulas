@@ -21,7 +21,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Psicomob - Consulta onlne
+        Quero Aulas - Consulta onlne
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -70,7 +70,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
                                                 <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                                Psicologos
+                                               Professores
                                             </a>
                                         </li>
                                         <li class="nav-item">

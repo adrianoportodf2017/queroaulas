@@ -54,7 +54,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
                                             <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                            Psicologos
+                                           Professores
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                                <div class="position-relative bg-gradient-dark h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('http://psicomob.com/wp-content/uploads/2021/05/Logo-Psicomob-PNG-Transparente-1.png');
+                                <div class="position-relative bg-gradient-dark h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('http://Quero Aulas.com/wp-content/uploads/2021/05/Logo-Quero Aulas-PNG-Transparente-1.png');
           background-size: cover;  background-position: center; /* Center the image */  background-repeat: no-repeat; /* Do not repeat the image */  background-size: cover; ">
                                     <span class="mask bg-gradient-grre opacity-6"></span>
                                     <h4 class="mt-5 text-white font-weight-bolder position-relative"></h4>

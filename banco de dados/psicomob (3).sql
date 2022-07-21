@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `psicomob`
+-- Banco de dados: `Quero Aulas`
 --
 
 -- --------------------------------------------------------
@@ -1355,7 +1355,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `system_vendor`, `title`, `address`, `phone`, `email`, `facebook_id`, `currency`, `language`, `discount`, `live_appointment_type`, `vat`, `login_title`, `logo`, `invoice_logo`, `payment_gateway`, `sms_gateway`, `codec_username`, `codec_purchase_code`, `timezone`, `emailtype`, `appointment_subtitle`, `appointment_title`, `appointment_description`, `appointment_img_url`) VALUES
-(1, 'Psicomob', 'Psicomob', 'Patos de minas', '5561986643917', 'admin@demo.com', '#', '$', 'portuguese', 'flat', 'jitsi', 'percentage', 'Login Title', 'uploads/Logo-Psicomob-PNG-Transparente-1-768x480.png', '', 'Pagarme', 'Twilio', '', '', 'America/Buenos_Aires', 'Smtp', '', '', '', '');
+(1, 'Quero Aulas', 'Quero Aulas', 'Patos de minas', '5561986643917', 'admin@demo.com', '#', '$', 'portuguese', 'flat', 'jitsi', 'percentage', 'Login Title', 'uploads/Logo-Quero Aulas-PNG-Transparente-1-768x480.png', '', 'Pagarme', 'Twilio', '', '', 'America/Buenos_Aires', 'Smtp', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1680,7 +1680,7 @@ CREATE TABLE `website_settings` (
 --
 
 INSERT INTO `website_settings` (`id`, `title`, `description`, `logo`, `address`, `phone`, `emergency`, `support`, `email`, `currency`, `block_1_text_under_title`, `service_block__text_under_title`, `doctor_block__text_under_title`, `facebook_id`, `twitter_id`, `google_id`, `youtube_id`, `skype_id`, `x`, `twitter_username`, `appointment_title`, `appointment_subtitle`, `appointment_description`, `appointment_img_url`) VALUES
-(1, 'Psicomob', 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus deleniti mollitia quibusdam natus dolorum quae id libero rerum ullam maxime molestias exercitationem incidunt, sunt, delectus consequuntur dignissimos ab iste fuga?', 'uploads/Logo-Psicomob-PNG-Transparente-1-768x4801.png', 'Patos de Minas', '+5561986643917', '+5561986643917', '+5561986643917', 'admin@demo.com', 'R$', 'Best Hospital In The City', 'Aenean nibh ante, lacinia non tincidunt nec, lobortis ut tellus. Sed in porta diam.', 'We work with forward thinking clients to create beautiful, honest and amazing things that bring positive results.', 'https://www.facebook.com/rizvi.plabon', 'https://www.twitter.com/casoft', 'https://www.google.com/casoft', 'https://www.youtube.com/casoft', 'https://www.skype.com/casoft', NULL, 'codearistos', 'Why you should choose us?', 'WELCOME TO HOSPITAL MANAGEMENT', 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam nulla quibusdam nam autem, in quasi quae cumque, laborum optio nobis reprehenderit doloremque delectus voluptate. Maxime aliquam vitae adipisci sit numquam?', 'uploads/why-choose-us-doc.png');
+(1, 'Quero Aulas', 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus deleniti mollitia quibusdam natus dolorum quae id libero rerum ullam maxime molestias exercitationem incidunt, sunt, delectus consequuntur dignissimos ab iste fuga?', 'uploads/Logo-Quero Aulas-PNG-Transparente-1-768x4801.png', 'Patos de Minas', '+5561986643917', '+5561986643917', '+5561986643917', 'admin@demo.com', 'R$', 'Best Hospital In The City', 'Aenean nibh ante, lacinia non tincidunt nec, lobortis ut tellus. Sed in porta diam.', 'We work with forward thinking clients to create beautiful, honest and amazing things that bring positive results.', 'https://www.facebook.com/rizvi.plabon', 'https://www.twitter.com/casoft', 'https://www.google.com/casoft', 'https://www.youtube.com/casoft', 'https://www.skype.com/casoft', NULL, 'codearistos', 'Why you should choose us?', 'WELCOME TO HOSPITAL MANAGEMENT', 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam nulla quibusdam nam autem, in quasi quae cumque, laborum optio nobis reprehenderit doloremque delectus voluptate. Maxime aliquam vitae adipisci sit numquam?', 'uploads/why-choose-us-doc.png');
 
 --
 -- Índices para tabelas despejadas
