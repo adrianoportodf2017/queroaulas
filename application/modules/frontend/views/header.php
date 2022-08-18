@@ -2,9 +2,9 @@
 <html lang="en">
 <base href="<?php echo base_url(); ?>">
 <?php
-$settings = $this->frontend_model->getSettings();
+$settings = $this->db->get('settings')->row();
 $title = explode(' ', $settings->title);
-$site_name = $this->db->get('website_settings')->row()->title;
+$site_name = $this->db->get('settings')->row()->title;
 
 ?>
 
@@ -52,150 +52,181 @@ $site_name = $this->db->get('website_settings')->row()->title;
 
 </head>
 
-<style>
-    .topbar-texts,
-    .footer-description {
-        font-family: "Roboto", sans-serif !important;
-        font-size: 15px !important;
-    }
 
-    body {
-        background-color: #f9f9fa
-    }
-
-    .padding {
-        padding: 3rem !important
-    }
-
-    .user-card-full {
-        overflow: hidden
-    }
-
-    .card {
-        border-radius: 5px;
-        -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
-        box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
-        border: none;
-        margin-bottom: 30px
-    }
-
-    .m-r-0 {
-        margin-right: 0px
-    }
-
-    .m-l-0 {
-        margin-left: 0px
-    }
-
-    .user-card-full .user-profile {
-        border-radius: 5px 0 0 5px
-    }
-
-    .bg-c-lite-green {
-        background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
-        background: linear-gradient(to right, #ee5a6f, #f29263)
-    }
-
-    .user-profile {
-        padding: 20px 0
-    }
-
-    .card-block {
-        padding: 1.25rem
-    }
-
-    .m-b-25 {
-        margin-bottom: 25px
-    }
-
-    .img-radius {
-        border-radius: 5px
-    }
-
-    h6 {
-        font-size: 14px
-    }
-
-    .card .card-block p {
-        line-height: 25px
-    }
-
-    @media only screen and (min-width: 1400px) {
-        p {
-            font-size: 14px
-        }
-    }
-
-    .card-block {
-        padding: 1.25rem
-    }
-
-    .b-b-default {
-        border-bottom: 1px solid #e0e0e0
-    }
-
-    .m-b-20 {
-        margin-bottom: 20px
-    }
-
-    .p-b-5 {
-        padding-bottom: 5px !important
-    }
-
-    .card .card-block p {
-        line-height: 25px
-    }
-
-    .m-b-10 {
-        margin-bottom: 10px
-    }
-
-    .text-muted {
-        color: #919aa3 !important
-    }
-
-    .b-b-default {
-        border-bottom: 1px solid #e0e0e0
-    }
-
-    .f-w-600 {
-        font-weight: 600
-    }
-
-    .m-b-20 {
-        margin-bottom: 20px
-    }
-
-    .m-t-40 {
-        margin-top: 20px
-    }
-
-    .p-b-5 {
-        padding-bottom: 5px !important
-    }
-
-    .m-b-10 {
-        margin-bottom: 10px
-    }
-
-    .m-t-40 {
-        margin-top: 20px
-    }
-
-    .user-card-full .social-link li {
-        display: inline-block
-    }
-
-    .user-card-full .social-link li a {
-        font-size: 20px;
-        margin: 0 10px 0 0;
-        -webkit-transition: all 0.3s ease-in-out;
-        transition: all 0.3s ease-in-out
-    }
-</style>
 
 <!-- BEGIN: Main Menu-->
 <style>
+    :root {
+        --color-background: #F0F0F7;
+        --color-primary-lighter: #9871F5;
+        --color-primary-light: #916BEA;
+        --color-primary: #8257E5;
+        --color-primary-dark: #774DD6;
+        --color-primary-darker: #6842C2;
+        --color-secondary: #04D361;
+        --color-secondary-dark: #04BF58;
+        --color-title-in-primary: #FFFFFF;
+        --color-text-in-primary: #D4C2FF;
+        --color-text-title: #32264D;
+        --color-text-complement: #9C98A6;
+        --color-text-base: #6A6180;
+        --color-line-in-white: #E6E6F0;
+        --color-input-background: #F8F8FC;
+        --color-button-text: #FFFFFF;
+        --color-box-base: #FFFFFF;
+        --color-box-footer: #FAFAFC;
+        --color-small-info: #C1BCCC;
+
+        /* Tamanho da Fonte PadrÃ£o: 16px - 100% - 1rem */
+
+        font-size: 60%;
+    }
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        height: 100vh;
+    }
+
+    body {
+        background: var(--color-primary);
+    }
+
+    body,
+    input,
+    button,
+    textarea {
+        font-size: 1.6rem;
+        font-weight: 500;
+        font-family: Poppins;
+        color: var(--color-text-base);
+    }
+
+    #container {
+        width: 90vw;
+        max-width: 700px;
+    }
+
+
+    @media (min-width: 700px) {
+        :root {
+            font-size: 62.5%;
+            /*1rem - 10px*/
+        }
+    }
+
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 3.2rem;
+    }
+
+    .logo-container h2 {
+        font-weight: 500;
+        font-size: 3.6rem;
+        line-height: 4.6rem;
+        margin-top: 0.8rem;
+    }
+
+    .logo-container img {
+        height: 10rem;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        margin: 3.2rem 0;
+    }
+
+    .buttons-container a {
+        width: 30rem;
+        height: 10.4rem;
+        border-radius: 0.8rem;
+        margin-right: 1.6rem;
+        font: 700 2.4rem Archivo;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: var(--color-button-text);
+    }
+
+    .buttons-container img {
+        margin-right: 1.6rem;
+    }
+
+    .buttons-container a img {
+        width: 4rem;
+    }
+
+    .buttons-container a.study {
+        background: var(--color-primary-lighter);
+    }
+
+    .buttons-container a.give-classes {
+        background: var(--color-secondary);
+    }
+
+    .total-connections {
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .total-connections img {
+        margin-left: 0.8rem;
+    }
+
+    @media(max-width:699px) {
+        :root {
+            font-size: 40%;
+        }
+    }
+
+    @media (min-width:1100px) {
+
+        .logo-container {
+            grid-area: proffy;
+            text-align: initial;
+            align-self: center;
+            margin: 0;
+        }
+
+        .logo-container img {
+            height: 127px;
+        }
+
+        .hero-image {
+            grid-area: image;
+            height: 350px;
+        }
+
+        .buttons-container {
+            grid-area: button;
+            justify-content: flex-start;
+            margin: 0;
+        }
+
+        .total-connections {
+            grid-area: texting;
+            justify-content: flex-end;
+            font-size: 1.2rem;
+        }
+    }
+
+
+
     .slider {
 
         width: 95%;
@@ -288,8 +319,8 @@ $site_name = $this->db->get('website_settings')->row()->title;
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
         <div class="container">
-            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="../pages/dashboard.html">
-                Quero Aulas
+            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="<?php echo base_url(); ?>/frontend"">
+            <img src=" <?php echo $settings->logo; ?>" width="150px">
             </a>
             <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon mt-2">
@@ -299,64 +330,53 @@ $site_name = $this->db->get('website_settings')->row()->title;
                 </span>
             </button>
             <div class="collapse navbar-collapse" id="navigation">
-                                <ul class="navbar-nav mx-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="<?php echo base_url(); ?>/frontend">
-                                            <i class="fa fa-chart-pie opacity-6 text me-1"></i>
-                                            Home
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
-                                            <i class="fa fa-user opacity-6 text me-1"></i>
-                                           Professores
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link me-2" href="<?php echo base_url(); ?>">
-                                            <i class="fas fa-user-circle opacity-6 text me-1"></i>
-                                            Acessar Sua Conta
-                                        </a>
-                                    </li>
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
 
-                                </ul>
-                                <ul class="navbar-nav d-lg-block d-none">
-                                    <li class="nav-item">
-                                        <a href="<?php echo base_url(); ?>frontend/search" class="btn btn-sm mb-0 me-1 btn-dark">Agendar consulta</a>
-                                    </li>
-                                </ul>
-                                <ul class="navbar-nav d-lg-block d-none">
-                                    <li class="nav-item">
-                                        <a href="<?php echo base_url(); ?>frontend/sou_profissional" class="btn btn-sm mb-0 me-1 btn-dark">Eu quero ser Quero Aulas</a>
-                                    </li>
-                                </ul>
-                            </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
+                            <i class="fa fa-user opacity-6 text me-1"></i>
+                            Professores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-2" href="<?php echo base_url(); ?>">
+                            <i class="fas fa-user-circle opacity-6 text me-1"></i>
+                            Acessar Sua Conta
+                        </a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav d-lg-block d-none">
+                    <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>frontend/search" class="btn btn-sm mb-0 me-1 btn-dark">Agendar consulta</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-lg-block d-none">
+                    <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>frontend/sou_profissional" class="btn btn-sm mb-0 me-1 btn-dark">Eu quero ser Quero Aulas</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     <!-- End Navbar -->
     <main class="main-content  mt-0">
-        <div class="page-header position-relative" style="background-image: url('https://demos.creative-tim.com/argon-dashboard-pro/assets/img/pricing-header-bg.jpg');
-background-size: cover;">
-            <span class="mask bg-gradient-primary opacity-6"></span>
+
+        <div class="page-header position-relative" style="background: var(--color-primary);">
             <div class="container pb-lg-9 pb-10 pt-7 postion-relative z-index-2">
                 <div class="row mt-4">
                     <div class="col-md-6 mx-auto text-center">
-                        <h3 class="text-white">Encontre seu especialista</h3>
-                        <p class="text-white"> Converse com um profissional sem sair de casa
-</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-7 mx-auto text-center">
-                        <div class="nav-wrapper mt-5 position-relative z-index-2">
-                         
-                        </div>
+                        <br>
+                        <h3 class="text-white"> Sua plataforma de estudos online
+                        </h3>                      
                     </div>
                 </div>
             </div>
         </div>
-       
+
         </div>
-    
-         <!-- End Navbar -->
+
+        <!-- End Navbar -->
     </main>

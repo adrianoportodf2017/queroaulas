@@ -37,7 +37,7 @@ class Frontend extends MX_Controller
         $data['images'] = $this->gallery_model->getActiveImages();
         $data['gridsections'] = $this->gridsection_model->getActiveGrids();
         $this->load->view('header', $data);
-        $this->load->view('frontend2');
+        $this->load->view('home');
         $this->load->view('footer');
         $this->load->view('scripts');
     }
