@@ -79,64 +79,20 @@ $site_name = $this->db->get('settings')->row()->title;
 
         /* Tamanho da Fonte PadrÃ£o: 16px - 100% - 1rem */
 
-        font-size: 60%;
     }
 
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    html,
-    body {
-        height: 100vh;
-    }
 
     body {
         background: var(--color-primary);
     }
 
-    body,
-    input,
-    button,
-    textarea {
-        font-size: 1.6rem;
-        font-weight: 500;
-        font-family: Poppins;
-        color: var(--color-text-base);
-    }
-
     #container {
         width: 90vw;
-        max-width: 700px;
+        max-width: 100%;
     }
 
 
-    @media (min-width: 700px) {
-        :root {
-            font-size: 62.5%;
-            /*1rem - 10px*/
-        }
-    }
-
-
-    .logo-container {
-        text-align: center;
-        margin-bottom: 3.2rem;
-    }
-
-    .logo-container h2 {
-        font-weight: 500;
-        font-size: 3.6rem;
-        line-height: 4.6rem;
-        margin-top: 0.8rem;
-    }
-
-    .logo-container img {
-        height: 10rem;
-    }
 
     .hero-image {
         width: 100%;
@@ -149,11 +105,11 @@ $site_name = $this->db->get('settings')->row()->title;
     }
 
     .buttons-container a {
-        width: 30rem;
-        height: 10.4rem;
+        width: 55%;
+        height: 90px;
         border-radius: 0.8rem;
         margin-right: 1.6rem;
-        font: 700 2.4rem Archivo;
+        font: 400 0.9rem  roboto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -162,11 +118,11 @@ $site_name = $this->db->get('settings')->row()->title;
     }
 
     .buttons-container img {
-        margin-right: 1.6rem;
+        margin-right: 0.6rem;
     }
 
     .buttons-container a img {
-        width: 4rem;
+        width: 2rem;
     }
 
     .buttons-container a.study {
@@ -178,51 +134,16 @@ $site_name = $this->db->get('settings')->row()->title;
     }
 
     .total-connections {
-        font-size: 1.8rem;
+        font-size: 0.8rem;
         display: flex;
         align-items: center;
         justify-content: center;
+        color: white;
     }
 
     .total-connections img {
         margin-left: 0.8rem;
-    }
-
-    @media(max-width:699px) {
-        :root {
-            font-size: 40%;
-        }
-    }
-
-    @media (min-width:1100px) {
-
-        .logo-container {
-            grid-area: proffy;
-            text-align: initial;
-            align-self: center;
-            margin: 0;
-        }
-
-        .logo-container img {
-            height: 127px;
-        }
-
-        .hero-image {
-            grid-area: image;
-            height: 350px;
-        }
-
-        .buttons-container {
-            grid-area: button;
-            justify-content: flex-start;
-            margin: 0;
-        }
-
-        .total-connections {
-            grid-area: texting;
-            justify-content: flex-end;
-            font-size: 1.2rem;
-        }
+        width: 30px;       
     }
 
 
@@ -348,24 +269,12 @@ $site_name = $this->db->get('settings')->row()->title;
                     </li>
 
                 </ul>
-                <ul class="navbar-nav d-lg-block d-none">
-                    <li class="nav-item">
-                        <a href="<?php echo base_url(); ?>frontend/search" class="btn btn-sm mb-0 me-1 btn-dark">Agendar consulta</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-lg-block d-none">
-                    <li class="nav-item">
-                        <a href="<?php echo base_url(); ?>frontend/sou_profissional" class="btn btn-sm mb-0 me-1 btn-dark">Eu quero ser Quero Aulas</a>
-                    </li>
-                </ul>
+                
             </div>
         </div>
     </nav>
-    <!-- End Navbar -->
-    <main class="main-content  mt-0">
-
-        <div class="page-header position-relative" style="background: var(--color-primary);">
-            <div class="container pb-lg-9 pb-10 pt-7 postion-relative z-index-2">
+    <div class="page-header position-relative" style="background: var(--color-primary);">
+            <div class="container pb-lg-3 pb-5 pt-7 postion-relative z-index-2">
                 <div class="row mt-4">
                     <div class="col-md-6 mx-auto text-center">
                         <br>
@@ -375,8 +284,3 @@ $site_name = $this->db->get('settings')->row()->title;
                 </div>
             </div>
         </div>
-
-        </div>
-
-        <!-- End Navbar -->
-    </main>
