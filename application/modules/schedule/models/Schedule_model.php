@@ -357,13 +357,8 @@ class Schedule_model extends CI_model
      // $final =  $hour - '24:00:00';
       $data = date('Y-m-d', strtotime($hour));
      /* if(date('Y-m-d', strtotime($hour)) == date('Y-m-d')){
-
-
-
-
-
       }*/
-      $this->db->where('doctor', $user_id);
+      $this->db->where('teacher', $user_id);
       $this->db->where('s_time >=', date('g:i A' , strtotime($hour)));
       $this->db->where('e_time <=', date('g:i A' , strtotime('+1 hours', strtotime($hour))));
       $this->db->where('date', strtotime($data));

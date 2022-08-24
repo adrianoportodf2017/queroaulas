@@ -39,8 +39,8 @@ class Appointment_model extends CI_model {
         }
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -67,8 +67,8 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -81,9 +81,9 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentByDoctor($doctor) {
+    function getAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -95,16 +95,16 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentRequestByDoctor($doctor) {
+    function getAppointmentRequestByTeacher($teacher) {
         $this->db->where('request', 'Yes');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getAppointmentByPatient($patient) {
+    function getAppointmentByClient($client) {
         $this->db->order_by('id', 'desc');
-        $this->db->where('patient', $patient);
+        $this->db->where('client', $client);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -116,10 +116,10 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentByStatusByDoctor($status, $doctor) {
+    function getAppointmentByStatusByTeacher($status, $teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', $status);
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -139,9 +139,9 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentByDoctorByToday($doctor_id) {
+    function getAppointmentByTeacherByToday($teacher_id) {
         $today = strtotime(date('Y-m-d'));
-        $this->db->where('doctor', $doctor_id);
+        $this->db->where('teacher', $teacher_id);
         $this->db->where('date', $today);
         $query = $this->db->get('appointment');
         return $query->result();
@@ -194,8 +194,8 @@ class Appointment_model extends CI_model {
         $this->db->where('status', 'Requested');
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -223,8 +223,8 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -258,8 +258,8 @@ class Appointment_model extends CI_model {
         $this->db->where('status', 'Pending Confirmation');
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -287,8 +287,8 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -322,8 +322,8 @@ class Appointment_model extends CI_model {
         $this->db->where('status', 'Confirmed');
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -351,8 +351,8 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -386,8 +386,8 @@ class Appointment_model extends CI_model {
         $this->db->where('status', 'Treated');
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -415,8 +415,8 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -450,8 +450,8 @@ class Appointment_model extends CI_model {
         $this->db->where('status', 'Cancelled');
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
@@ -479,23 +479,23 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getAppointmentListByDoctor($doctor) {
-        $this->db->where('doctor', $doctor);
+    function getAppointmentListByTeacher($teacher) {
+        $this->db->where('teacher', $teacher);
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-    function getAppointmentListByDoctorWithoutSearch($doctor, $order, $dir) {
-        $this->db->where('doctor', $doctor);
+    function getAppointmentListByTeacherWithoutSearch($teacher, $order, $dir) {
+        $this->db->where('teacher', $teacher);
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -505,8 +505,8 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentListBySearchByDoctor($doctor, $search, $order, $dir) {
-        $this->db->where('doctor', $doctor);
+    function getAppointmentListBySearchByTeacher($teacher, $search, $order, $dir) {
+        $this->db->where('teacher', $teacher);
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -514,14 +514,14 @@ class Appointment_model extends CI_model {
         }
         $this->db->like('id', $search);
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getAppointmentListByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
-        $this->db->where('doctor', $doctor);
+    function getAppointmentListByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
+        $this->db->where('teacher', $teacher);
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -532,8 +532,8 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentListByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
-        $this->db->where('doctor', $doctor);
+    function getAppointmentListByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
+        $this->db->where('teacher', $teacher);
 
         $this->db->like('id', $search);
 
@@ -544,35 +544,35 @@ class Appointment_model extends CI_model {
         }
 
         $this->db->or_like('app_time_full_format', $search);
-        $this->db->or_like('patientname', $search);
-        $this->db->or_like('doctorname', $search);
+        $this->db->or_like('clientname', $search);
+        $this->db->or_like('teachername', $search);
 
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getRequestAppointmentByDoctor($doctor) {
+    function getRequestAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', 'Requested');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-    function getRequestAppointmentByDoctorWithoutSearch($doctor, $order, $dir) {
+    function getRequestAppointmentByTeacherWithoutSearch($teacher, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Requested');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getRequestAppointmentBySearchByDoctor($doctor, $search, $order, $dir) {
+    function getRequestAppointmentBySearchByTeacher($teacher, $search, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -581,26 +581,26 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Requested')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getRequestAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
+    function getRequestAppointmentByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Requested');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getRequestAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
+    function getRequestAppointmentByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
 
        if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -611,33 +611,33 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Requested')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getCancelledAppointmentByDoctor($doctor) {
+    function getCancelledAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', 'Cancelled');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-    function getCancelledAppointmentByDoctorWithoutSearch($doctor, $order, $dir) {
+    function getCancelledAppointmentByTeacherWithoutSearch($teacher, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Cancelled');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getCancelledAppointmentBySearchByDoctor($doctor, $search, $order, $dir) {
+    function getCancelledAppointmentBySearchByTeacher($teacher, $search, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -646,26 +646,26 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Cancelled')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getCancelledAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
+    function getCancelledAppointmentByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Cancelled');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getCancelledAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
+    function getCancelledAppointmentByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
 
         if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -676,33 +676,33 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Cancelled')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getPendingAppointmentByDoctor($doctor) {
+    function getPendingAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', 'Pending Confirmation');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-     function getPendingAppointmentByDoctorWithoutSearch($doctor, $order, $dir) {
+     function getPendingAppointmentByTeacherWithoutSearch($teacher, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Pending Confirmation');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getPendingAppointmentBySearchByDoctor($doctor, $search, $order, $dir) {
+    function getPendingAppointmentBySearchByTeacher($teacher, $search, $order, $dir) {
        if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -711,26 +711,26 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Pending Confirmation')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getPendingAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
+    function getPendingAppointmentByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Pending Confirmation');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getPendingAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
+    function getPendingAppointmentByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
 
        if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -741,33 +741,33 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Pending Confirmation')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getTreatedAppointmentByDoctor($doctor) {
+    function getTreatedAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', 'Treated');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-     function getTreatedAppointmentByDoctorWithoutSearch($doctor, $order, $dir) {
+     function getTreatedAppointmentByTeacherWithoutSearch($teacher, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Treated');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getTreatedAppointmentBySearchByDoctor($doctor, $search, $order, $dir) {
+    function getTreatedAppointmentBySearchByTeacher($teacher, $search, $order, $dir) {
        if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -776,26 +776,26 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Treated')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getTreatedAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
+    function getTreatedAppointmentByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Treated');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getTreatedAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
+    function getTreatedAppointmentByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
 
         if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -806,33 +806,33 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Treated')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getConfirmedAppointmentByDoctor($doctor) {
+    function getConfirmedAppointmentByTeacher($teacher) {
         $this->db->order_by('id', 'desc');
         $this->db->where('status', 'Confirmed');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
     
-    function getConfirmedAppointmentByDoctorWithoutSearch($doctor, $order, $dir) {
+    function getConfirmedAppointmentByTeacherWithoutSearch($teacher, $order, $dir) {
        if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Confirmed');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getConfirmedAppointmentBySearchByDoctor($doctor, $search, $order, $dir) {
+    function getConfirmedAppointmentBySearchByTeacher($teacher, $search, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -841,26 +841,26 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Confirmed')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
-    function getConfirmedAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir) {
+    function getConfirmedAppointmentByLimitByTeacher($teacher, $limit, $start, $order, $dir) {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
             $this->db->order_by('id', 'desc');
         }
         $this->db->where('status', 'Confirmed');
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
     }
 
-    function getConfirmedAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir) {
+    function getConfirmedAppointmentByLimitBySearchByTeacher($teacher, $limit, $start, $search, $order, $dir) {
 
        if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -871,8 +871,8 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('status', 'Confirmed')
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where('teacher', $teacher)
+                ->where("(id LIKE '%" . $search . "%' OR app_time_full_format LIKE '%" . $search . "%' OR clientname LIKE '%" . $search . "%' OR teachername LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }

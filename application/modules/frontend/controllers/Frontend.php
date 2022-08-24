@@ -9,33 +9,19 @@ class Frontend extends MX_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('frontend_model');
-        $this->load->model('finance/finance_model');
+        $this->load->model('frontend_model');    
         $this->load->model('payment/payment_model');
-        $this->load->model('doctor/doctor_model');
+        $this->load->model('teacher/teacher_model');
         $this->load->model('schedule/schedule_model');
-        $this->load->model('patient/patient_model');
-        $this->load->model('slide/slide_model');
-        $this->load->model('service/service_model');
-        $this->load->model('email/email_model');
-        $this->load->model('featured/featured_model');
-        $this->load->model('review/review_model');
-        $this->load->model('gallery/gallery_model');
-        $this->load->model('gridsection/gridsection_model');
+        $this->load->model('client/client_model');
+        $this->load->model('email/email_model');    
         $language = $this->db->get('settings')->row()->language;
         $this->lang->load('system_syntax', $language);
     }
 
     public function index()
     {
-        $data = array();
-        $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['slides'] = $this->slide_model->getActiveSlide();
-        $data['services'] = $this->service_model->getService();
-        $data['featureds'] = $this->featured_model->getFeatured();
-        $data['reviews'] = $this->review_model->getActiveReview();
-        $data['images'] = $this->gallery_model->getActiveImages();
-        $data['gridsections'] = $this->gridsection_model->getActiveGrids();
+        $data = array();       
         $this->load->view('header', $data);
         $this->load->view('home');
         $this->load->view('footer');
@@ -45,19 +31,19 @@ class Frontend extends MX_Controller
     public function search($search = NULL, $order = NULL, $dir = NULL)
     {
         $data = array();
-        $data['doctors'] = $this->doctor_model->getDoctorBySearch($search, $order, $dir);
+        $data['teachers'] = $this->teacher_model->getTeacherBySearch($search, $order, $dir);
         $this->load->view('header', $data);
         $this->load->view('search');
         $this->load->view('footer');
         $this->load->view('scripts');
     }
 
-    function sou_profissional()
+    function queroDarAulas()
     {
         $data = array();
         $data['settings'] = $this->frontend_model->getSettings();
         $this->load->view('header', $data); // just the header file
-        $this->load->view('sou_profissional');
+        $this->load->view('queroDarAulas');
         $this->load->view('footer'); // just the footer file
         $this->load->view('scripts');
     }
@@ -66,22 +52,14 @@ class Frontend extends MX_Controller
     {
         // var_dump($_POST);
         $ion_user_id = $this->db->get_where('users', array('email' => $_POST['email']))->row();
-        $cpf = $this->db->get_where('doctor', array('cpf' => preg_replace('/[-\@\.\;\" "]+/', '', $_POST['cpf'])))->row();
         if (isset($ion_user_id)) {
             echo json_encode(array('mensagem' => 'Já existe uma conta cadastrada com esse e-mail', 'situacao' => false));
-            die;
-        }
-        elseif (isset($cpf)) {
-            echo json_encode(array('mensagem' => 'Já existe uma CPF cadastrado', 'situacao' => false));           
             die;
         } else {
             $data = array(
                 'name' => $_POST['first_name'],
                 'email' => $_POST['email'],            
                 'phone' => $_POST['phone'],               
-                'cpf' => preg_replace('/[-\@\.\;\" "]+/', '', $_POST['cpf']),           
-                'crp' => $_POST['crp'],
-                'specialties' => $_POST['specialties'], 
                 'hours_available' =>'a:7:{i:1;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";s:1:"1";s:5:"08:00";s:1:"1";s:5:"09:00";s:1:"1";s:5:"10:00";s:1:"1";s:5:"11:00";s:1:"1";s:5:"12:00";N;s:5:"13:00";N;s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";s:1:"1";s:5:"18:00";s:1:"1";s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:2;a:24:{s:5:"00:00";s:1:"1";s:5:"01:00";s:1:"1";s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";s:1:"1";s:5:"08:00";s:1:"1";s:5:"09:00";s:1:"1";s:5:"10:00";s:1:"1";s:5:"11:00";s:1:"1";s:5:"12:00";N;s:5:"13:00";N;s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";s:1:"1";s:5:"18:00";s:1:"1";s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:3;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";N;s:5:"08:00";s:1:"1";s:5:"09:00";s:1:"1";s:5:"10:00";s:1:"1";s:5:"11:00";s:1:"1";s:5:"12:00";s:1:"1";s:5:"13:00";N;s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";s:1:"1";s:5:"18:00";s:1:"1";s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:4;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";N;s:5:"08:00";N;s:5:"09:00";N;s:5:"10:00";N;s:5:"11:00";N;s:5:"12:00";N;s:5:"13:00";s:1:"1";s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";N;s:5:"18:00";N;s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:5;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";N;s:5:"08:00";N;s:5:"09:00";s:1:"1";s:5:"10:00";s:1:"1";s:5:"11:00";s:1:"1";s:5:"12:00";N;s:5:"13:00";N;s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";s:1:"1";s:5:"18:00";s:1:"1";s:5:"19:00";s:1:"1";s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:6;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";N;s:5:"08:00";s:1:"1";s:5:"09:00";s:1:"1";s:5:"10:00";s:1:"1";s:5:"11:00";s:1:"1";s:5:"12:00";N;s:5:"13:00";N;s:5:"14:00";s:1:"1";s:5:"15:00";s:1:"1";s:5:"16:00";s:1:"1";s:5:"17:00";s:1:"1";s:5:"18:00";s:1:"1";s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}i:7;a:24:{s:5:"00:00";N;s:5:"01:00";N;s:5:"02:00";N;s:5:"03:00";N;s:5:"04:00";N;s:5:"05:00";N;s:5:"06:00";N;s:5:"07:00";N;s:5:"08:00";N;s:5:"09:00";N;s:5:"10:00";N;s:5:"11:00";N;s:5:"12:00";N;s:5:"13:00";N;s:5:"14:00";N;s:5:"15:00";N;s:5:"16:00";N;s:5:"17:00";N;s:5:"18:00";N;s:5:"19:00";N;s:5:"20:00";N;s:5:"21:00";N;s:5:"22:00";N;s:5:"23:00";N;}}'           
            );
 
@@ -89,15 +67,13 @@ class Frontend extends MX_Controller
                 $dfg = 4;
                     $this->ion_auth->register($username, $_POST['password'], $_POST['email'], $dfg);
                     $ion_user_id = $this->db->get_where('users', array('email' => $_POST['email']))->row()->id;
-                    $this->doctor_model->insertDoctor($data);
-                    $doctor_user_id = $this->db->get_where('doctor', array('email' => $_POST['email']))->row()->id;
+                    $this->teacher_model->insertTeacher($data);
+                    $teacher_user_id = $this->db->get_where('teacher', array('email' => $_POST['email']))->row()->id;
                     $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->doctor_model->updateDoctor($doctor_user_id, $id_info);
+                    $this->teacher_model->updateTeacher($teacher_user_id, $id_info);
 
                     //sms
-                    $set['settings'] = $this->settings_model->getSettings();
-                    $autosms = $this->sms_model->getAutoSmsByType('doctor');
-                    $message = $autosms->message;
+                    $set['settings'] = $this->settings_model->getSettings();              
                     $to = $_POST['phone'];
                     $name1 = $_POST['first_name'];
                    
@@ -108,7 +84,8 @@ class Frontend extends MX_Controller
                         'company' => $set['settings']->system_vendor
                     );
 
-                 $autoemail = $this->email_model->getAutoEmailByType('doctor');
+                 $autoemail = $this->email_model->getAutoEmailByType('teacher');
+                 if($autoemail){
                     if ($autoemail->status == 'Active') {
                         $mail_provider = $this->settings_model->getSettings()->emailtype;
                         $settngs_name = $this->settings_model->getSettings()->system_vendor;
@@ -251,7 +228,7 @@ class Frontend extends MX_Controller
                         $this->email->subject('Registration confirmation');
                         $this->email->message($messageprint1);
                         $this->email->send();
-                    }
+                    }}
                     $redirect = base_url() . 'frontend/cadastro_sucess';
                     // echo 'deu certo';
                     echo json_encode(array('html' => $redirect, 'redirect' => true));
@@ -271,7 +248,7 @@ class Frontend extends MX_Controller
 
     public function checkout_sucess()
     {
-        $data['doctors'] = $this->doctor_model->getDoctorBySearch($search, $order, $dir);
+        $data['teachers'] = $this->teacher_model->getTeacherBySearch($search, $order, $dir);
 
         $this->load->view('header', $data);
         $this->load->view('checkout_sucess');
@@ -286,19 +263,19 @@ class Frontend extends MX_Controller
         //var_dump( $paytm);
         if ($this->ion_auth->user()->row()) {
             $page_data['user'] =  $this->ion_auth->user()->row();
-            $patient = $this->patient_model->getPatientWithDoctor($page_data['user']->id, $_GET['id']);
-            if ($patient != NULL) {
-                $patient = $patient->row();
+            $client = $this->client_model->getClientWithTeacher($page_data['user']->id, $_GET['id']);
+            if ($client != NULL) {
+                $client = $client->row();
             }
         } else {
-            $patient = NULL;
+            $client = NULL;
         }
-        $doctor = $this->db->get_where('doctor', array('id =' =>  $_GET['id']))->row();
+        $teacher = $this->db->get_where('teacher', array('id =' =>  $_GET['id']))->row();
         $page_data['payment_request'] = $payment_request;
-        $page_data['amount_to_pay'] =  $doctor->amount_to_pay;
+        $page_data['amount_to_pay'] =  $teacher->amount_to_pay;
         $page_data['discounted'] = null;
         $page_data['profile_details'] =  $paytm;
-        $page_data['doctor'] =  $doctor;
+        $page_data['teacher'] =  $teacher;
         $page_data['date'] =   $_GET['date'];
         $page_data['hour'] =   $_GET['hour'];
 
@@ -315,8 +292,8 @@ class Frontend extends MX_Controller
 
 
         // var_dump($post);die;
-        $doctor = $this->db->get_where('doctor', array('id =' =>  $post['doctor']))->row();
-        $patient_id = '';
+        $teacher = $this->db->get_where('teacher', array('id =' =>  $post['teacher']))->row();
+        $client_id = '';
 
         $profile_details =  $this->db->get_where('paymentgateway', array('name =' => 'pagarme'))->row();
         if ($profile_details->status == 'test') {
@@ -330,19 +307,19 @@ class Frontend extends MX_Controller
         $user =  $this->db->get_where('users', array('email =' =>  $post['email']))->row();
         if ($user != NULL) {
             $ion_user_id = $user->id;
-            $patient =  $this->db->get_where('patient', array('ion_user_id =' =>  $ion_user_id))->row();
-            if ($patient != NULL) {
-                $patient_id = $patient->patient_id;
-                $patient_add_date = $patient->add_date;
-                $patient_registration_time = $patient->registration_time;
+            $client =  $this->db->get_where('client', array('ion_user_id =' =>  $ion_user_id))->row();
+            if ($client != NULL) {
+                $client_id = $client->client_id;
+                $client_add_date = $client->add_date;
+                $client_registration_time = $client->registration_time;
             }
         } else {
 
             $add_date = date('m/d/y');
             $registration_time = time();
-            $patient_add_date = $add_date;
-            $patient_registration_time = $registration_time;
-            $patient_id = rand(10000, 1000000);
+            $client_add_date = $add_date;
+            $client_registration_time = $registration_time;
+            $client_id = rand(10000, 1000000);
         }
         $p_name = $this->input->post('first_name') . ' ' . $this->input->post('last_name');
         $p_email = $this->input->post('email');
@@ -362,19 +339,19 @@ class Frontend extends MX_Controller
         //  var_dump($password);
 
         $data_p = array(
-            'patient_id' => $patient_id,
+            'client_id' => $client_id,
             'name' => $p_name,
             'email' => $p_email,
             'phone' => $p_phone,
             //'sex' => $p_gender,
             //'age' => $p_age,
-            'add_date' => $patient_add_date,
-            'registration_time' => $patient_registration_time,
+            'add_date' => $client_add_date,
+            'registration_time' => $client_registration_time,
             'how_added' => 'from_appointment'
         );
         if ($this->ion_auth->email_check($p_email) != NULL) {
-            $this->patient_model->updatePatient($patient->id, $data_p);
-            $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
+            $this->client_model->updateClient($client->id, $data_p);
+            $client_user_id = $this->db->get_where('client', array('email' => $p_email))->row()->id;
 
             // echo 'teste cadastro'; 
 
@@ -384,10 +361,10 @@ class Frontend extends MX_Controller
             $dfg = 5;
             $this->ion_auth->register($username, $password, $p_email, $dfg);
             $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
-            $this->patient_model->insertPatient($data_p);
-            $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
+            $this->client_model->insertClient($data_p);
+            $client_user_id = $this->db->get_where('client', array('email' => $p_email))->row()->id;
             $id_info = array('ion_user_id' => $ion_user_id);
-            $this->patient_model->updatePatient($patient_user_id, $id_info);
+            $this->client_model->updateClient($client_user_id, $id_info);
 
 
 
@@ -533,12 +510,12 @@ class Frontend extends MX_Controller
             $this->email->message($message);
             $this->email->send();
         }
-        $patient = $patient_user_id;
+        $client = $client_user_id;
 
 
 
         //THIS IS HOW I CHECKED THE STRIPE PAYMENT STATUS
-        $payment = $this->payment_model->pagarme_payment($post, $public_key, isset($post['boleto']) ? 'boleto' : 'credit_card', $doctor);
+        $payment = $this->payment_model->pagarme_payment($post, $public_key, isset($post['boleto']) ? 'boleto' : 'credit_card', $teacher);
         if ($payment['status'] == 'paid') {
 
             $date = time();
@@ -546,21 +523,21 @@ class Frontend extends MX_Controller
             $amount = $post['amount'] / 100;
             $data = array(
                 'category_name' => 'Atendimento',
-                'patient' => $patient,
+                'client' => $client,
                 'date' => $date,
                 'amount' => $amount,
-                'doctor' => $doctor->id,
+                'teacher' => $teacher->id,
                 //'discount' => $discount,
                 // 'flat_discount' => $flat_discount,
                 'gross_total' => $post['amount'] / 100,
                 'status' => 'paid',
                 'hospital_amount' => ($amount / 100) * $paytm->percentage,
-                'doctor_amount' => ($amount / 100) * $paytm->percentage_doctor,
+                'teacher_amount' => ($amount / 100) * $paytm->percentage_teacher,
                 'user' => $user->id,
-                'patient_name' => $post['first_name'],
-                'patient_phone' => $post['phone'],
-                'patient_address' => $post['adress'],
-                'doctor_name' => $doctor->name,
+                'client_name' => $post['first_name'],
+                'client_phone' => $post['phone'],
+                'client_address' => $post['adress'],
+                'teacher_name' => $teacher->name,
                 'date_string' => $date_string,
                 'deposit_type' => 'cred_card'
                 // 'remarks' => $remarks
@@ -571,7 +548,7 @@ class Frontend extends MX_Controller
             $inserted_id = $this->db->insert_id();
             $data1 = array(
                 'date' => $date,
-                'patient' => $patient,
+                'client' => $client,
                 'deposited_amount' =>  $amount,
                 'payment_id' => $inserted_id,
                 'amount_received_id' => $inserted_id . '.' . 'R$',
@@ -589,10 +566,10 @@ class Frontend extends MX_Controller
             // var_dump($e_time);die;
 
 
-            $patientname = $this->patient_model->getPatientById($patient)->name;
-            $patient_phone = $this->patient_model->getPatientById($patient)->phone;
-            $doctorname = $this->doctor_model->getDoctorById($doctor->id)->name;
-            $room_id = 'hms-meeting-' . $patient_phone . '-' . rand(10000, 1000000);
+            $clientname = $this->client_model->getClientById($client)->name;
+            $client_phone = $this->client_model->getClientById($client)->phone;
+            $teachername = $this->teacher_model->getTeacherById($teacher->id)->name;
+            $room_id = 'hms-meeting-' . $client_phone . '-' . rand(10000, 1000000);
             $live_meeting_link = 'https://meet.jit.si/' . $room_id;
             $app_time = strtotime($date . ' ' . $s_time);
             //var_dump(date("Y-m-d H:i:s", $app_time));die;
@@ -600,14 +577,14 @@ class Frontend extends MX_Controller
             $time_slot = date("h:i A", strtotime($s_time)) . ' To ' . date("h:i A", strtotime($e_time));
             $add_date = date('m/d/y');
             $registration_time = time();
-            $patient_add_date = $add_date;
-            $patient_registration_time = $registration_time;
+            $client_add_date = $add_date;
+            $client_registration_time = $registration_time;
 
             $data = array(
-                'patient' => $patient,
-                'patientname' => $patientname,
-                'doctor' => $doctor->id,
-                'doctorname' => $doctorname,
+                'client' => $client,
+                'clientname' => $clientname,
+                'teacher' => $teacher->id,
+                'teachername' => $teachername,
                 'date' => strtotime($date),
                 's_time' => date("h:i A", strtotime($s_time)),
                 'e_time' => date("h:i A", strtotime($e_time)),
@@ -629,21 +606,21 @@ class Frontend extends MX_Controller
             $this->frontend_model->insertAppointment($data);
 
             if (!empty($sms)) {
-                $this->sms->sendSmsDuringAppointment($patient, $doctor, $date, $s_time, $e_time);
+                $this->sms->sendSmsDuringAppointment($client, $teacher, $date, $s_time, $e_time);
             }
 
-            $patient_doctor = $this->patient_model->getPatientById($patient)->doctor;
+            $client_teacher = $this->client_model->getClientById($client)->teacher;
 
-            $patient_doctors = explode(',', $patient_doctor);
+            $client_teachers = explode(',', $client_teacher);
 
 
 
-            if (!in_array($doctor->id, $patient_doctors)) {
-                $patient_doctors[] = $doctor->id;
-                $doctorss = implode(',', $patient_doctors);
+            if (!in_array($teacher->id, $client_teachers)) {
+                $client_teachers[] = $teacher->id;
+                $teacherss = implode(',', $client_teachers);
                 $data_d = array();
-                $data_d = array('doctor' => $doctorss);
-                $this->patient_model->updatePatient($patient, $data_d);
+                $data_d = array('teacher' => $teacherss);
+                $this->client_model->updateClient($client, $data_d);
             }
 
             $autoemail = $this->email_model->getAutoEmailByType('appoinment_confirmation');
@@ -655,8 +632,8 @@ class Frontend extends MX_Controller
                 $data1 = array(
                     'firstname' => $this->input->post('first_name'),
                     'lastname' => $this->input->post('last_name'),
-                    'name' => $patientname,
-                    'doctorname' => $doctorname,
+                    'name' => $clientname,
+                    'teachername' => $teachername,
                     'appoinmentdate' => date('d-m-Y', $data['date']),
                     'meeting_link' =>  $live_meeting_link,
                     'time_slot' => $time_slot,
@@ -827,10 +804,10 @@ class Frontend extends MX_Controller
 
 
 
-    public function list_hour_doctor()
+    public function list_hour_teacher()
     {
         $date = $_POST['start'];
-        $id_doctor = $_POST['id'];
+        $id_teacher = $_POST['id'];
         $day_week = strval(substr($date, 0, 1));
         $today = str_replace(' ', '', strval(substr($date, 3)));
         $date_compare = strval(date('Y-m-d'));
@@ -838,9 +815,9 @@ class Frontend extends MX_Controller
         //var_dump(str_replace(' ', '', $data));
 
         $data = "";
-        //  $doctor_ion_id = $this->ion_auth->get_user_id();
+        //  $teacher_ion_id = $this->ion_auth->get_user_id();
         // $user_id = 1;
-        $event_data = $this->db->get_where('doctor', array('id' => $id_doctor))->row();
+        $event_data = $this->db->get_where('teacher', array('id' => $id_teacher))->row();
         // var_dump($event_data->hours_available);
         if ($event_data->hours_available == NULL || $event_data->hours_available == "") {
 
@@ -854,11 +831,11 @@ class Frontend extends MX_Controller
                 //echo $current_time;
                 if ($k == '1' && $current_time < $hours) {
                     // echo str_replace(' ', '', substr($date, 3)).' '.$hours.':00';
-                    $liberado =  $this->schedule_model->hour_compare(str_replace(' ', '', substr($date, 3)) . ' ' . $hours . ':00', $id_doctor);
+                    $liberado =  $this->schedule_model->hour_compare(str_replace(' ', '', substr($date, 3)) . ' ' . $hours . ':00', $id_teacher);
                     var_dump($liberado);
                     if (!$liberado) {
-                        md5(str_replace(' ', '', $id_doctor) . '&date=' . str_replace(' ', '', substr($date, 3)));
-                        $data = $data . '<div><a href="' . base_url('frontend/checkout?id=' . str_replace(' ', '', $id_doctor) . '&date=' . str_replace(' ', '', substr($date, 3))) . '&hour=' . $hours . '" class="btn btn-info round buttonhours">' . $hours . '</button>
+                        md5(str_replace(' ', '', $id_teacher) . '&date=' . str_replace(' ', '', substr($date, 3)));
+                        $data = $data . '<div><a href="' . base_url('frontend/checkout?id=' . str_replace(' ', '', $id_teacher) . '&date=' . str_replace(' ', '', substr($date, 3))) . '&hour=' . $hours . '" class="btn btn-info round buttonhours">' . $hours . '</button>
                         </div>';
                     } else {
                         $data = $data . '<div><button class="btn btn round buttonhours" disabled>' . $hours . '</button>
@@ -874,9 +851,9 @@ class Frontend extends MX_Controller
 
             } else if ($k == '1') {
                 // echo str_replace(' ', '', substr($date, 3)).' '.$hours.':00';
-                $liberado =  $this->schedule_model->hour_compare(str_replace(' ', '', substr($date, 3)) . ' ' . $hours . ':00', $id_doctor);
+                $liberado =  $this->schedule_model->hour_compare(str_replace(' ', '', substr($date, 3)) . ' ' . $hours . ':00', $id_teacher);
                 if (!$liberado) {
-                    $data = $data . '<div><a href="' . base_url('frontend/checkout?id=' . str_replace(' ', '', $id_doctor) . '&date=' . str_replace(' ', '', substr($date, 3))) . '&hour=' . $hours . '" class="btn btn-info round buttonhours">' . $hours . '</button>
+                    $data = $data . '<div><a href="' . base_url('frontend/checkout?id=' . str_replace(' ', '', $id_teacher) . '&date=' . str_replace(' ', '', substr($date, 3))) . '&hour=' . $hours . '" class="btn btn-info round buttonhours">' . $hours . '</button>
           </div>';
                 } else {
                     $data = $data . '<div><button class="btn btn round buttonhours" disabled>' . $hours . '</button>
@@ -906,16 +883,16 @@ class Frontend extends MX_Controller
 
 
 
-    function getAvailableSlotByDoctorByDateByJason()
+    function getAvailableSlotByTeacherByDateByJason()
     {
         $data = array();
         $date = $this->input->get('date');
         if (!empty($date)) {
             $date = strtotime($date);
         }
-        $doctor = $this->input->get('doctor');
-        if (!empty($date) && !empty($doctor)) {
-            $data['aslots'] = $this->frontend_model->getAvailableSlotByDoctorByDate($date, $doctor);
+        $teacher = $this->input->get('teacher');
+        if (!empty($date) && !empty($teacher)) {
+            $data['aslots'] = $this->frontend_model->getAvailableSlotByTeacherByDate($date, $teacher);
         }
         echo json_encode($data);
     }

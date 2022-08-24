@@ -64,7 +64,6 @@ function required() {
     $CI->currency = $settings->currency;
     $CI->load->model('home/home_model');
     $CI->load->model('settings/settings_model');
-    $CI->load->model('sms/sms_model');
     $CI->load->model('email/email_model');
     $CI->load->model('ion_auth_model');
     $CI->load->library('parser');

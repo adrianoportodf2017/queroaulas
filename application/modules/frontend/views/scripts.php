@@ -15,7 +15,7 @@
 <script src="<?php echo site_url('front/site_assets/js/main.js'); ?>"></script>
 <script src="<?php echo site_url('common/toastr/toastr.js'); ?>"></script>
 <script src="front/js/smoothscroll/jquery.smoothscroll.min.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery-2.2.0.min.js"></script>
 <!--footer end-->
 </section>
 <!-- js placed at the end of the document so the pages load faster -->
@@ -86,7 +86,7 @@
 
 
         $.ajax({
-            url: "<?php echo base_url(); ?>frontend/list_hour_doctor",
+            url: "<?php echo base_url(); ?>frontend/list_hour_teacher",
             type: "POST",
             data: {
                 start: start,

@@ -22,33 +22,23 @@ $site_name = $this->db->get('settings')->row()->title;
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <!-- jQuery Plugins -->
-    <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/owl-carousel/owl.carousel.min.css'); ?>" />
     <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/magnific-popup/magnific-popup.css'); ?>" />
     <link rel="stylesheet" href="<?php echo site_url('common/assets/bootstrap-datepicker/css/bootstrap-datepicker.css'); ?>" />
-    <link rel="stylesheet" type="text/css" href="<?php echo site_url('common/assets/bootstrap-timepicker/compiled/timepicker.css'); ?>">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!--external css-->
     <!-- Nucleo Icons -->
     <link href="<?php echo base_url(); ?>assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="<?php echo base_url(); ?>assets/css/nucleo-svg.css" rel="stylesheet" />
+  
     <!-- CSS Files -->
     <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
-
-    <link rel="stylesheet" href="<?php echo site_url('front/assets/revolution_slider/css/rs-style.css'); ?>" media="screen">
-    <link rel="stylesheet" href="<?php echo site_url('front/assets/revolution_slider/rs-plugin/css/settings.css'); ?>" media="screen">
     <!-- CSS Stylesheet -->
     <link href="<?php echo site_url('front/site_assets/css/style.css'); ?>" rel="stylesheet" />
     <link href="<?php echo site_url('front/site_assets/css/responsive.css') ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo site_url('common/toastr/toastr.css'); ?>" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">
-    <script src="<?= base_url() ?>assets/payment/js/jquery.3.5.3.min.js"></script>
 
 </head>
 
@@ -60,7 +50,7 @@ $site_name = $this->db->get('settings')->row()->title;
         --color-background: #F0F0F7;
         --color-primary-lighter: #9871F5;
         --color-primary-light: #916BEA;
-        --color-primary: #8257E5;
+        --color-primary: #6842C2;
         --color-primary-dark: #774DD6;
         --color-primary-darker: #6842C2;
         --color-secondary: #04D361;
@@ -114,6 +104,7 @@ $site_name = $this->db->get('settings')->row()->title;
         align-items: center;
         justify-content: center;
         text-decoration: none;
+        text-align: center;
         color: var(--color-button-text);
     }
 
@@ -142,7 +133,7 @@ $site_name = $this->db->get('settings')->row()->title;
     }
 
     .total-connections img {
-        margin-left: 0.8rem;
+        margin: 0.8rem;
         width: 30px;       
     }
 
@@ -257,14 +248,20 @@ $site_name = $this->db->get('settings')->row()->title;
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
-                            <i class="fa fa-user opacity-6 text me-1"></i>
+                            
                             Professores
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2" href="<?php echo base_url(); ?>">
-                            <i class="fas fa-user-circle opacity-6 text me-1"></i>
+                           
                             Acessar Sua Conta
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me-2" href="<?php echo base_url('frontend/querodaraulas'); ?>">
+                           
+                           Quero dar Aulas
                         </a>
                     </li>
 
@@ -284,3 +281,4 @@ $site_name = $this->db->get('settings')->row()->title;
                 </div>
             </div>
         </div>
+        

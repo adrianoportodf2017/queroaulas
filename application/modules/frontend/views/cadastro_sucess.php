@@ -61,7 +61,7 @@
             <div class="pt-5">
                 <div class="card py-3 mt-sm-3">
                     <div class="card-body text-center">
-                    <h3 class="h4 pb-3">Seja Bem vindo a Psicomo!</h3><hr>                    
+                    <h3 class="h4 pb-3">Seja Bem vindo a Quero Aulas!</h3><hr>                    
                         <h3 class="h4 pb-3">Seu Cadastro foi realizado com sucesso!</h3>
                         <p class="mb-2">Você receberá a confirmação pelo email.</p>
                         <p class="mb-2"></p>
