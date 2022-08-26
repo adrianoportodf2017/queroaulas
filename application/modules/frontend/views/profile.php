@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-4 mb-2 align-self-center">
         <div class="card card-profile">
-          <img src="<?= base_url() ?>uploads/fundoprofilee.JPG" alt="Image placeholder" class="card-img-top">
+          <img src="<?= base_url() ?>uploads/fundoprofilee.jpg" alt="Image placeholder" class="card-img-top">
           <div class="row justify-content-center">
             <div class="col-4 col-lg-4 order-lg-2">
               <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
