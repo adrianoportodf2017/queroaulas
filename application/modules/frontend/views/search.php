@@ -38,16 +38,10 @@
                                                 </div> 
                                                 </div>                                             
                                             </div>
-                                            <div class="card-block">
-                                                <?php
-                                                $specialties = explode(",", $teacher->specialties);
-                                                foreach ($specialties as $specialtie) {
-                                                    echo '<button class="btn btn-outline-secondary" style="margin: 2px"> ' . $specialtie . '</button>';
-                                                }
-                                                ?>
+                                            <div class="card-block">                                             
                                                 <p style="margin: 30px;  margin: 0;  text-align: justify; font-size: small;"><?= mb_substr($teacher->profile, 0, 300, 'UTF-8'); ?>
                                     </aside>
-                                    <a href="<?= site_url().'frontend/profile/'. $teacher->id; ?>" class="btn btn-outline-info" style="margin: 2px">Quero Saber Mais      <i class="fa fa-heart-o"></i></a>
+                                    <a href="<?= site_url().'frontend/profile/'. $teacher->id; ?>" class="btn btn-outline-info  d-none d-lg-block w-100" style="margin: 2px">Quero Saber Mais      <i class="fa fa-heart-o"></i></a>
                                 </div>
                                 <div class="col-md-5">
                                     <b>
@@ -91,6 +85,8 @@
                                     </div>
                                     <div id="msg<?= $teacher->id ?>">
                                     </div>
+                                    <a href="<?= site_url().'frontend/profile/'. $teacher->id; ?>" class="btn btn-outline-info  d-block d-lg-none" style="margin: 2px">Quero Saber Mais      <i class="fa fa-heart-o"></i></a>
+
                                 </div>
                             </div>
                         </div>
