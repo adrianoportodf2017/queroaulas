@@ -59,6 +59,18 @@ class Frontend extends MX_Controller
         $this->load->view('scripts');
     }
 
+    public function checkout($payment_request = "only_for_mobile")
+    {
+
+      $data = array();
+      $data['settings'] = $this->frontend_model->getSettings();
+      $data['teacher'] = $this->teacher_model->getTeacherById($this->uri->segment(3));
+      $this->load->view('header', $data); // just the header file
+      $this->load->view('checkout');
+      $this->load->view('footer'); // just the footer file
+      $this->load->view('scripts');
+    }
+
     function salvarProfissional()
     {
         // var_dump($_POST);
@@ -267,33 +279,7 @@ class Frontend extends MX_Controller
         $this->load->view('scripts');
     }
 
-    public function checkout($payment_request = "only_for_mobile")
-    {
-
-        $paytm = $this->db->get_where('paymentgateway', array('name =' => 'pagarme'))->row();
-        //var_dump( $paytm);
-        if ($this->ion_auth->user()->row()) {
-            $page_data['user'] =  $this->ion_auth->user()->row();
-            $client = $this->client_model->getClientWithTeacher($page_data['user']->id, $_GET['id']);
-            if ($client != NULL) {
-                $client = $client->row();
-            }
-        } else {
-            $client = NULL;
-        }
-        $teacher = $this->db->get_where('teacher', array('id =' =>  $_GET['id']))->row();
-        $page_data['payment_request'] = $payment_request;
-        $page_data['amount_to_pay'] =  $teacher->amount_to_pay;
-        $page_data['discounted'] = null;
-        $page_data['profile_details'] =  $paytm;
-        $page_data['teacher'] =  $teacher;
-        $page_data['date'] =   $_GET['date'];
-        $page_data['hour'] =   $_GET['hour'];
-
-        $this->load->view('checkout', $page_data);
-        $this->load->view('home/footer');
-        $this->load->view('scripts');
-    }
+    
 
     public function pagarme_payment()
 
