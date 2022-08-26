@@ -48,6 +48,17 @@ class Frontend extends MX_Controller
         $this->load->view('scripts');
     }
 
+    function profile()
+    {
+        $data = array();
+        $data['settings'] = $this->frontend_model->getSettings();
+        $data['teacher'] = $this->teacher_model->getTeacherById($this->uri->segment(3));
+        $this->load->view('header', $data); // just the header file
+        $this->load->view('profile');
+        $this->load->view('footer'); // just the footer file
+        $this->load->view('scripts');
+    }
+
     function salvarProfissional()
     {
         // var_dump($_POST);
