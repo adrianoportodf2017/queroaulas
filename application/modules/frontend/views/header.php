@@ -253,7 +253,7 @@ $site_name = $this->db->get('settings')->row()->title;
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-2" href="<?php echo base_url(); ?>">
+                        <a class="nav-link me-2" href="<?php echo base_url('auth'); ?>">
                            
                             Acessar Sua Conta
                         </a>

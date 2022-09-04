@@ -25,58 +25,6 @@
 </head>
 
 <body class="login-body">
-
-    <div class="container">
-        <div class="container position-sticky z-index-sticky top-0">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Navbar -->
-                    <nav class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
-                        <div class="container-fluid">
-                            <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="<?php echo base_url(); ?>">
-                                <?php echo $this->db->get('settings')->row()->system_vendor; ?>
-                            </a>
-                            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon mt-2">
-                                    <span class="navbar-toggler-bar bar1"></span>
-                                    <span class="navbar-toggler-bar bar2"></span>
-                                    <span class="navbar-toggler-bar bar3"></span>
-                                </span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navigation">
-                                <ul class="navbar-nav mx-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="<?php echo base_url(); ?>/frontend">
-                                            <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
-                                            Home
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
-                                            <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                           Professores
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link me-2" href="<?php echo base_url(); ?>">
-                                            <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                                            Acessar Sua Conta
-                                        </a>
-                                    </li>
-
-                                </ul>
-                                <ul class="navbar-nav d-lg-block d-none">
-                                    <li class="nav-item">
-                                        <a href="<?php echo base_url(); ?>frontend/search" class="btn btn-sm mb-0 me-1 btn-primary">Agendar consulta</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    <!-- End Navbar -->
-                </div>
-            </div>
-        </div>
         <main class="main-content  mt-0">
             <section>
                 <div class="page-header min-vh-100">
@@ -89,7 +37,7 @@
                                         <p class="mb-0">Entre com seu e-mail e sua senha</p><small>(Caso seja seu primeiro acesso a sua senha é o seu CPF)
                                     </div>
                                     <div class="card-body">
-                                        <div id="infoMessage"><?php echo $message; ?></div>
+                                        <div id="infoMessage" class=""><?php echo $message; ?></div>
                                         <form method="post" action="auth/login">
                                             <div class="mb-3">
                                                 <input type="email" class="form-control form-control-lg" aria-label="Email" name="identity" placeholder="Email" autofocus>
@@ -107,21 +55,15 @@
                                         </form>
                                     </div>
                                     <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                        <p class="mb-4 text-sm mx-auto">
-                                            Quero me
-                                            <a href="javascript:;" class="text-primary text-gradient font-weight-bold">Cadastrar</a>
-                                        </p>
-                                        <p><a data-toggle="modal" href="#myModal"> Esqueci minha senha</a></p>
-
+                                     <p><a data-toggle="modal" href="#myModal"> Esqueci minha senha</a></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                                <div class="position-relative bg-gradient-dark h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('http://Quero Aulas.com/wp-content/uploads/2021/05/Logo-Quero Aulas-PNG-Transparente-1.png');
+                                <div class="position-relative bg-gradient-dark h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="
           background-size: cover;  background-position: center; /* Center the image */  background-repeat: no-repeat; /* Do not repeat the image */  background-size: cover; ">
-                                    <span class="mask bg-gradient-grre opacity-6"></span>
-                                    <h4 class="mt-5 text-white font-weight-bolder position-relative"></h4>
-                                    <p class="text-white position-relative"></p>
+                                             <img class="hero-image" src="<?php echo base_url() ?>uploads/cadastro.svg" alt="Plataforma de Estudos">
+
                                 </div>
                             </div>
                         </div>

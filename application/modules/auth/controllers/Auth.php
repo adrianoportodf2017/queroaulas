@@ -97,8 +97,9 @@ class Auth extends MX_Controller {
 				'id' => 'password',
 				'type' => 'password',
 			);
-
-			$this->_render_page('auth/login', $data);
+			$this->load->view('frontend/header', $data); // just the header file
+			$this->_render_page('auth/login');
+			$this->load->view('frontend/footer'); 
 		}
 	}
 
