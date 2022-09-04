@@ -37,7 +37,7 @@
                                         <p class="mb-0">Entre com seu e-mail e sua senha</p><small>(Caso seja seu primeiro acesso a sua senha é o seu CPF)
                                     </div>
                                     <div class="card-body">
-                                        <div id="infoMessage" class=""><?php echo $message; ?></div>
+                                    <?php if($message){ ?><div id="infoMessage" class="alert alert-light"><?= $message ?></div><?php } ?>
                                         <form method="post" action="auth/login">
                                             <div class="mb-3">
                                                 <input type="email" class="form-control form-control-lg" aria-label="Email" name="identity" placeholder="Email" autofocus>

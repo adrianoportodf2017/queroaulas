@@ -8,7 +8,7 @@ class Profile extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('profile_model');
-        $this->load->model('doctor/doctor_model');
+        $this->load->model('teacher/teacher_model');
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -23,7 +23,7 @@ class Profile extends MX_Controller {
         $data = array();
         $id = $this->ion_auth->get_user_id();
         $data['profile'] = $this->profile_model->getProfileById($id);
-        $data['doctor'] = $this->doctor_model->getDoctorByIonUserId($id);
+        $data['teacher'] = $this->teacher_model->getteacherByIonUserId($id);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('profile');
         $this->load->view('home/footer'); // just the footer file
@@ -46,7 +46,7 @@ class Profile extends MX_Controller {
         $number = $this->input->post('number');
         $date_of_birth = $this->input->post('date_of_birth');
         $biography = $this->input->post('biography');
-        $crp = $this->input->post('crp');
+        $profile = $this->input->post('profile');
         $specialties = $this->input->post('specialties');
         $facebook = $this->input->post('facebook');
         $instagram = $this->input->post('instagram');
@@ -55,7 +55,10 @@ class Profile extends MX_Controller {
         $data['profile'] = $this->profile_model->getProfileById($id);
         if ($data['profile']->email != $email) {
             if ($this->ion_auth->email_check($email)) {
+                
                 $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                $data['feedback'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('feedback');
+               // var_dump( $data['feedback']);die;
                 redirect('profile');
             }
         }
@@ -81,6 +84,8 @@ class Profile extends MX_Controller {
             $data = array();
             $id = $this->ion_auth->get_user_id();
             $data['profile'] = $this->profile_model->getProfileById($id);
+            $data['feedback'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            var_dump( $data['feedback']);die;
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('profile', $data);
             $this->load->view('home/footer'); // just the footer file
@@ -133,7 +138,7 @@ class Profile extends MX_Controller {
                     'number' => $number,
                     'date_of_birth' => $date_of_birth,
                     'biography' => $biography,
-                    'crp' => $crp,
+                    'profile' => $profile,
                     'specialties' => $specialties,
                     'facebook' => $facebook,
                     'instagram' => $instagram,
@@ -163,7 +168,7 @@ class Profile extends MX_Controller {
                     'number' => $number,
                     'date_of_birth' => $date_of_birth,
                     'biography' => $biography,
-                    'crp' => $crp,
+                    'profile' => $profile,
                     'specialties' => $specialties,
                     'facebook' => $facebook,
                     'instagram' => $instagram,
@@ -188,6 +193,9 @@ class Profile extends MX_Controller {
                 $this->profile_model->updateProfile($ion_user_id, $data, $group_name);
             }
             $this->session->set_flashdata('feedback', lang('updated'));
+            $data['feedback'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('feedback');
+           // var_dump( $data['feedback']);die;
+
 
             // Loading View
             redirect('profile');

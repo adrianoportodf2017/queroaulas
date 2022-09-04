@@ -70,7 +70,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
                                                 <i class="fa fa-user opacity-6 text-dark me-1"></i>
-                                               Professores
+                                                Professores
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -117,7 +117,7 @@
             <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="<?php echo base_url(); ?>doctor/details">
+                        <a class="nav-link active" href="<?php echo base_url(); ?>teacher/details">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
                             </div>
@@ -125,11 +125,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="<?php echo base_url(); ?>patient/customers">
+                        <a class="nav-link " href="<?php echo base_url(); ?>client/customers">
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Clientes</span>
+                            <span class="nav-link-text ms-1">Alunos</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -137,7 +137,7 @@
                             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Prox. Consultas</span>
+                            <span class="nav-link-text ms-1">Prox. Aulas</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -224,32 +224,41 @@
                     <div class="row gx-4">
                         <div class="col-auto">
                             <div class="avatar avatar-xl position-relative">
-                                <img src="<?php echo base_url() . $doctor->img_url; ?>" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                            </div>
-                        </div>
-                        <div class="col-auto my-auto">
-                            <div class="h-100">
-                                <h5 class="mb-1">
-                                    <?php echo $doctor->name; ?>
-                                </h5>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                            <div class="nav-wrapper position-relative end-0">
-                                <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center " href="<?php echo base_url(); ?>doctor/details">
-                                            <i class="ni ni-app"></i>
-                                            <span class="ms-2">Caléndario</span>
-                                        </a>
-                                    </li>
-
-                                </ul>
+                                <?php if (!empty($teacher->img_url) && file_exists($teacher->img_url)) { ?>
+                                    <a href="#">
+                                        <img src="<?= base_url().$teacher->img_url ?>" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;">
+                                    </a>
+                                <?php } else {
+                                ?>
+                                    <a href="#">
+                                        <img src="<?= base_url() ?>uploads/semfoto.gif" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;">
+                                    </a><?php } ?>
                             </div>
                         </div>
                     </div>
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1">
+                                <?php echo $teacher->name; ?>
+                            </h5>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                        <div class="nav-wrapper position-relative end-0">
+                            <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center " href="<?php echo base_url(); ?>teacher/details">
+                                        <i class="ni ni-app"></i>
+                                        <span class="ms-2">Caléndario</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+            </div>
             </div>
             <!-- End Navbar -->
 

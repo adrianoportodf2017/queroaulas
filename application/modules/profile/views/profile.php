@@ -18,11 +18,23 @@
              
                    
 
-                            <?php echo validation_errors(); ?>
+                            <?php if($this->session->flashdata('feedback')){ ?><div id="infoMessage" class="alert alert-warning"><?= $this->session->flashdata('feedback') ?></div><?php } ?>
+
                             <form role="form" action="profile/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                             <div class="adv-table editable-table ">
                         <div class="clearfix">
-                        <div class="col-md-6 form-group">                            
+                        <div class="col-md-6 form-group">          
+                        <div class="avatar avatar-xl position-relative">
+                                <?php if (!empty($teacher->img_url) && file_exists($teacher->img_url)) { ?>
+                                    <a href="#">
+                                        <img src="<?= base_url().$teacher->img_url ?>" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;">
+                                    </a>
+                                <?php } else {
+                                ?>
+                                    <a href="#">
+                                        <img src="<?= base_url() ?>uploads/semfoto.gif" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;">
+                                    </a><?php } ?>
+                            </div>                  
                         <label for="exampleInputEmail1"><?php echo lang('image'); ?></label>
                                 <input  class="form-control"  type="file" name="img_url">
                             </div>
@@ -47,32 +59,20 @@
                                     }
                                     ?>' placeholder="">
                                 </div>
-                                <div class=" col-md-6 form-group">
-                                    <label for="exampleInputEmail1"><?php echo lang('crp'); ?></label>
-                                    <input type="text" class="form-control" name="crp" id="crp" value='<?php
-                                    if (!empty($doctor->crp)) {
-                                        echo $doctor->crp;
-                                    }
-                                    ?>' placeholder="<?php
-                                    if (!empty($doctor->crp)) {
-                                        echo $doctor->crp;
-                                    }
-                                    ?>">
-                                 
-                                </div>
+  
                                 <div class=" col-md-6 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('phone'); ?></label>
                                     <input type="text" class="form-control" name="phone" id="exampleInputEmail1" value='<?php
-                                    if (!empty($doctor->phone)) {
-                                        echo $doctor->phone;
+                                    if (!empty($teacher->phone)) {
+                                        echo $teacher->phone;
                                     }
                                     ?>'>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('amount_to_pay'); ?></label>
                                     <input type="number" class="form-control" name="amount_to_pay" id="amount_to_pay" value='<?php
-                                    if (!empty($doctor->amount_to_pay)) {
-                                        echo $doctor->amount_to_pay;
+                                    if (!empty($teacher->amount_to_pay)) {
+                                        echo $teacher->amount_to_pay;
                                     }
                                     ?>'>
                                 </div>
@@ -80,8 +80,8 @@
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('date_of_birth'); ?></label>
                                     <input type="text" class="form-control" name="date_of_birth" id="date_of_birth" value='<?php
-                                    if (!empty($doctor->date_of_birth)) {
-                                        echo $doctor->date_of_birth;
+                                    if (!empty($teacher->date_of_birth)) {
+                                        echo $teacher->date_of_birth;
                                     }
                                     ?>'>
                                 </div>
@@ -89,8 +89,8 @@
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('instagram'); ?></label>
                                     <input type="text" class="form-control" name="instagram" id="instagram" value='<?php
-                                    if (!empty($doctor->instagram)) {
-                                        echo $doctor->instagram;
+                                    if (!empty($teacher->instagram)) {
+                                        echo $teacher->instagram;
                                     }
                                     ?>'>
                                 </div>
@@ -98,17 +98,27 @@
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('facebook'); ?></label>
                                     <input type="text" class="form-control" name="facebook" id="facebook" value='<?php
-                                    if (!empty($doctor->facebook)) {
-                                        echo $doctor->facebook;
+                                    if (!empty($teacher->facebook)) {
+                                        echo $teacher->facebook;
                                     }
                                     ?>'>
+                                </div>
+                                <div class=" col-md-12 form-group">
+                                    <label for="exampleInputEmail1">Currículo</label>
+                                    <textarea style="min-height: 80px;"   class="form-control" name="profile" id="profile" rows="10"> <?php
+                                    if (!empty($teacher->profile)) {
+                                        echo $teacher->profile;
+                                    }
+                                    ?>
+                                    </textarea>
+                                 
                                 </div>
                               
                                 <div class=" col-md-12 ">
                                     <label for="exampleInputEmail1"><?php echo lang('specialties'); ?>, Por favor separe às especialidades por virgulas</label>
                                     <textarea style="min-height: 80px;"  class="form-control" name="specialties" id="specialties" rows="10" ><?php
-                                    if (!empty($doctor->specialties)) {
-                                        echo $doctor->specialties;
+                                    if (!empty($teacher->specialties)) {
+                                        echo $teacher->specialties;
                                     }
                                     ?></textarea>
                                 </div>
@@ -116,8 +126,8 @@
                                 <div class=" col-md-12 ">
                                     <label for="exampleInputEmail1"><?php echo lang('biography'); ?></label>
                                     <textarea style="min-height: 80px;"  class="form-control" name="biography" id="biography" rows="10" ><?php
-                                    if (!empty($doctor->biography)) {
-                                        echo $doctor->biography;
+                                    if (!empty($teacher->biography)) {
+                                        echo $teacher->biography;
                                     }
                                     ?></textarea>
                                 </div>
@@ -128,64 +138,64 @@
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('address'); ?></label>
                                     <input type="text" class="form-control" name="address" id="exampleInputEmail1" value='<?php
-                                    if (!empty($doctor->address)) {
-                                        echo $doctor->address;
+                                    if (!empty($teacher->address)) {
+                                        echo $teacher->address;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('postal_code'); ?></label>
-                                    <input type="text" class="form-control" name="postal_code" id="address" value='<?php
-                                    if (!empty($doctor->postal_code)) {
-                                        echo $doctor->postal_code;
+                                    <input type="text" class="form-control" name="postal_code" id="postal_code" value='<?php
+                                    if (!empty($teacher->postal_code)) {
+                                        echo $teacher->postal_code;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('country'); ?></label>
                                     <input type="text" class="form-control" name="country" id="country" value='<?php
-                                    if (!empty($doctor->postal_code)) {
-                                        echo $doctor->postal_code;
+                                    if (!empty($teacher->country)) {
+                                        echo $teacher->country;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('state'); ?></label>
                                     <input type="text" class="form-control" name="state" id="state" value='<?php
-                                    if (!empty($doctor->state)) {
-                                        echo $doctor->state;
+                                    if (!empty($teacher->state)) {
+                                        echo $teacher->state;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('city'); ?></label>
                                     <input type="text" class="form-control" name="city" id="city" value='<?php
-                                    if (!empty($doctor->state)) {
-                                        echo $doctor->state;
+                                    if (!empty($teacher->state)) {
+                                        echo $teacher->state;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('district'); ?></label>
                                     <input type="text" class="form-control" name="district" id="district" value='<?php
-                                    if (!empty($doctor->district)) {
-                                        echo $doctor->district;
+                                    if (!empty($teacher->district)) {
+                                        echo $teacher->district;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('complement'); ?></label>
                                     <input type="text" class="form-control" name="complement" id="complement" value='<?php
-                                    if (!empty($doctor->complement)) {
-                                        echo $doctor->complement;
+                                    if (!empty($teacher->complement)) {
+                                        echo $teacher->complement;
                                     }
                                     ?>'>
                                 </div>
                                 <div class=" col-md-4 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('number'); ?></label>
                                     <input type="text" class="form-control" name="number" id="number" value='<?php
-                                    if (!empty($doctor->number)) {
-                                        echo $doctor->number;
+                                    if (!empty($teacher->number)) {
+                                        echo $teacher->number;
                                     }
                                     ?>'>
                                 </div>

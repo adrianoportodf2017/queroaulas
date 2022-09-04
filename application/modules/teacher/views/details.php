@@ -1,5 +1,6 @@
 <?php
 $cont = '0';
+$teste = '';
 
 if (empty($teacher->img_url)) {
   $cont = $cont + 1;

@@ -67,12 +67,12 @@
           <div class="card-body">
             <p class="text-uppercase text-sm">Sobre o(a) professor(a)</p>
             <div class="row">
-              <p style="margin: 30px;  margin: 0;   font-family: 'roboto'; text-align: justify; font-size:large; font-weight: 500;"><?= $teacher->profile; ?>
+              <p style="margin: 30px;  margin: 0;   font-family: 'roboto'; text-align: justify; font-size:large; font-weight: 500;"><?= $teacher->biography; ?>
             </div>
             <hr class="horizontal dark">
             <p class="text-uppercase text-sm">Currículo</p>
             <div class="row">
-              <p style="margin: 30px;  margin: 0;   font-family: 'roboto'; text-align: justify; font-size:large; font-weight: 500;"><?= $teacher->career; ?>
+              <p style="margin: 30px;  margin: 0;   font-family: 'roboto'; text-align: justify; font-size:large; font-weight: 500;"><?= $teacher->profile; ?>
             </div>
             <hr class="horizontal dark">
             <p class="text-uppercase text-sm">Especialidades</p>
