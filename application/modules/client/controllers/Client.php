@@ -13,44 +13,43 @@ class Client extends MX_Controller
         $this->load->model('appointment/appointment_model');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->model('teacher/teacher_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Teacher', 'Laboratorist', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'client', 'Teacher', 'Laboratorist', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
 
     public function index()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient', $data);
+        $this->load->view('client', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
     public function customers()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
         $data = array();
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $id = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+        if ($this->ion_auth->in_group(array('Teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $id = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
         } else {
             redirect('home');
         }
 
 
-        $data['doctor'] = $this->doctor_model->getDoctorById($id);
-        $data['groups'] = $this->donor_model->getBloodBank();
+        $data['teacher'] = $this->teacher_model->getteacherById($id);
         $data['settings'] = $this->settings_model->getSettings();
-        $data['patients'] = $this->patient_model->getPatient();
+        $data['clients'] = $this->client_model->getclient();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('customers');
         $this->load->view('home/footer'); // just the header file
@@ -66,11 +65,11 @@ class Client extends MX_Controller
 
     public function addNewView()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
         $data = array();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
@@ -80,7 +79,7 @@ class Client extends MX_Controller
     public function addNew()
     {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
@@ -92,22 +91,22 @@ class Client extends MX_Controller
         $name = $this->input->post('name');
         $password = $this->input->post('password');
         $sms = $this->input->post('sms');
-        $doctor = $this->input->post('doctor');
+        $teacher = $this->input->post('teacher');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
         $sex = $this->input->post('sex');
         $birthdate = $this->input->post('birthdate');
         $bloodgroup = $this->input->post('bloodgroup');
-        $patient_id = $this->input->post('p_id');
-        if (empty($patient_id)) {
-            $patient_id = rand(10000, 1000000);
+        $client_id = $this->input->post('p_id');
+        if (empty($client_id)) {
+            $client_id = rand(10000, 1000000);
         }
         if ((empty($id))) {
             $add_date = date('m/d/y');
             $registration_time = time();
         } else {
-            $add_date = $this->patient_model->getPatientById($id)->add_date;
-            $registration_time = $this->patient_model->getPatientById($id)->registration_time;
+            $add_date = $this->client_model->getclientById($id)->add_date;
+            $registration_time = $this->client_model->getclientById($id)->registration_time;
         }
 
 
@@ -129,8 +128,8 @@ class Client extends MX_Controller
         }
         // Validating Email Field
         $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|max_length[100]|xss_clean');
-        // Validating Doctor Field
-        //   $this->form_validation->set_rules('doctor', 'Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating teacher Field
+        //   $this->form_validation->set_rules('teacher', 'teacher', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[2]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -146,11 +145,11 @@ class Client extends MX_Controller
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect("patient/editPatient?id=$id");
+                redirect("client/editclient?id=$id");
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
-                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['teachers'] = $this->teacher_model->getteacher();
                 $data['groups'] = $this->donor_model->getBloodBank();
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new', $data);
@@ -187,12 +186,12 @@ class Client extends MX_Controller
                 $img_url = "uploads/" . $path['file_name'];
                 $data = array();
                 $data = array(
-                    'patient_id' => $patient_id,
+                    'client_id' => $client_id,
                     'img_url' => $img_url,
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'doctor' => $doctor,
+                    'teacher' => $teacher,
                     'phone' => $phone,
                     'sex' => $sex,
                     'birthdate' => $birthdate,
@@ -204,10 +203,10 @@ class Client extends MX_Controller
                 //$error = array('error' => $this->upload->display_errors());
                 $data = array();
                 $data = array(
-                    'patient_id' => $patient_id,
+                    'client_id' => $client_id,
                     'name' => $name,
                     'email' => $email,
-                    'doctor' => $doctor,
+                    'teacher' => $teacher,
                     'address' => $address,
                     'phone' => $phone,
                     'sex' => $sex,
@@ -220,23 +219,23 @@ class Client extends MX_Controller
 
             $username = $this->input->post('name');
 
-            if (empty($id)) {     // Adding New Patient
+            if (empty($id)) {     // Adding New client
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
-                    redirect('patient/addNewView');
+                    redirect('client/addNewView');
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $email, $dfg);
                     $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                    $this->patient_model->insertPatient($data);
-                    $patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
+                    $this->client_model->insertclient($data);
+                    $client_user_id = $this->db->get_where('client', array('email' => $email))->row()->id;
                     $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->patient_model->updatePatient($patient_user_id, $id_info);
+                    $this->client_model->updateclient($client_user_id, $id_info);
                     //sms
                     $set['settings'] = $this->settings_model->getSettings();
-                    $autosms = $this->sms_model->getAutoSmsByType('patient');
+                    $autosms = $this->sms_model->getAutoSmsByType('client');
                     $message = $autosms->message;
-                    $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
+                    $teachername = $this->teacher_model->getteacherById($teacher)->name;
                     $to = $phone;
                     $name1 = explode(' ', $name);
                     if (!isset($name1[1])) {
@@ -246,11 +245,11 @@ class Client extends MX_Controller
                         'firstname' => $name1[0],
                         'lastname' => $name1[1],
                         'name' => $name,
-                        'doctor' => $doctorname,
+                        'teacher' => $teachername,
                         'company' => $set['settings']->system_vendor
                     );
                     //   if (!empty($sms)) {
-                    // $this->sms->sendSmsDuringPatientRegistration($patient_user_id);
+                    // $this->sms->sendSmsDuringclientRegistration($client_user_id);
                     if ($autosms->status == 'Active') {
                         $messageprint = $this->parser->parse_string($message, $data1);
                         $data2[] = array($to => $messageprint);
@@ -260,7 +259,7 @@ class Client extends MX_Controller
                     //  }
                     //email
 
-                    $autoemail = $this->email_model->getAutoEmailByType('patient');
+                    $autoemail = $this->email_model->getAutoEmailByType('client');
                     if ($autoemail->status == 'Active') {
                         $mail_provider = $this->settings_model->getSettings()->emailtype;
                         $settngs_name = $this->settings_model->getSettings()->system_vendor;
@@ -407,7 +406,7 @@ class Client extends MX_Controller
                         $settngs_name = $this->settings_model->getSettings()->system_vendor;
                         $emailSettings = $this->email_model->getEmailSettingsByType($mail_provider);
                         $base_url = str_replace(array('http://', 'https://', '/'), '', base_url());
-                        $subject = $base_url . ' - Patient Registration Details';
+                        $subject = $base_url . ' - client Registration Details';
                         $message = 'Dear ' . $name . ', Thank you for the registration. <br> Here is your login details.<br> <br> Link: ' . base_url() . 'auth/login <br> Username: ' . $email . ' <br> Password: ' . $password . '<br><br> Thank You, <br>' . $this->settings->title;
                        
                        $message =    '
@@ -551,56 +550,56 @@ class Client extends MX_Controller
                     $this->session->set_flashdata('feedback', lang('added'));
                 }
                 //    }
-            } else { // Updating Patient
-                $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
+            } else { // Updating client
+                $ion_user_id = $this->db->get_where('client', array('id' => $id))->row()->ion_user_id;
                 if (empty($password)) {
                     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                 } else {
                     $password = $this->ion_auth_model->hash_password($password);
                 }
-                $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->patient_model->updatePatient($id, $data);
+                $this->client_model->updateIonUser($username, $email, $password, $ion_user_id);
+                $this->client_model->updateclient($id, $data);
                 $this->session->set_flashdata('feedback', lang('updated'));
             }
             // Loading View
             if (!empty($redirect)) {
                 redirect($redirect);
             } else {
-                redirect('patient');
+                redirect('client');
             }
         }
     }
 
-    function editPatient()
+    function editclient()
     {
         $data = array();
         $id = $this->input->get('id');
-        $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['client'] = $this->client_model->getclientById($id);
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the footer file
     }
 
-    function editPatientByJason()
+    function editclientByJason()
     {
         $id = $this->input->get('id');
-        $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['patient']->doctor);
+        $data['client'] = $this->client_model->getclientById($id);
+        $data['teacher'] = $this->teacher_model->getteacherById($data['client']->teacher);
         echo json_encode($data);
     }
 
-    function getPatientByJason()
+    function getclientByJason()
     {
         $id = $this->input->get('id');
-        $data['patient'] = $this->patient_model->getPatientById($id);
+        $data['client'] = $this->client_model->getclientById($id);
 
-        $doctor = $data['patient']->doctor;
-        $data['doctor'] = $this->doctor_model->getDoctorById($doctor);
+        $teacher = $data['client']->teacher;
+        $data['teacher'] = $this->teacher_model->getteacherById($teacher);
 
-        if (!empty($data['patient']->birthdate)) {
-            $birthDate = strtotime($data['patient']->birthdate);
+        if (!empty($data['client']->birthdate)) {
+            $birthDate = strtotime($data['client']->birthdate);
             $birthDate = date('m/d/Y', $birthDate);
             $birthDate = explode("/", $birthDate);
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
@@ -610,11 +609,11 @@ class Client extends MX_Controller
         echo json_encode($data);
     }
 
-    function patientDetails()
+    function clientDetails()
     {
         $data = array();
         $id = $this->input->get('id');
-        $data['patient'] = $this->patient_model->getPatientById($id);
+        $data['client'] = $this->client_model->getclientById($id);
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('details', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -635,7 +634,7 @@ class Client extends MX_Controller
     {
         $id = $this->input->post('id');
         $invoice = $this->input->post('invoice');
-        $patient = $this->input->post('patient');
+        $client = $this->input->post('client');
         $report = $this->input->post('report');
 
         $date = time();
@@ -653,7 +652,7 @@ class Client extends MX_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('feedback', lang('validation_error'));
-            redirect('patient/report?id=' . $invoice);
+            redirect('client/report?id=' . $invoice);
         } else {
 
             //$error = array('error' => $this->upload->display_errors());
@@ -665,31 +664,31 @@ class Client extends MX_Controller
             );
 
             if (empty($id)) {     // Adding New department
-                $this->patient_model->insertDiagnosticReport($data);
+                $this->client_model->insertDiagnosticReport($data);
                 $this->session->set_flashdata('feedback', lang('added'));
             } else { // Updating department
-                $this->patient_model->updateDiagnosticReport($id, $data);
+                $this->client_model->updateDiagnosticReport($id, $data);
                 $this->session->set_flashdata('feedback', lang('updated'));
             }
             // Loading View
-            redirect('patient/report?id=' . $invoice);
+            redirect('client/report?id=' . $invoice);
         }
     }
 
-    function patientPayments()
+    function clientPayments()
     {
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient_payments', $data);
+        $this->load->view('client_payments', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
     function caseList()
     {
         $data['settings'] = $this->settings_model->getSettings();
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['medical_histories'] = $this->patient_model->getMedicalHistory();
+        $data['clients'] = $this->client_model->getclient();
+        $data['medical_histories'] = $this->client_model->getMedicalHistory();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('case_list', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -697,8 +696,8 @@ class Client extends MX_Controller
 
     function documents()
     {
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['files'] = $this->patient_model->getPatientMaterial();
+        $data['clients'] = $this->client_model->getclient();
+        $data['files'] = $this->client_model->getclientMaterial();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('documents', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -706,10 +705,10 @@ class Client extends MX_Controller
 
     function myCaseList()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
-            $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($patient_id);
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
+            $data['medical_histories'] = $this->client_model->getMedicalHistoryByclientId($client_id);
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('my_case_list', $data);
             $this->load->view('home/footer'); // just the footer file
@@ -718,10 +717,10 @@ class Client extends MX_Controller
 
     function myDocuments()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
-            $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
+            $data['files'] = $this->client_model->getclientMaterialByclientId($client_id);
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('my_documents', $data);
             $this->load->view('home/footer'); // just the footer file
@@ -730,11 +729,11 @@ class Client extends MX_Controller
 
     function myPrescription()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
-            $data['doctors'] = $this->doctor_model->getDoctor();
-            $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($patient_id);
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
+            $data['teachers'] = $this->teacher_model->getteacher();
+            $data['prescriptions'] = $this->prescription_model->getPrescriptionByclientId($client_id);
             $data['settings'] = $this->settings_model->getSettings();
             $this->load->view('home/dashboard', $data); // just the header file
             $this->load->view('my_prescription', $data);
@@ -744,11 +743,11 @@ class Client extends MX_Controller
 
     public function myPayment()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
             $data['settings'] = $this->settings_model->getSettings();
-            $data['payments'] = $this->finance_model->getPaymentByPatientId($patient_id);
+            $data['payments'] = $this->finance_model->getPaymentByclientId($client_id);
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('my_payment', $data);
             $this->load->view('home/footer'); // just the header file
@@ -762,9 +761,9 @@ class Client extends MX_Controller
         }
 
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client = $this->client_model->getclientByIonUserId($client_ion_id)->id;
         }
         $data['settings'] = $this->settings_model->getSettings();
         $date_from = strtotime($this->input->post('date_from'));
@@ -777,20 +776,20 @@ class Client extends MX_Controller
         $data['date_to'] = $date_to;
 
         if (!empty($date_from)) {
-            $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
+            $data['payments'] = $this->finance_model->getPaymentByclientIdByDate($client, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByclientIdByDate($client, $date_from, $date_to);
             $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
         } else {
-            $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
-            $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByPatientId($patient);
-            $data['ot_payments'] = $this->finance_model->getOtPaymentByPatientId($patient);
-            $data['deposits'] = $this->finance_model->getDepositByPatientId($patient);
+            $data['payments'] = $this->finance_model->getPaymentByclientId($client);
+            $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByclientId($client);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByclientId($client);
+            $data['deposits'] = $this->finance_model->getDepositByclientId($client);
             $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
         }
 
 
 
-        $data['patient'] = $this->patient_model->getPatientByid($patient);
+        $data['client'] = $this->client_model->getclientByid($client);
         $data['settings'] = $this->settings_model->getSettings();
 
 
@@ -805,12 +804,12 @@ class Client extends MX_Controller
         $id = $this->input->post('id');
 
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client = $this->client_model->getclientByIonUserId($client_ion_id)->id;
         } else {
-            $this->session->set_flashdata('feedback', lang('undefined_patient_id'));
-            redirect('patient/myPaymentsHistory');
+            $this->session->set_flashdata('feedback', lang('undefined_client_id'));
+            redirect('client/myPaymentsHistory');
         }
 
 
@@ -824,23 +823,23 @@ class Client extends MX_Controller
 
         if ($deposit_type != 'Card') {
             $this->session->set_flashdata('feedback', lang('undefined_payment_type'));
-            redirect('patient/myPaymentsHistory');
+            redirect('client/myPaymentsHistory');
         }
 
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-        // Validating Patient Name Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating client Name Field
+        $this->form_validation->set_rules('client', 'client', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Deposited Amount Field
         $this->form_validation->set_rules('deposited_amount', 'Deposited Amount', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            redirect('patient/myPaymentsHistory');
+            redirect('client/myPaymentsHistory');
         } else {
             $data = array();
             $data = array(
-                'patient' => $patient,
+                'client' => $client,
                 // 'date' => $date,
                 'payment_id' => $payment_id,
                 'deposited_amount' => $deposited_amount,
@@ -863,24 +862,24 @@ class Client extends MX_Controller
                         $cvv = $this->input->post('cvv_number');
                         $cardholdername = $this->input->post('cardholder');
                         $all_details = array(
-                            'patient' => $payment_details->patient,
+                            'client' => $payment_details->client,
                             'date' => $payment_details->date,
                             'amount' => $payment_details->amount,
-                            'doctor' => $payment_details->doctor_name,
+                            'teacher' => $payment_details->teacher_name,
                             'discount' => $payment_details->discount,
                             'flat_discount' => $payment_details->flat_discount,
                             'gross_total' => $payment_details->gross_total,
                             'status' => 'unpaid',
-                            'patient_name' => $payment_details->patient_name,
-                            'patient_phone' => $payment_details->patient_phone,
-                            'patient_address' => $payment_details->patient_address,
+                            'client_name' => $payment_details->client_name,
+                            'client_phone' => $payment_details->client_phone,
+                            'client_address' => $payment_details->client_address,
                             'deposited_amount' => $deposited_amount,
                             'payment_id' => $payment_details->id,
                             'card_type' => $card_type,
                             'card_number' => $card_number,
                             'expire_date' => $expire_date,
                             'cvv' => $cvv,
-                            'from' => 'patient_payment_details',
+                            'from' => 'client_payment_details',
                             'user' => $user,
                             'cardholdername' => $cardholdername
                         );
@@ -902,7 +901,7 @@ class Client extends MX_Controller
                         $datapayment = array(
                             'ref' => $ref,
                             'amount' => $amount,
-                            'patient' => $patient,
+                            'client' => $client,
                             'insertid' => $payment_id,
                             'card_type' => $card_type,
                             'card_number' => $card_number,
@@ -918,7 +917,7 @@ class Client extends MX_Controller
                             $date = time();
                             $data1 = array(
                                 'date' => $date,
-                                'patient' => $patient,
+                                'client' => $client,
                                 'deposited_amount' => $deposited_amount,
                                 'payment_id' => $payment_id,
                                 'gateway' => '2Checkout',
@@ -927,10 +926,10 @@ class Client extends MX_Controller
                             );
                             $this->finance_model->insertDeposit($data1);
                             $this->session->set_flashdata('feedback', lang('added'));
-                            redirect('patient/myPaymentHistory');
+                            redirect('client/myPaymentHistory');
                         } else {
                             $this->session->set_flashdata('feedback', lang('transaction_failed'));
-                            redirect('patient/myPaymentHistory');
+                            redirect('client/myPaymentHistory');
                         }
                     } elseif ($gateway == 'Authorize.Net') {
 
@@ -947,13 +946,13 @@ class Client extends MX_Controller
                         $datapayment = array(
                             'ref' => $ref,
                             'amount' => $amount,
-                            'patient' => $patient,
+                            'client' => $client,
                             'insertid' => $payment_id,
                             'card_type' => $card_type,
                             'card_number' => $card_number,
                             'expire_date' => $expire_date,
                             'cvv' => $cvv,
-                            //  'email'=>$patient_email
+                            //  'email'=>$client_email
                         );
 
                         $this->load->module('authorizenet');
@@ -961,7 +960,7 @@ class Client extends MX_Controller
                         //  $this->authorizenet->reponseRedirectPageAuthorizenet($respose, $datapayment,'pos');
                         // $this->load->view('paytm/paytminfo', $datapayment);
                         //    }
-                        // $email=$patient_email;
+                        // $email=$client_email;
                     } elseif ($gateway == 'Stripe') {
                         $card_number = $this->input->post('card_number');
                         $expire_date = $this->input->post('expire_date');
@@ -978,7 +977,7 @@ class Client extends MX_Controller
                         $chargeJson = $charge->jsonSerialize();
                         if ($chargeJson['status'] == 'succeeded') {
                             $data1 = array(
-                                'patient' => $patient,
+                                'client' => $client,
                                 'date' => $date,
                                 'payment_id' => $payment_id,
                                 'deposited_amount' => $deposited_amount,
@@ -989,20 +988,20 @@ class Client extends MX_Controller
                             );
                             $this->finance_model->insertDeposit($data1);
                             $this->session->set_flashdata('feedback', 'Added');
-                            redirect('patient/myPaymentHistory');
+                            redirect('client/myPaymentHistory');
                         } else {
                             $this->session->set_flashdata('feedback', 'Payment failed.');
-                            redirect('patient/myPaymentHistory');
+                            redirect('client/myPaymentHistory');
                         }
                     } elseif ($gateway == 'Paystack') {
 
                         $ref = date('Y') . '-' . rand() . date('d') . '-' . date('m');
                         $amount_in_kobo = $deposited_amount;
                         $this->load->module('paystack');
-                        $this->paystack->paystack_standard($amount_in_kobo, $ref, $patient, $payment_id, $user, '1');
+                        $this->paystack->paystack_standard($amount_in_kobo, $ref, $client, $payment_id, $user, '1');
                     } elseif ($gateway == 'SSLCOMMERZ') {
                         $this->load->module('sslcommerzpayment');
-                        $this->sslcommerzpayment->request_api_hosted($deposited_amount, $patient, $payment_id, $user, '0');
+                        $this->sslcommerzpayment->request_api_hosted($deposited_amount, $client, $payment_id, $user, '0');
                     } elseif ($gateway == 'Paytm') {
 
 
@@ -1014,21 +1013,21 @@ class Client extends MX_Controller
                         $datapayment = array(
                             'ref' => $ref,
                             'amount' => $amount,
-                            'patient' => $patient,
+                            'client' => $client,
                             'insertid' => $payment_id,
                             'channel_id' => 'WEB',
                             'industry_type' => 'Retail',
-                            //  'email'=>$patient_email
+                            //  'email'=>$client_email
                         );
                         //  $this->load->module('paytm/pgRedirects');
                         $this->paytm->PaytmGateway($datapayment);
                         //}
-                        // $email=$patient_email;
+                        // $email=$client_email;
                     } elseif ($gateway == 'Pay U Money') {
                         redirect("payu/check?deposited_amount=" . "$deposited_amount" . '&payment_id=' . $payment_id);
                     } else {
                         $this->session->set_flashdata('feedback', lang('payment_failed_no_gateway_selected'));
-                        redirect('patient/myPaymentHistory');
+                        redirect('client/myPaymentHistory');
                     }
                 } else {
                     $this->finance_model->insertDeposit($data);
@@ -1046,7 +1045,7 @@ class Client extends MX_Controller
                 }
 
                 $this->session->set_flashdata('feedback', lang('updated'));
-                redirect('patient/myPaymentHistory');
+                redirect('client/myPaymentHistory');
             }
         }
     }
@@ -1065,7 +1064,7 @@ class Client extends MX_Controller
     function addMedicalHistory()
     {
         $id = $this->input->post('id');
-        $patient_id = $this->input->post('patient_id');
+        $client_id = $this->input->post('client_id');
 
         $date = $this->input->post('date');
 
@@ -1083,7 +1082,7 @@ class Client extends MX_Controller
 
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
-            $redirect = 'patient/medicalHistory?id=' . $patient_id;
+            $redirect = 'client/medicalHistory?id=' . $client_id;
         }
 
         // Validating Name Field
@@ -1099,7 +1098,7 @@ class Client extends MX_Controller
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("patient/editMedicalHistory?id=$id");
+                redirect("client/editMedicalHistory?id=$id");
             } else {
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new');
@@ -1107,34 +1106,34 @@ class Client extends MX_Controller
             }
         } else {
 
-            if (!empty($patient_id)) {
-                $patient_details = $this->patient_model->getPatientById($patient_id);
-                $patient_name = $patient_details->name;
-                $patient_phone = $patient_details->phone;
-                $patient_address = $patient_details->address;
+            if (!empty($client_id)) {
+                $client_details = $this->client_model->getclientById($client_id);
+                $client_name = $client_details->name;
+                $client_phone = $client_details->phone;
+                $client_address = $client_details->address;
             } else {
-                $patient_name = 0;
-                $patient_phone = 0;
-                $patient_address = 0;
+                $client_name = 0;
+                $client_phone = 0;
+                $client_address = 0;
             }
 
             //$error = array('error' => $this->upload->display_errors());
             $data = array();
             $data = array(
-                'patient_id' => $patient_id,
+                'client_id' => $client_id,
                 'date' => $date,
                 'title' => $title,
                 'description' => $description,
-                'patient_name' => $patient_name,
-                'patient_phone' => $patient_phone,
-                'patient_address' => $patient_address,
+                'client_name' => $client_name,
+                'client_phone' => $client_phone,
+                'client_address' => $client_address,
             );
 
             if (empty($id)) {     // Adding New department
-                $this->patient_model->insertMedicalHistory($data);
+                $this->client_model->insertMedicalHistory($data);
                 $this->session->set_flashdata('feedback', lang('added'));
             } else { // Updating department
-                $this->patient_model->updateMedicalHistory($id, $data);
+                $this->client_model->updateMedicalHistory($id, $data);
                 $this->session->set_flashdata('feedback', lang('updated'));
             }
             // Loading View
@@ -1148,10 +1147,10 @@ class Client extends MX_Controller
             redirect('auth/login', 'refresh');
         }
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             $current_user = $this->ion_auth->get_user_id();
-            $patient_user_id = $this->patient_model->getPatientByIonUserId($current_user)->id;
-            $data['payments'] = $this->finance_model->getPaymentByPatientId($patient_user_id);
+            $client_user_id = $this->client_model->getclientByIonUserId($current_user)->id;
+            $data['payments'] = $this->finance_model->getPaymentByclientId($client_user_id);
         } else {
             $data['payments'] = $this->finance_model->getPayment();
         }
@@ -1162,33 +1161,29 @@ class Client extends MX_Controller
         $this->load->view('home/footer'); // just the header file
     }
 
-    function medicalHistory()
+    function clientHistory()
     {
         $data = array();
         $id = $this->input->get('id');
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
         }
 
-        $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
-        $data['labs'] = $this->lab_model->getLabByPatientId($id);
-        $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
-        $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        $data['client'] = $this->client_model->getclientById($id);
+        $data['appointments'] = $this->appointment_model->getAppointmentByclient($data['client']->id);
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
 
 
 
         foreach ($data['appointments'] as $appointment) {
-            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctor_details)) {
-                $doctor_name = $doctor_details->name;
+            $teacher_details = $this->teacher_model->getteacherById($appointment->teacher);
+            if (!empty($teacher_details)) {
+                $teacher_name = $teacher_details->name;
             } else {
-                $doctor_name = '';
+                $teacher_name = '';
             }
             $timeline[$appointment->date + 1] = '<div class="panel-body profile-activity" >
                 <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('appointment') . '</span></h5>
@@ -1205,7 +1200,7 @@ class Client extends MX_Controller
                                                             <h4>' . date('d-m-Y', $appointment->date) . '</h4>
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $doctor_name . '</h4>
+                                                                <h4>' . $teacher_name . '</h4>
                                                                     <p></p>
                                                                     <i class=" fa fa-clock-o"></i>
                                                                 <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
@@ -1217,11 +1212,11 @@ class Client extends MX_Controller
         }
 
         foreach ($data['prescriptions'] as $prescription) {
-            $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
-            if (!empty($doctor_details)) {
-                $doctor_name = $doctor_details->name;
+            $teacher_details = $this->teacher_model->getteacherById($prescription->teacher);
+            if (!empty($teacher_details)) {
+                $teacher_name = $teacher_details->name;
             } else {
-                $doctor_name = '';
+                $teacher_name = '';
             }
             $timeline[$prescription->date + 2] = '<div class="panel-body profile-activity" >
                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
@@ -1238,7 +1233,7 @@ class Client extends MX_Controller
                                                             <h4>' . date('d-m-Y', $prescription->date) . '</h4>
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $doctor_name . '</h4>
+                                                                <h4>' . $teacher_name . '</h4>
                                                                     <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"> View</i></a>
                                                         </div>
                                                     </div>
@@ -1249,11 +1244,11 @@ class Client extends MX_Controller
 
         foreach ($data['labs'] as $lab) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
-            if (!empty($doctor_details)) {
-                $lab_doctor = $doctor_details->name;
+            $teacher_details = $this->teacher_model->getteacherById($lab->teacher);
+            if (!empty($teacher_details)) {
+                $lab_teacher = $teacher_details->name;
             } else {
-                $lab_doctor = '';
+                $lab_teacher = '';
             }
 
             $timeline[$lab->date + 3] = '<div class="panel-body profile-activity" >
@@ -1271,7 +1266,7 @@ class Client extends MX_Controller
                                                             <h4>' . date('d-m-Y', $lab->date) . '</h4>
                                                             <p></p>
                                                              <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $lab_doctor . '</h4>
+                                                                <h4>' . $lab_teacher . '</h4>
                                                                     <a class="btn btn-xs invoicebutton" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file-text"></i>' . lang('report') . '</a>
                                                         </div>
                                                     </div> 
@@ -1304,10 +1299,10 @@ class Client extends MX_Controller
                                         </div>';
         }
 
-        foreach ($data['patient_materials'] as $patient_material) {
-            $timeline[$patient_material->date + 5] = '<div class="panel-body profile-activity" >
+        foreach ($data['client_materials'] as $client_material) {
+            $timeline[$client_material->date + 5] = '<div class="panel-body profile-activity" >
                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('documents') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
+                                            <h5 class="pull-right">' . date('d-m-Y', $client_material->date) . '</h5>
                                             <div class="activity purplee">
                                                 <span>
                                                     <i class="fa fa-file-o"></i>
@@ -1317,9 +1312,9 @@ class Client extends MX_Controller
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' <a class="pull-right" title="' . lang('download') . '"  href="' . $patient_material->url . '" download=""> <i class=" fa fa-download"></i> </a> </h4>
+                                                            <h4>' . date('d-m-Y', $client_material->date) . ' <a class="pull-right" title="' . lang('download') . '"  href="' . $client_material->url . '" download=""> <i class=" fa fa-download"></i> </a> </h4>
                                                                 
-                                                                 <h4>' . $patient_material->title . '</h4>
+                                                                 <h4>' . $client_material->title . '</h4>
                                                             
                                                                 
                                                         </div>
@@ -1340,17 +1335,17 @@ class Client extends MX_Controller
     function editMedicalHistoryByJason()
     {
         $id = $this->input->get('id');
-        $data['medical_history'] = $this->patient_model->getMedicalHistoryById($id);
-        $data['patient'] = $this->patient_model->getPatientById($data['medical_history']->patient_id);
+        $data['medical_history'] = $this->client_model->getMedicalHistoryById($id);
+        $data['client'] = $this->client_model->getclientById($data['medical_history']->client_id);
         echo json_encode($data);
     }
 
     function getCaseDetailsByJason()
     {
         $id = $this->input->get('id');
-        $data['case'] = $this->patient_model->getMedicalHistoryById($id);
-        $patient = $data['case']->patient_id;
-        $data['patient'] = $this->patient_model->getPatientById($patient);
+        $data['case'] = $this->client_model->getMedicalHistoryById($id);
+        $client = $data['case']->client_id;
+        $data['client'] = $this->client_model->getclientById($client);
         echo json_encode($data);
     }
 
@@ -1374,42 +1369,42 @@ class Client extends MX_Controller
         return $clients;
     }
 
-    function patientMaterial()
+    function clientMaterial()
     {
         $data = array();
-        $id = $this->input->get('patient');
+        $id = $this->input->get('client');
         $data['settings'] = $this->settings_model->getSettings();
-        $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        $data['client'] = $this->client_model->getclientById($id);
+        $data['client_materials'] = $this->client_model->getclientMaterialByclientId($id);
         $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('patient_material', $data);
+        $this->load->view('client_material', $data);
         $this->load->view('home/footer'); // just the footer file
     }
 
-    function addPatientMaterial()
+    function addclientMaterial()
     {
         $title = $this->input->post('title');
-        $patient_id = $this->input->post('patient');
+        $client_id = $this->input->post('client');
         $img_url = $this->input->post('img_url');
         $date = time();
         $redirect = $this->input->post('redirect');
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            if (empty($patient_id)) {
-                $current_patient = $this->ion_auth->get_user_id();
-                $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            if (empty($client_id)) {
+                $current_client = $this->ion_auth->get_user_id();
+                $client_id = $this->client_model->getclientByIonUserId($current_client)->id;
             }
         }
 
 
         if (empty($redirect)) {
-            $redirect = "patient/medicalHistory?id=" . $patient_id;
+            $redirect = "client/medicalHistory?id=" . $client_id;
         }
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
-        // Validating Patient Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating client Field
+        $this->form_validation->set_rules('client', 'client', 'trim|min_length[1]|max_length[100]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -1417,15 +1412,15 @@ class Client extends MX_Controller
             redirect($redirect);
         } else {
 
-            if (!empty($patient_id)) {
-                $patient_details = $this->patient_model->getPatientById($patient_id);
-                $patient_name = $patient_details->name;
-                $patient_phone = $patient_details->phone;
-                $patient_address = $patient_details->address;
+            if (!empty($client_id)) {
+                $client_details = $this->client_model->getclientById($client_id);
+                $client_name = $client_details->name;
+                $client_phone = $client_details->phone;
+                $client_address = $client_details->address;
             } else {
-                $patient_name = 0;
-                $patient_phone = 0;
-                $patient_address = 0;
+                $client_name = 0;
+                $client_phone = 0;
+                $client_address = 0;
             }
 
 
@@ -1466,10 +1461,10 @@ class Client extends MX_Controller
                     'date' => $date,
                     'title' => $title,
                     'url' => $img_url,
-                    'patient' => $patient_id,
-                    'patient_name' => $patient_name,
-                    'patient_address' => $patient_address,
-                    'patient_phone' => $patient_phone,
+                    'client' => $client_id,
+                    'client_name' => $client_name,
+                    'client_address' => $client_address,
+                    'client_phone' => $client_phone,
                     'date_string' => date('d-m-y', $date),
                 );
             } else {
@@ -1477,16 +1472,16 @@ class Client extends MX_Controller
                 $data = array(
                     'date' => $date,
                     'title' => $title,
-                    'patient' => $patient_id,
-                    'patient_name' => $patient_name,
-                    'patient_address' => $patient_address,
-                    'patient_phone' => $patient_phone,
+                    'client' => $client_id,
+                    'client_name' => $client_name,
+                    'client_address' => $client_address,
+                    'client_phone' => $client_phone,
                     'date_string' => date('d-m-y', $date),
                 );
                 $this->session->set_flashdata('feedback', lang('upload_error'));
             }
 
-            $this->patient_model->insertPatientMaterial($data);
+            $this->client_model->insertclientMaterial($data);
             $this->session->set_flashdata('feedback', lang('added'));
 
 
@@ -1498,31 +1493,31 @@ class Client extends MX_Controller
     {
         $id = $this->input->get('id');
         $redirect = $this->input->get('redirect');
-        $case_history = $this->patient_model->getMedicalHistoryById($id);
-        $this->patient_model->deleteMedicalHistory($id);
+        $case_history = $this->client_model->getMedicalHistoryById($id);
+        $this->client_model->deleteMedicalHistory($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
         if ($redirect == 'case') {
-            redirect('patient/caseList');
+            redirect('client/caseList');
         } else {
-            redirect("patient/MedicalHistory?id=" . $case_history->patient_id);
+            redirect("client/MedicalHistory?id=" . $case_history->client_id);
         }
     }
 
-    function deletePatientMaterial()
+    function deleteclientMaterial()
     {
         $id = $this->input->get('id');
         $redirect = $this->input->get('redirect');
-        $patient_material = $this->patient_model->getPatientMaterialById($id);
-        $path = $patient_material->url;
+        $client_material = $this->client_model->getclientMaterialById($id);
+        $path = $client_material->url;
         if (!empty($path)) {
             unlink($path);
         }
-        $this->patient_model->deletePatientMaterial($id);
+        $this->client_model->deleteclientMaterial($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
         if ($redirect == 'documents') {
-            redirect('patient/documents');
+            redirect('client/documents');
         } else {
-            redirect("patient/MedicalHistory?id=" . $patient_material->patient);
+            redirect("client/MedicalHistory?id=" . $client_material->client);
         }
     }
 
@@ -1530,7 +1525,7 @@ class Client extends MX_Controller
     {
         $data = array();
         $id = $this->input->get('id');
-        $user_data = $this->db->get_where('patient', array('id' => $id))->row();
+        $user_data = $this->db->get_where('client', array('id' => $id))->row();
         $path = $user_data->img_url;
 
         if (!empty($path)) {
@@ -1539,9 +1534,9 @@ class Client extends MX_Controller
         $ion_user_id = $user_data->ion_user_id;
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
-        $this->patient_model->delete($id);
+        $this->client_model->delete($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
-        redirect('patient');
+        redirect('client');
     }
 
 
@@ -1564,41 +1559,41 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientBysearch($search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientBysearch($search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientWithoutSearch($order, $dir);
+                $data['clients'] = $this->client_model->getclientWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimit($limit, $start, $order, $dir);
             }
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
+        //  $data['clients'] = $this->client_model->getclient();
 
-        foreach ($data['patients'] as $patient) {
+        foreach ($data['clients'] as $client) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $client->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
-            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
+            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
-            $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
+            $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
+                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="client/delete?id=' . $client->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $options6 = ' <a type="button" class="btn detailsbutton inffo" title="' . lang('info') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
+            $options6 = ' <a type="button" class="btn detailsbutton inffo" title="' . lang('info') . '" data-toggle = "modal" data-id="' . $client->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
 
 
-            if ($this->ion_auth->in_group('Doctor')) {
-                $options7 = '<a class="btn green detailsbutton" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_live') . '</a>';
+            if ($this->ion_auth->in_group('teacher')) {
+                $options7 = '<a class="btn green detailsbutton" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $client->id . '" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('start_live') . '</a>';
             } else {
                 $options7 = '';
             }
@@ -1606,10 +1601,10 @@ class Client extends MX_Controller
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    $client->id,
+                    $client->name,
+                    $client->phone,
+                    $this->settings_model->getSettings()->currency . $this->client_model->getDueBalanceByclientId($client->id),
                     $options1 . ' ' . $options6 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
                     //  $options2
                 );
@@ -1617,31 +1612,31 @@ class Client extends MX_Controller
 
             if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    $client->id,
+                    $client->name,
+                    $client->phone,
+                    $this->settings_model->getSettings()->currency . $this->client_model->getDueBalanceByclientId($client->id),
                     $options1 . ' ' . $options6 . ' ' . $options4,
                     //  $options2
                 );
             }
 
-            if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'teacher'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
+                    $client->id,
+                    $client->name,
+                    $client->phone,
                     $options1 . ' ' . $options6 . ' ' . $options3,
                     //  $options2
                 );
             }
         }
 
-        if (!empty($data['patients'])) {
+        if (!empty($data['clients'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('patient')->num_rows(),
-                "recordsFiltered" => $this->db->get('patient')->num_rows(),
+                "recordsTotal" => $this->db->get('client')->num_rows(),
+                "recordsFiltered" => $this->db->get('client')->num_rows(),
                 "data" => $info
             );
         } else {
@@ -1656,7 +1651,7 @@ class Client extends MX_Controller
         echo json_encode($output);
     }
 
-    function getPatient()
+    function getclient()
     {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
@@ -1675,41 +1670,41 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientBysearch($search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientBysearch($search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientWithoutSearch($order, $dir);
+                $data['clients'] = $this->client_model->getclientWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimit($limit, $start, $order, $dir);
             }
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
+        //  $data['clients'] = $this->client_model->getclient();
 
-        foreach ($data['patients'] as $patient) {
+        foreach ($data['clients'] as $client) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $client->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
-            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
+            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
-            $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
+            $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
+                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="client/delete?id=' . $client->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $options6 = ' <a type="button" class="btn detailsbutton inffo" title="' . lang('info') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
+            $options6 = ' <a type="button" class="btn detailsbutton inffo" title="' . lang('info') . '" data-toggle = "modal" data-id="' . $client->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
 
 
-            if ($this->ion_auth->in_group('Doctor')) {
-                $options7 = '<a class="btn green detailsbutton" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_live') . '</a>';
+            if ($this->ion_auth->in_group('teacher')) {
+                $options7 = '<a class="btn green detailsbutton" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $client->id . '" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('start_live') . '</a>';
             } else {
                 $options7 = '';
             }
@@ -1717,10 +1712,10 @@ class Client extends MX_Controller
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    $client->id,
+                    $client->name,
+                    $client->phone,
+                    $this->settings_model->getSettings()->currency . $this->client_model->getDueBalanceByclientId($client->id),
                     $options1 . ' ' . $options6 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
                     //  $options2
                 );
@@ -1728,31 +1723,31 @@ class Client extends MX_Controller
 
             if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    $client->id,
+                    $client->name,
+                    $client->phone,
+                    $this->settings_model->getSettings()->currency . $this->client_model->getDueBalanceByclientId($client->id),
                     $options1 . ' ' . $options6 . ' ' . $options4,
                     //  $options2
                 );
             }
 
-            if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'teacher'))) {
                 $info[] = array(
-                    $patient->id,
-                    $patient->name,
-                    $patient->phone,
+                    $client->id,
+                    $client->name,
+                    $client->phone,
                     $options1 . ' ' . $options6 . ' ' . $options3,
                     //  $options2
                 );
             }
         }
 
-        if (!empty($data['patients'])) {
+        if (!empty($data['clients'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('patient')->num_rows(),
-                "recordsFiltered" => $this->db->get('patient')->num_rows(),
+                "recordsTotal" => $this->db->get('client')->num_rows(),
+                "recordsFiltered" => $this->db->get('client')->num_rows(),
                 "data" => $info
             );
         } else {
@@ -1767,7 +1762,7 @@ class Client extends MX_Controller
         echo json_encode($output);
     }
 
-    function getPatientPayments()
+    function getclientPayments()
     {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
@@ -1786,53 +1781,53 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientBysearch($search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientBysearch($search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientWithoutSearch($order, $dir);
+                $data['clients'] = $this->client_model->getclientWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start, $order, $dir);
+                $data['clients'] = $this->client_model->getclientByLimit($limit, $start, $order, $dir);
             }
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
+        //  $data['clients'] = $this->client_model->getclient();
 
-        foreach ($data['patients'] as $patient) {
+        foreach ($data['clients'] as $client) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a type="button" class="btn editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $client->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
-            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
+            $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
-            $options4 = '<a class="btn btn-xs green" title="' . lang('payment') . ' ' . lang('history') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . ' ' . lang('history') . '</a>';
+            $options4 = '<a class="btn btn-xs green" title="' . lang('payment') . ' ' . lang('history') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . ' ' . lang('history') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
+                $options5 = '<a class="btn delete_button" title="' . lang('delete') . '" href="client/delete?id=' . $client->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $due = $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id);
+            $due = $this->settings_model->getSettings()->currency . $this->client_model->getDueBalanceByclientId($client->id);
 
             $info[] = array(
-                $patient->id,
-                $patient->name,
-                $patient->phone,
+                $client->id,
+                $client->name,
+                $client->phone,
                 $due,
                 //  $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
                 $options4
             );
         }
 
-        if (!empty($data['patients'])) {
+        if (!empty($data['clients'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('patient')->num_rows(),
-                "recordsFiltered" => $this->db->get('patient')->num_rows(),
+                "recordsTotal" => $this->db->get('client')->num_rows(),
+                "recordsFiltered" => $this->db->get('client')->num_rows(),
                 "data" => $info
             );
         } else {
@@ -1858,7 +1853,7 @@ class Client extends MX_Controller
         $order = $this->input->post("order");
         $columns_valid = array(
             "0" => "date",
-            "1" => "patient",
+            "1" => "client",
             "2" => "title",
         );
         $values = $this->settings_model->getColumnOrder($order, $columns_valid);
@@ -1867,44 +1862,44 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['cases'] = $this->patient_model->getMedicalHistoryBySearch($search, $order, $dir);
+                $data['cases'] = $this->client_model->getMedicalHistoryBySearch($search, $order, $dir);
             } else {
-                $data['cases'] = $this->patient_model->getMedicalHistoryWithoutSearch($order, $dir);
+                $data['cases'] = $this->client_model->getMedicalHistoryWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['cases'] = $this->patient_model->getMedicalHistoryByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['cases'] = $this->client_model->getMedicalHistoryByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['cases'] = $this->patient_model->getMedicalHistoryByLimit($limit, $start, $order, $dir);
+                $data['cases'] = $this->client_model->getMedicalHistoryByLimit($limit, $start, $order, $dir);
             }
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
+        //  $data['clients'] = $this->client_model->getclient();
 
         foreach ($data['cases'] as $case) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i> </a>';
             }
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options2 = '<a class="btn btn-info btn-xs btn_width delete_button" title="' . lang('delete') . '" href="patient/deleteCaseHistory?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
+                $options2 = '<a class="btn btn-info btn-xs btn_width delete_button" title="' . lang('delete') . '" href="client/deleteCaseHistory?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>';
                 $options3 = ' <a type="button" class="btn btn-info btn-xs btn_width detailsbutton case" title="' . lang('case') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"> </i> </a>';
             }
 
-            if (!empty($case->patient_id)) {
-                $patient_info = $this->patient_model->getPatientById($case->patient_id);
-                if (!empty($patient_info)) {
-                    $patient_details = $patient_info->name . '</br>' . $patient_info->address . '</br>' . $patient_info->phone . '</br>';
+            if (!empty($case->client_id)) {
+                $client_info = $this->client_model->getclientById($case->client_id);
+                if (!empty($client_info)) {
+                    $client_details = $client_info->name . '</br>' . $client_info->address . '</br>' . $client_info->phone . '</br>';
                 } else {
-                    $patient_details = $case->patient_name . '</br>' . $case->patient_address . '</br>' . $case->patient_phone . '</br>';
+                    $client_details = $case->client_name . '</br>' . $case->client_address . '</br>' . $case->client_phone . '</br>';
                 }
             } else {
-                $patient_details = '';
+                $client_details = '';
             }
 
             $info[] = array(
                 date('d-m-Y', $case->date),
-                $patient_details,
+                $client_details,
                 $case->title,
                 $options3 . ' ' . $options1 . ' ' . $options2
                 // $options4
@@ -1940,7 +1935,7 @@ class Client extends MX_Controller
         $order = $this->input->post("order");
         $columns_valid = array(
             "0" => "date",
-            "1" => "patient",
+            "1" => "client",
         );
         $values = $this->settings_model->getColumnOrder($order, $columns_valid);
         $dir = $values[0];
@@ -1948,38 +1943,38 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['documents'] = $this->patient_model->getDocumentBySearch($search, $order, $dir);
+                $data['documents'] = $this->client_model->getDocumentBySearch($search, $order, $dir);
             } else {
-                $data['documents'] = $this->patient_model->getPatientMaterialWithoutSearch($order, $dir);
+                $data['documents'] = $this->client_model->getclientMaterialWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['documents'] = $this->patient_model->getDocumentByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['documents'] = $this->client_model->getDocumentByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['documents'] = $this->patient_model->getDocumentByLimit($limit, $start, $order, $dir);
+                $data['documents'] = $this->client_model->getDocumentByLimit($limit, $start, $order, $dir);
             }
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
+        //  $data['clients'] = $this->client_model->getclient();
 
         foreach ($data['documents'] as $document) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '" download> ' . lang('download') . ' </a>';
             }
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options2 = '<a class="btn btn-info btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> X </a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'teacher'))) {
+                $options2 = '<a class="btn btn-info btn-xs delete_button" href="client/deleteclientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> X </a>';
             }
 
-            if (!empty($document->patient)) {
-                $patient_info = $this->patient_model->getPatientById($document->patient);
-                if (!empty($patient_info)) {
-                    $patient_details = $patient_info->name . '</br>' . $patient_info->address . '</br>' . $patient_info->phone . '</br>';
+            if (!empty($document->client)) {
+                $client_info = $this->client_model->getclientById($document->client);
+                if (!empty($client_info)) {
+                    $client_details = $client_info->name . '</br>' . $client_info->address . '</br>' . $client_info->phone . '</br>';
                 } else {
-                    $patient_details = $document->patient_name . '</br>' . $document->patient_address . '</br>' . $document->patient_phone . '</br>';
+                    $client_details = $document->client_name . '</br>' . $document->client_address . '</br>' . $document->client_phone . '</br>';
                 }
             } else {
-                $patient_details = '';
+                $client_details = '';
             }
             $extension_url = explode(".", $document->url);
 
@@ -1999,7 +1994,7 @@ class Client extends MX_Controller
             }
             $info[] = array(
                 date('d-m-y', $document->date),
-                $patient_details,
+                $client_details,
                 $document->title,
                 $files,
                 $options1 . ' ' . $options2
@@ -2010,8 +2005,8 @@ class Client extends MX_Controller
         if (!empty($data['documents'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('patient_material')->num_rows(),
-                "recordsFiltered" => $this->db->get('patient_material')->num_rows(),
+                "recordsTotal" => $this->db->get('client_material')->num_rows(),
+                "recordsFiltered" => $this->db->get('client_material')->num_rows(),
                 "data" => $info
             );
         } else {
@@ -2035,33 +2030,33 @@ class Client extends MX_Controller
 
         if (!empty($from_where)) {
             $this->db->where('id', $id);
-            $id = $this->db->get('appointment')->row()->patient;
+            $id = $this->db->get('appointment')->row()->client;
         }
 
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+        if ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
         }
 
-        $patient = $this->patient_model->getPatientById($id);
-        $appointments = $this->appointment_model->getAppointmentByPatient($patient->id);
-        $patients = $this->patient_model->getPatient();
-        $doctors = $this->doctor_model->getDoctor();
-        $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
-        $labs = $this->lab_model->getLabByPatientId($id);
-        $medical_histories = $this->patient_model->getMedicalHistoryByPatientId($id);
-        $patient_materials = $this->patient_model->getPatientMaterialByPatientId($id);
+        $client = $this->client_model->getclientById($id);
+        $appointments = $this->appointment_model->getAppointmentByclient($client->id);
+        $clients = $this->client_model->getclient();
+        $teachers = $this->teacher_model->getteacher();
+        $data['prescriptions'] = $this->prescription_model->getPrescriptionByclientId($id);
+        $labs = $this->lab_model->getLabByclientId($id);
+        $medical_histories = $this->client_model->getMedicalHistoryByclientId($id);
+        $client_materials = $this->client_model->getclientMaterialByclientId($id);
 
 
 
         foreach ($appointments as $appointment) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctor_details)) {
-                $doctor_name = $doctor_details->name;
+            $teacher_details = $this->teacher_model->getteacherById($appointment->teacher);
+            if (!empty($teacher_details)) {
+                $teacher_name = $teacher_details->name;
             } else {
-                $doctor_name = '';
+                $teacher_name = '';
             }
 
             $timeline[$appointment->date + 1] = '
@@ -2079,7 +2074,7 @@ class Client extends MX_Controller
                                                             <h4>' . date('d-m-Y', $appointment->date) . '</h4>
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $doctor_name . '</h4>
+                                                                <h4>' . $teacher_name . '</h4>
                                                                     <p></p>
                                                                     <i class=" fa fa-clock-o"></i>
                                                                 <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
@@ -2094,20 +2089,20 @@ class Client extends MX_Controller
         $all_appointments = '';
         foreach ($appointments as $appointment) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctor_details)) {
-                $appointment_doctor = $doctor_details->name;
+            $teacher_details = $this->teacher_model->getteacherById($appointment->teacher);
+            if (!empty($teacher_details)) {
+                $appointment_teacher = $teacher_details->name;
             } else {
-                $appointment_doctor = "";
+                $appointment_teacher = "";
             }
 
 
 
-            $patient_appointments = '  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+            $client_appointments = '  <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
             <div class="d-flex align-items-center">
                 <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-down" aria-hidden="true"></i></button>
                 <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark text-sm">'. $patient->name .'</h6>
+                    <h6 class="mb-1 text-dark text-sm">'. $client->name .'</h6>
                     <span class="text-xs">'. date("d-m-Y", $appointment->date) .' / ' . $appointment->time_slot . '</span>
                 </div>
             </div>
@@ -2116,7 +2111,7 @@ class Client extends MX_Controller
             </div>
         </li> ';
 
-            $all_appointments .= $patient_appointments ;
+            $all_appointments .= $client_appointments ;
         }
 
 
@@ -2124,9 +2119,9 @@ class Client extends MX_Controller
 
 
 
-        if (!empty($patient->img_url)) {
+        if (!empty($client->img_url)) {
             $profile_image = '<a href="#">
-                            <img src="'  .base_url().$patient->img_url . '" alt="">
+                            <img src="'  .base_url().$client->img_url . '" alt="">
                         </a>';
         } else {
             $profile_image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIIAAACCCAMAAAC93eDPAAAAk1BMVEUEU33////v7u7u7e3w7+/39/f6+vrz8/MAUXwAT3sASHYASncAQHAATXoAQ3IARnW+xs8APW+zvcfm5+lwgpcRSnLe4OI8YoNVcYtHZ4efq7dQaoMAQ26Gk6IAR3EANmbU1dgAMWWqsbiHmqp4iqHK0tkvWHseUXgoTHBheY96k6qcoqyUo693i50+XnvJy9AAKmN+GITCAAALTUlEQVR4nNVbiZLisK4liZdsZCUB0tAEaELTDcP9/6+7djY7u0Jzq95zTc2oarBzYksnkiwtFD6wpqoqykXEJI0KEXOJqFwktaiS1qzWAmp7AUWrFyhEMUtd/P+HoL0NgvoKBAVjgguJUITKBehrEKjGhlpM42KxgsrFcgU+CgiaiihWSHjxTvf919fPz9fXOTl5lxjh9gKob4FCLCHwscBsUIyrfySRvWJLxJQ9HNPYO2/WV9N0TdPifywuutf15hxwHFhasjGI+A9JxAtNQqpW8IgQc6TlFrPXD4PV9mBbhq4v2kM3TP+QPQJaL0DaCwhR2quF2jqvCkLjvIppJE4+DrbRfbiMY2kfP5KQwe2xG9rSejwTguZtTNMYe3w1DHO38UKC3gmB7ViYZDbo+SUKO0tC3N7GAQiIDbWQVS6WlleLmIkk3H/ao/vfcyLO5z5/CcyfUClTLeZSCUHoyaBRavuDORNADsI87EM8ZpSkMMpis4apiZDk6s5/fjHMa1I87A8EjXC6dV7YgXonnPUTCKF/FzRK9/4MJewbhn8mEAj9uoBIejX/BoAPN0rHCVqoJslFUouUJO4ft6AY+i7BwiJoxyIGeQHRlfMOAHzYK1xsdt95D0HQsJZZ70LATOOb9kAY3wVyiZbvQ8C0kivEAAT5Syk4AwfRH0yxH4M39KWkfGDCRy7mkuK5b0bAlNJlGOonSI/tNUrsHd+OgGE4PNubPUTQGgneZgpNDI43wo6ynuDLu/WgGrlOAiAg7X+FgGOgwxBqXaDoe4416vkfOIZv3E/Qkp+CyArMSLrpusyPNVzTAsOwVniCoDWcAFXRMK3okQRpHKdB8ogsKAonmWBHeoEh0P0sSZXyfZh9K/E982EgnHQUAkJXyDq6u/UIrqKnagFvC+IzIyJjBI33EP/AiBJE61kiasMJ6LvinhuzlEUj4kp9wBJWFio94RobSvgNeQU/JfKsBkGTLcBFcVYYdUK1SiQQH8PYooZRytQEsQZnz2O1wRQHedjTa7h3KcppsKMK0EXrhvuiRUm8TfOKfg17IWgEoIuM3ZA6DoF+T5+mu5ch5O4BD7poeJiGb8UFr9WzZLHwBHAKYKmDpvCf5gssRAoHsAnOHVchRm3WrXQQ26D7tEqZe9xDTeHnJHh9rXWzSF0IdD290meIuhAA5mCfcNf77EJQTtNW4SSkA0HLpqHvKAJBILvptbKwyinUBO1NI7f2uOEAtwma1FHbftowbY9WHnShxZRspk3JfCr8p7Xvi4VD3BTxE2DeG6WcVfICiqcn6TuslDmg3uyrJrI5dFq1F7uwGVnTZBrCctM48LEcNGhPkyYE8gGYs4dDgBDtR4ugp5mxdLmGIYiD0PAv4IN3pBJBEyUAfN9sT5BqqXiMlKkQcSUyfQQ4HnagIFoTNF4BHAX7gvoCY4kXRDbnAnglYyVRk0q3AK/PvtAJCOKMIBD0DAkIKAaoAts4DIYAIDrmwIUCAvUgPiPzdcAQ7pBUpR8ICPgMiaCWDwKAUOjCA7KgeRYErQCYhKnPP24RRLIIyU9piuQfaMFNPi3nBTL9gc9Rh0BeQDEoJtPXqKamOILMWLgnIDvSEyxjeo1RBeECm2HcgBDwDZYy3V1qCB4wzXtUZaegL5TJDwJpR9h6pkfLGzrlBMz2MxXuj+RaN3GgyHTBT5aUN3T4Dk12mynq3EB2vaYUwks5hKTiBRgt8LFksdQ0Nd2gmSLrXEEgX+DcjnMiUxCUEzhlaH2VELQZEBaHdByCRkEJggYEzmU/cAh6lH9bqLjFkEQuxDNShuZPDoH/NQPCYrmOcXlxUrKyEJkQrmfcolg/pCLoGQfBMFyfZJCaLtc5SUvri3s58yEs9ENC25SYi1hJDrMSt9aKVOwINspyuJu0C4GS58fMC03zjCsIydy70KW1SrkF1KxMKE5Xn3Pvccw7LgmaQAlaBuH/u1/y6IqrBUnv//z5F0nmSSkJmkI/U42hW2a0vf0Gwe9tGzmvXGqzz1TFjujy4l2cbliu45jWeFXF8Nhdagjx9bUl/jj0LKwgqCrMcXs7hDWuCBphkPv69rG8KeKG7vyG2/H5o6CFMrKGRLWtoRumczz+Jx/Ho2O+oJK+RwUEUEAnPd6yne1X4qVpztQkTIPfr3+uD78fyschFk68QqfTbWJY7vonCEnxca7ZkdIw2K+dGeatb/NNKCGQB5TadMt9PFGnXKj8TNHnwwSTFAvuixQH/84jqDIYdnSinJSpSGkIEfP6OxREwOIXO1CKO+sixUEhnj+/kiqLC+UctNZw3Fio4a1Bl1THVvYVkO6yrgmikBy0gpPrtE4YH6RZxTGZ9NPtVQgJ7guHKlxNVoOZCW1CCCeUYWl7Vbnb6EFUtaHE201o+K6q0axKKCbiD3cTlvlaqdqiLTZywyTejHohyxtplVDQ0eyQu9JoXXg6EdbWJSL4MYaB7Wrzhk5F4Qg7+b8EvVKEfB+OavQ16lyPjdyXO7+KdMozICjDSVg7UToQ0ODFkJPMKsWWi5Dx78BZ6Fe1C0Eduq927pXlTZRiS5cBdangUDK6TKnXBM18Fp5260+Fmyv+NeJUWpaoFWZQBJJ1Bg63knGVqCir3n3wQ1rPkosH9j2/tj4EHzXeb5yapHT0R4+1u2ciiEWGEHa92PwWq3HKMHaU7m7C746O6Vc6UELRYxSOR7Q/QlC87qrJYAkFahcPmI9OMTcg11SLxYt19NzYkqK0t/xGjJVQ6BEkwTY9WlmP3hKK+lWbrrQZ0J7OAChBiw0Kmqvy604xq1lCwR5wlY5Cz5Q3dYnI5G9wXRwrMJPvK50AvwmCrJE7frkzWuMmrMLY0PEukWGC7rCHCNecU86kXQiiWB3XBWaOhxvFwaooDh5Odw2U+dbbUJBto6StW3iKyzI7Zg4tRXvRKPl8WhrFMsOdJpie8lsaFbtm5LF3+xs4m5q4IxCXWq5HGuos0FcBnJaVPUYWvwUCTbMSgZX21GD0FiFXtXbGZzrkCcyAgNPPUhktjzsm9axGCUW7WP1SRja6f1LUP+qCSEYePVyvJRN0uwIil9g+lNPsW+4rAOomaH1nLTvXJLyVLgAvvm3VOjdKKDr8eomqzcsuyssEjfAzK7lOj6pgsGksHYIW9fJpVTio22f8ovuK0dkp32QZpXh2lwity/Ldbw/TVyB435UfZmUa1iZaNLoQpMJB3dk8MdV6LL7/qrRYIN3UUT4vUFQnGlVajUXlPiZ1XLh0bzypQ8YJmtQLECW+udVkwzkR2mz/kBboIWihc+y7mdUe7dJfPQntqWsSVCtp6nPl1+G9eX3iTg+dbJR91CR1j91Fu87Sz5KQTF2PsSeESSZy4oZ/ZmfY2z2mjrCj3MAmNy0Z7nWTJ7oGILCjQHGwiUSLjW5vU64Gf+qhIzSR2ob0pX3dPFKNFr2VxZnw9qr8p+HzZ3N1lsJFcq8JkV3w/l3oJejGtxaHjQY2Xbf8aPt1D9KwBMFVJA7uq23kW1KfpW76v7RZb9+vC4pQzQJen8eB9tdGGk3Xl5bj27soW7ORRTvbd1ptnrpz3YekahEk7RbB4rFqXUIx2WGsUN7M2I3MdN0w2JO7IfnS/peggiKkQ/5bkzPCYXCzoS2dzu1Jm+/wBgi8lYtZ2+ZoL0dTaUVja9wx3UkI/d1ETU+gWIEGj8z3+/LuXD/8w/YRaIwK+5qcBQRNQNDKJud2UzPFBHdH0ZPM9D8MeJOzY7quVY6iyfl29mJG0txccb1et6m53Us9TtBK14MuP0sovnin5Fy2et9P3oVRFsZI7fWgx41yipqGfMfqq5RX/5X8MORBT1DTXAhdD7qZfZ0BAUrQ74gj/s9D+C/uw8Ytmj8XNAAAAABJRU5ErkJggg==';
@@ -2150,8 +2145,8 @@ class Client extends MX_Controller
         <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
         <div class="d-flex justify-content-between">
         <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
-        <a href="mailto:' . $patient->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
-        <a href="mailto:' . $patient->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
+        <a href="mailto:' . $client->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+        <a href="mailto:' . $client->email . '?Subject=Quero Aulas%20-%20Agendamento" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
         </div>
         </div>
         <div class="card-body pt-0">
@@ -2169,13 +2164,13 @@ class Client extends MX_Controller
         </div>
         <div class="text-center mt-4">
         <h5>
-        ' . $patient->name . '<span class="font-weight-light">, ' . $patient->email . ' </span>
+        ' . $client->name . '<span class="font-weight-light">, ' . $client->email . ' </span>
         </h5>
         <div class="h6 font-weight-300">
-        ' . $patient->birthdate . '
+        ' . $client->birthdate . '
         </div>
         <div class="h6 mt-4">
-        ' . $patient->address . '
+        ' . $client->address . '
         </div>
         <div>
         </div>
@@ -2197,31 +2192,31 @@ class Client extends MX_Controller
         echo json_encode($data);
     }
 
-    public function getPatientinfo()
+    public function getclientinfo()
     {
         // Search term
         $searchTerm = $this->input->post('searchTerm');
 
         // Get users
-        $response = $this->patient_model->getPatientInfo($searchTerm);
+        $response = $this->client_model->getclientInfo($searchTerm);
 
         echo json_encode($response);
     }
 
-    public function getPatientinfoWithAddNewOption()
+    public function getclientinfoWithAddNewOption()
     {
         // Search term
         $searchTerm = $this->input->post('searchTerm');
-        //$doctor =   $this->id; 
-        $id = $this->doctor_model->getDoctorByIonUserId($this->ion_auth->get_user_id())->id;
+        //$teacher =   $this->id; 
+        $id = $this->teacher_model->getteacherByIonUserId($this->ion_auth->get_user_id())->id;
         //var_dump($id);die;
 
         // Get users
-        $response = $this->patient_model->getPatientinfoWithAddNewOption($searchTerm, $id);
+        $response = $this->client_model->getclientinfoWithAddNewOption($searchTerm, $id);
 
         echo json_encode($response);
     }
 }
 
-/* End of file patient.php */
-    /* Location: ./application/modules/patient/controllers/patient.php */
+/* End of file client.php */
+    /* Location: ./application/modules/client/controllers/client.php */
