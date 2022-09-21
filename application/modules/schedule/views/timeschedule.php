@@ -12,7 +12,7 @@
                             <!-- page start-->
                             <section class="panel">
                                 <header class="panel-heading">
-                                    <?php echo lang('time_schedule'); ?> (<?php echo  $doctor->name; ?>)
+                                    <?php echo lang('time_schedule'); ?> (<?php echo  $teacher->name; ?>)
                                     <div class="col-md-4 clearfix pull-right">
                                         <a data-toggle="modal" href="#myModal">
                                             <div class="btn-group pull-right">
@@ -26,14 +26,14 @@
                                 // $planos_details = $this->crud_model->get_planos_by_id($param3)->row_array();
                                 //  $section_details = $this->crud_model->get_section('section', $param2)->row_array();
 
-                                $horas = unserialize($doctor->hours_available);
+                                $horas = unserialize($teacher->hours_available);
                                 ?>
                                 <div class="container">
                                     <form action="<?php echo site_url('schedule/hours_settings'); ?>" method="post">
                                         <div class="row">
                                       
 
-                                            <input type="hidden" id="id" name="id" value="<?= $doctor->id ?>">
+                                            <input type="hidden" id="id" name="id" value="<?= $teacher->id ?>">
                                             <div class="col-md-2" style="border: 1px solid black; border-radius: 5px">
                                                 <b style="margin-right: 15px;"> SEG</b>
                                                 <hr>
@@ -263,7 +263,7 @@
         var start = dia
 
         $.ajax({
-            url: "<?php echo base_url(); ?>schedule/list_hour_doctor",
+            url: "<?php echo base_url(); ?>schedule/list_hour_teacher",
             type: "POST",
             data: {
                 start: start

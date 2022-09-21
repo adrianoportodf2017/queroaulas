@@ -10,9 +10,9 @@ class Schedule extends MX_Controller
     {
         parent::__construct();
         $this->load->model('schedule_model');
-        $this->load->model('doctor/doctor_model');
+        $this->load->model('teacher/teacher_model');
         $this->load->model('appointment/appointment_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Teacher', 'Client', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
@@ -21,7 +21,7 @@ class Schedule extends MX_Controller
     {
         $data['settings'] = $this->settings_model->getSettings();
         $data['schedules'] = $this->schedule_model->getSchedule();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['teacher'] = $this->teacher_model->getTeacher();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('schedule', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -29,16 +29,16 @@ class Schedule extends MX_Controller
 
     function timeSchedule()
     {
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+        if ($this->ion_auth->in_group(array('Teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
         } else {
-            $doctor = $this->input->get('doctor');
+            $teacher = $this->input->get('teacher');
         }
-        $data['doctorr'] = $doctor;
-        $data['doctor'] = $this->db->get_where('doctor', array('id' => $doctor))->row();
+        $data['teacherr'] = $teacher;
+        $data['teacher'] = $this->db->get_where('teacher', array('id' => $teacher))->row();
         $data['settings'] = $this->settings_model->getSettings();
-        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor);
+        $data['schedules'] = $this->schedule_model->getScheduleByTeacher($teacher);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('timeschedule', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -238,7 +238,7 @@ class Schedule extends MX_Controller
         $hours =   serialize($data);
         $id = $this->input->post('id');
         // var_dump( $id);die;
-        //$this->schedule_model->getScheduleByDoctorByWeekdayById($doctor, $hours, $id);
+        //$this->schedule_model->getScheduleByteacherByWeekdayById($teacher, $hours, $id);
         $teste =   $this->schedule_model->hours_settings($hours, $id);
         //var_dump($teste );die;
         redirect('schedule/timeSchedule');
@@ -252,7 +252,7 @@ class Schedule extends MX_Controller
             $redirect = 'schedule';
         }
         $id = $this->input->post('id');
-        $doctor = $this->input->post('doctor');
+        $teacher = $this->input->post('teacher');
         $s_time = $this->input->post('s_time');
         $e_time = $this->input->post('e_time');
         $weekday = $this->input->post('weekday');
@@ -260,7 +260,7 @@ class Schedule extends MX_Controller
         $duration = $this->input->post('duration');
 
         if (empty($id)) {
-            $check = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday);
+            $check = $this->schedule_model->getScheduleByteacherByWeekday($teacher, $weekday);
             if (!empty($check)) {
                 $this->session->set_flashdata('feedback', lang('schedule_already_exists'));
                 redirect($redirect);
@@ -583,9 +583,9 @@ class Schedule extends MX_Controller
         }
 
         if (!empty($id)) {
-            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekdayById($doctor, $weekday, $id);
+            $previous_time = $this->schedule_model->getScheduleByteacherByWeekdayById($teacher, $weekday, $id);
         } else {
-            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday);
+            $previous_time = $this->schedule_model->getScheduleByteacherByWeekday($teacher, $weekday);
         }
 
         if (!empty($previous_time)) {
@@ -656,7 +656,7 @@ class Schedule extends MX_Controller
 
             $data = array();
             $data = array(
-                'doctor' => $doctor,
+                'teacher' => $teacher,
                 's_time' => $s_time,
                 'e_time' => $e_time,
                 'weekday' => $weekday,
@@ -682,7 +682,7 @@ class Schedule extends MX_Controller
                                     $p_slot_e_time = $value_e;
 
                                     $slot_data = array(
-                                        'doctor' => $doctor,
+                                        'teacher' => $teacher,
                                         's_time' => $p_slot_s_time,
                                         'e_time' => $p_slot_e_time,
                                         'weekday' => $weekday,
@@ -715,12 +715,12 @@ class Schedule extends MX_Controller
     {
         $from = $this->input->get('all');
         $id = $this->input->get('id');
-        $doctor = $this->input->get('doctor');
+        $teacher = $this->input->get('teacher');
         $weekday = $this->input->get('weekday');
-        $this->schedule_model->deleteTimeSlotByDoctorByWeekday($doctor, $weekday);
+        $this->schedule_model->deleteTimeSlotByteacherByWeekday($teacher, $weekday);
         $this->schedule_model->deleteSchedule($id);
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
+        if ($this->ion_auth->in_group(array('teacher'))) {
             redirect('schedule/timeSchedule');
         } else {
             redirect('schedule');
@@ -729,10 +729,10 @@ class Schedule extends MX_Controller
 
     function timeSlots()
     {
-        $doctor = $this->input->get('doctor');
-        $data['doctorr'] = $doctor;
+        $teacher = $this->input->get('teacher');
+        $data['teacherr'] = $teacher;
         $data['settings'] = $this->settings_model->getSettings();
-        $data['slots'] = $this->schedule_model->getTimeSlotByDoctor($doctor);
+        $data['slots'] = $this->schedule_model->getTimeSlotByteacher($teacher);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('timeslot', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -741,7 +741,7 @@ class Schedule extends MX_Controller
     function addTimeSlot()
     {
         $id = $this->input->post('id');
-        $doctor = $this->input->post('doctor');
+        $teacher = $this->input->post('teacher');
         $s_time = $this->input->post('s_time');
         $e_time = $this->input->post('e_time');
         $weekday = $this->input->post('weekday');
@@ -749,13 +749,13 @@ class Schedule extends MX_Controller
 
         if (empty($s_time)) {
             $this->session->set_flashdata('feedback', lang('fields_can_not_be_empty'));
-            redirect('schedule/timeSlots?doctor=' . $doctor);
+            redirect('schedule/timeSlots?teacher=' . $teacher);
             die();
         }
 
         if (empty($e_time)) {
             $this->session->set_flashdata('feedback', lang('fields_can_not_be_empty'));
-            redirect('schedule/timeSlots?doctor=' . $doctor);
+            redirect('schedule/timeSlots?teacher=' . $teacher);
             die();
         }
 
@@ -1090,14 +1090,14 @@ class Schedule extends MX_Controller
 
         if ($key1 > $key2) {
             $this->session->set_flashdata('feedback', 'Time Selection Error!');
-            redirect('schedule/timeSlots?doctor=' . $doctor);
+            redirect('schedule/timeSlots?teacher=' . $teacher);
             die();
         }
 
         if (!empty($id)) {
-            $previous_time = $this->schedule_model->getTimeSlotByDoctorByWeekdayById($doctor, $weekday, $id);
+            $previous_time = $this->schedule_model->getTimeSlotByteacherByWeekdayById($teacher, $weekday, $id);
         } else {
-            $previous_time = $this->schedule_model->getTimeSlotByDoctorByWeekday($doctor, $weekday);
+            $previous_time = $this->schedule_model->getTimeSlotByteacherByWeekday($teacher, $weekday);
         }
 
         if (!empty($previous_time)) {
@@ -1114,7 +1114,7 @@ class Schedule extends MX_Controller
                         continue;
                     } else {
                         $this->session->set_flashdata('feedback', lang('slot_overlapped'));
-                        redirect('schedule/timeSlots?doctor=' . $doctor);
+                        redirect('schedule/timeSlots?teacher=' . $teacher);
                         die();
                     }
                 } elseif ($key1 > $key_pre_s) {
@@ -1123,21 +1123,21 @@ class Schedule extends MX_Controller
                             continue;
                         } else {
                             $this->session->set_flashdata('feedback', lang('slot_overlapped'));
-                            redirect('schedule/timeSlots?doctor=' . $doctor);
+                            redirect('schedule/timeSlots?teacher=' . $teacher);
                             die();
                         }
                     } else {
                         $this->session->set_flashdata('feedback', lang('slot_overlapped'));
-                        redirect('schedule/timeSlots?doctor=' . $doctor);
+                        redirect('schedule/timeSlots?teacher=' . $teacher);
                         die();
                     }
                 } elseif ($key1 >= $key_pre_s && $key2 <= $key_pre_e) {
                     $this->session->set_flashdata('feedback', lang('slot_overlapped'));
-                    redirect('schedule/timeSlots?doctor=' . $doctor);
+                    redirect('schedule/timeSlots?teacher=' . $teacher);
                     die();
                 } elseif ($key1 == $key_pre_s) {
                     $this->session->set_flashdata('feedback', lang('slot_overlapped'));
-                    redirect('schedule/timeSlots?doctor=' . $doctor);
+                    redirect('schedule/timeSlots?teacher=' . $teacher);
                     die();
                 }
             }
@@ -1165,7 +1165,7 @@ class Schedule extends MX_Controller
 
             $data = array();
             $data = array(
-                'doctor' => $doctor,
+                'teacher' => $teacher,
                 's_time' => $s_time,
                 'e_time' => $e_time,
                 'weekday' => $weekday,
@@ -1178,7 +1178,7 @@ class Schedule extends MX_Controller
                 $this->session->set_flashdata('feedback', lang('added'));
                 $this->schedule_model->insertTimeSlot($data);
             }
-            redirect('schedule/timeSlots?doctor=' . $doctor);
+            redirect('schedule/timeSlots?teacher=' . $teacher);
         }
     }
 
@@ -1189,19 +1189,19 @@ class Schedule extends MX_Controller
         echo json_encode($data);
     }
 
-    function getAvailableSlotByDoctorByDateByJasonold()
+    function getAvailableSlotByteacherByDateByJasonold()
     {
         $data = array();
         $date = $this->input->get('date');
         if (!empty($date)) {
             $date = strtotime($date);
         }
-        $doctor = $this->input->get('doctor');
-        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDate($date, $doctor);
+        $teacher = $this->input->get('teacher');
+        $data['aslots'] = $this->schedule_model->getAvailableSlotByteacherByDate($date, $teacher);
         echo json_encode($data);
     }
 
-    function getAvailableSlotByDoctorByDateByAppointmentIdByJason()
+    function getAvailableSlotByteacherByDateByAppointmentIdByJason()
     {
         $data = array();
         $appointment_id = $this->input->get('appointment_id');
@@ -1209,8 +1209,8 @@ class Schedule extends MX_Controller
         if (!empty($date)) {
             $date = strtotime($date);
         }
-        $doctor = $this->input->get('doctor');
-        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id);
+        $teacher = $this->input->get('teacher');
+        $data['aslots'] = $this->schedule_model->getAvailableSlotByteacherByDateByAppointmentId($date, $teacher, $appointment_id);
         $data['current_value'] = $this->appointment_model->getAppointmentById($appointment_id)->time_slot;
         echo json_encode($data);
     }
@@ -1219,7 +1219,7 @@ class Schedule extends MX_Controller
     {
         $data['settings'] = $this->settings_model->getSettings();
         $data['holidays'] = $this->schedule_model->getHolidays();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('all_holidays', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -1227,16 +1227,16 @@ class Schedule extends MX_Controller
 
     function holidays()
     {
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
         } else {
-            $doctor = $this->input->get('doctor');
+            $teacher = $this->input->get('teacher');
         }
 
-        $data['doctorr'] = $doctor;
+        $data['teacherr'] = $teacher;
         $data['settings'] = $this->settings_model->getSettings();
-        $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($doctor);
+        $data['holidays'] = $this->schedule_model->getHolidaysByteacher($teacher);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('holidays', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -1249,7 +1249,7 @@ class Schedule extends MX_Controller
         if (empty($redirect)) {
             $redirect = 'schedule/allHolidays';
         }
-        $doctor = $this->input->post('doctor');
+        $teacher = $this->input->post('teacher');
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
@@ -1261,14 +1261,14 @@ class Schedule extends MX_Controller
 
 
         if (empty($id)) {
-            $is_exist = $this->schedule_model->getHolidayByDoctorByDate($doctor, $date);
+            $is_exist = $this->schedule_model->getHolidayByteacherByDate($teacher, $date);
             if (!empty($is_exist)) {
                 $this->session->set_flashdata('feedback', lang('already_exist'));
                 redirect($redirect);
                 die();
             }
         } else {
-            $is_exist = $this->schedule_model->getHolidayByDoctorByDate($doctor, $date);
+            $is_exist = $this->schedule_model->getHolidayByteacherByDate($teacher, $date);
             if (!empty($is_exist)) {
                 if ($is_exist->date == $date) {
                     $this->session->set_flashdata('feedback', lang('already_exist'));
@@ -1295,7 +1295,7 @@ class Schedule extends MX_Controller
 
             $data = array();
             $data = array(
-                'doctor' => $doctor,
+                'teacher' => $teacher,
                 'date' => $date,
             );
             if (!empty($id)) {
@@ -1314,7 +1314,7 @@ class Schedule extends MX_Controller
     {
         $id = $this->input->get('id');
         $data['holiday'] = $this->schedule_model->getHolidayById($id);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['holiday']->doctor);
+        $data['teacher'] = $this->teacher_model->getTeacherById($data['holiday']->teacher);
         echo json_encode($data);
     }
 
@@ -1325,7 +1325,7 @@ class Schedule extends MX_Controller
         if (empty($redirect)) {
             $redirect = 'schedule/allHolidays';
         }
-        $doctor = $this->input->get('doctor');
+        $teacher = $this->input->get('teacher');
         $this->schedule_model->deleteHoliday($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
         redirect($redirect);
@@ -1335,7 +1335,7 @@ class Schedule extends MX_Controller
     {
         $data = array();
         $id = $this->input->get('id');
-        $user_data = $this->db->get_where('doctor', array('id' => $id))->row();
+        $user_data = $this->db->get_where('teacher', array('id' => $id))->row();
         $path = $user_data->img_url;
 
         if (!empty($path)) {
@@ -1346,15 +1346,15 @@ class Schedule extends MX_Controller
         $this->db->delete('users');
         $this->schedule_model->delete($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
-        redirect('doctor');
+        redirect('teacher');
     }
 
     function deleteTimeSlot()
     {
         $id = $this->input->get('id');
-        $doctor = $this->input->get('doctor');
+        $teacher = $this->input->get('teacher');
         $this->schedule_model->deleteTimeSlot($id);
-        redirect('scedule/timeSlots?doctor=' . $doctor);
+        redirect('scedule/timeSlots?teacher=' . $teacher);
     }
 
     public function fetch_all_event($user_id)
@@ -1364,7 +1364,7 @@ class Schedule extends MX_Controller
         return $this->db->get('events');
     }
 
-    function list_hour_doctor()
+    function list_hour_teacher()
     {
 
         $date = $_POST['start'];
@@ -1375,9 +1375,9 @@ class Schedule extends MX_Controller
         //var_dump(str_replace(' ', '', $data));
 
         $data = "";
-        $doctor_ion_id = $this->ion_auth->get_user_id();
-        $user_id = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
-        $event_data = $this->db->get_where('doctor', array('id' => $user_id))->row();
+        $teacher_ion_id = $this->ion_auth->get_user_id();
+        $user_id = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
+        $event_data = $this->db->get_where('teacher', array('id' => $user_id))->row();
         $hours_available =  unserialize($event_data->hours_available);
         //var_dump($day_week);die;
         foreach ($hours_available[$day_week] as $hours => $k) {
@@ -1432,7 +1432,7 @@ class Schedule extends MX_Controller
         echo die(die(($data)));
     }
 
-    function getAvailableSlotByDoctorByDateByjason()
+    function getAvailableSlotByteacherByDateByjason()
     {
         $dateee = array();
         $dateee['aslots'] = null;
@@ -1441,9 +1441,9 @@ class Schedule extends MX_Controller
         $day_week = strval(substr($date, 0, 1));
         //var_dump($day_week);die;
         // $data = "";
-        $doctor_ion_id = $this->ion_auth->get_user_id();
-        $user_id = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
-        $event_data = $this->db->get_where('doctor', array('id' => $user_id))->row();
+        $teacher_ion_id = $this->ion_auth->get_user_id();
+        $user_id = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
+        $event_data = $this->db->get_where('teacher', array('id' => $user_id))->row();
         $hours_available =  unserialize($event_data->hours_available);
         $c = '0';
         //var_dump($hours_available[$day_week]);die;

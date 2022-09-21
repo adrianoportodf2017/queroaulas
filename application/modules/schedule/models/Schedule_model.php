@@ -18,91 +18,91 @@ class Schedule_model extends CI_model
         return $query->result();
     }
 
-    function getAvailableDoctorByDate($date)
+    function getAvailableteacherByDate($date)
     {
 
         $weekday = strftime("%A", $date);
         $this->db->where('date', $date);
         $query1 = $this->db->get('holidays')->result();
         if (!empty($query1)) {
-            $doctor = array();
+            $teacher = array();
             foreach ($query1 as $q1) {
-                $doctor[] = $q1->doctor;
+                $teacher[] = $q1->teacher;
             }
             $this->db->where_not_in('id', $staff);
         }
 
-        $query = $this->db->get('doctor')->result();
-        foreach ($query as $availableDoctor) {
-            $this->db->where('doctor', $availableDoctor->id);
+        $query = $this->db->get('teacher')->result();
+        foreach ($query as $availableteacher) {
+            $this->db->where('teacher', $availableteacher->id);
             $this->db->where('weekday', $weekday);
             $query_slot = $this->db->get('time_slot')->result();
 
             if (!empty($query_slot)) {
-                $doctor_avail[] = $availableDoctor->id;
+                $teacher_avail[] = $availableteacher->id;
             }
         }
-        $this->db->where_in('id', $doctor_avail);
-        $query_avail_doctor = $this->db->get('doctor');
-        return $query_avail_doctor->result();
+        $this->db->where_in('id', $teacher_avail);
+        $query_avail_teacher = $this->db->get('teacher');
+        return $query_avail_teacher->result();
     }
 
-    function getAvailableDoctorsByDateBySlot($date, $slot)
+    function getAvailableteachersByDateBySlot($date, $slot)
     {
 
         $weekday = strftime("%A", $date);
         $this->db->where('date', $date);
         $query1 = $this->db->get('holidays')->result();
         if (!empty($query1)) {
-            $doctor = array();
+            $teacher = array();
             foreach ($query1 as $q1) {
-                $doctor[] = $q1->doctor;
+                $teacher[] = $q1->teacher;
             }
-            $this->db->where_not_in('id', $doctor);
+            $this->db->where_not_in('id', $teacher);
         }
 
-        $query = $this->db->get('doctor')->result();
-        foreach ($query as $availableDoctor) {
-            $this->db->where('doctor', $availableDoctor->id);
+        $query = $this->db->get('teacher')->result();
+        foreach ($query as $availableteacher) {
+            $this->db->where('teacher', $availableteacher->id);
             $this->db->where('weekday', $weekday);
             $query_slot = $this->db->get('time_slot')->result();
 
             if (!empty($query_slot)) {
-                $doctor_avail[] = $availableDoctor->id;
+                $teacher_avail[] = $availableteacher->id;
             }
         }
 
-        foreach ($doctor_avail as $key => $value) {
-            $this->db->where('doctor', $value);
+        foreach ($teacher_avail as $key => $value) {
+            $this->db->where('teacher', $value);
             $this->db->where('date', $date);
             $this->db->where('time_slot', $slot);
             $query_appointment = $this->db->get('appointment')->result();
 
             if (empty($query_appointment)) {
-                $most_probable_avail_doctor[] = $value;
+                $most_probable_avail_teacher[] = $value;
             }
         }
-        $this->db->where_in('id', $most_probable_avail_doctor);
-        $query_avail_doctor = $this->db->get('staff');
-        return $query_avail_doctor->result();
+        $this->db->where_in('id', $most_probable_avail_teacher);
+        $query_avail_teacher = $this->db->get('staff');
+        return $query_avail_teacher->result();
     }
 
-    function getAvailableSlotByDoctorByDate($date, $doctor)
+    function getAvailableSlotByteacherByDate($date, $teacher)
     {
         //$newDate = date("m-d-Y", strtotime($date));
         $weekday = strftime("%A", $date);
 
         $this->db->where('date', $date);
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $holiday = $this->db->get('holidays')->result();
 
         if (empty($holiday)) {
             $this->db->where('date', $date);
-            $this->db->where('doctor', $doctor);
+            $this->db->where('teacher', $teacher);
             $query = $this->db->get('appointment')->result();
 
 
-            $this->db->where('doctor', $doctor);
+            $this->db->where('teacher', $teacher);
             $this->db->where('weekday', $weekday);
             $this->db->order_by('s_time_key', 'asc');
             $query1 = $this->db->get('time_slot')->result();
@@ -127,23 +127,23 @@ class Schedule_model extends CI_model
         return $availableSlot;
     }
 
-    function getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id)
+    function getAvailableSlotByteacherByDateByAppointmentId($date, $teacher, $appointment_id)
     {
         //$newDate = date("m-d-Y", strtotime($date));
         $weekday = strftime("%A", $date);
 
         $this->db->where('date', $date);
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $holiday = $this->db->get('holidays')->result();
 
         if (empty($holiday)) {
 
             $this->db->where('date', $date);
-            $this->db->where('doctor', $doctor);
+            $this->db->where('teacher', $teacher);
             $query = $this->db->get('appointment')->result();
 
 
-            $this->db->where('doctor', $doctor);
+            $this->db->where('teacher', $teacher);
             $this->db->where('weekday', $weekday);
             $this->db->order_by('s_time_key', 'asc');
             $query1 = $this->db->get('time_slot')->result();
@@ -181,10 +181,10 @@ class Schedule_model extends CI_model
         $this->db->update('users', $uptade_ion_user);
     }
 
-    function getDoctorByIonUserId($id)
+    function getteacherByIonUserId($id)
     {
         $this->db->where('ion_user_id', $id);
-        $query = $this->db->get('doctor');
+        $query = $this->db->get('teacher');
         return $query->row();
     }
 
@@ -206,10 +206,10 @@ class Schedule_model extends CI_model
         return $query->row();
     }
 
-    function getTimeSlotByDoctor($id)
+    function getTimeSlotByteacher($id)
     {
         $this->db->order_by('s_time_key', 'asc');
-        $this->db->where('doctor', $id);
+        $this->db->where('teacher', $id);
         $query = $this->db->get('time_slot');
         return $query->result();
     }
@@ -231,9 +231,9 @@ class Schedule_model extends CI_model
         $this->db->insert('time_schedule', $data);
     }
 
-    function getScheduleByDoctor($doctor)
+    function getScheduleByteacher($teacher)
     {
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $query = $this->db->get('time_schedule');
         return $query->result();
     }
@@ -245,18 +245,18 @@ class Schedule_model extends CI_model
         return $query->row();
     }
 
-    function getScheduleByDoctorByWeekday($doctor, $weekday)
+    function getScheduleByteacherByWeekday($teacher, $weekday)
     {
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('weekday', $weekday);
         $query = $this->db->get('time_schedule');
         return $query->result();
     }
 
-    function getScheduleByDoctorByWeekdayById($doctor, $weekday, $id)
+    function getScheduleByteacherByWeekdayById($teacher, $weekday, $id)
     {
         $this->db->where_not_in('id', $id);
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('weekday', $weekday);
         $query = $this->db->get('time_schedule');
         return $query->result();
@@ -274,9 +274,9 @@ class Schedule_model extends CI_model
         $this->db->delete('time_schedule');
     }
 
-    function deleteTimeSlotByDoctorByWeekday($doctor, $weekday)
+    function deleteTimeSlotByteacherByWeekday($teacher, $weekday)
     {
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('weekday', $weekday);
         $this->db->delete('time_slot');
     }
@@ -299,34 +299,34 @@ class Schedule_model extends CI_model
         return $query->row();
     }
 
-    function getHolidaysByDoctor($id)
+    function getHolidaysByteacher($id)
     {
         $this->db->order_by('id', 'asc');
-        $this->db->where('doctor', $id);
+        $this->db->where('teacher', $id);
         $query = $this->db->get('holidays');
         return $query->result();
     }
 
-    function getHolidayByDoctorByDate($doctor, $date)
+    function getHolidayByteacherByDate($teacher, $date)
     {
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('date', $date);
         $query = $this->db->get('holidays');
         return $query->row();
     }
 
-    function getTimeSlotByDoctorByWeekday($doctor, $weekday)
+    function getTimeSlotByteacherByWeekday($teacher, $weekday)
     {
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('weekday', $weekday);
         $query = $this->db->get('time_slot');
         return $query->result();
     }
 
-    function getTimeSlotByDoctorByWeekdayById($doctor, $weekday, $id)
+    function getTimeSlotByteacherByWeekdayById($teacher, $weekday, $id)
     {
         $this->db->where_not_in('id', $id);
-        $this->db->where('doctor', $doctor);
+        $this->db->where('teacher', $teacher);
         $this->db->where('weekday', $weekday);
         $query = $this->db->get('time_slot');
         return $query->result();
@@ -349,7 +349,7 @@ class Schedule_model extends CI_model
     {
         $data['hours_available'] = $hours;
         $this->db->where('id', $id);
-        $this->db->update('doctor', $data);
+        $this->db->update('teacher', $data);
     }
 
   public function hour_compare($hour, $user_id){

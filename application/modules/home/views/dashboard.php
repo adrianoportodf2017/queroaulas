@@ -43,7 +43,7 @@
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
-    <?php if ($this->ion_auth->in_group('Patient')) { ?>
+    <?php if ($this->ion_auth->in_group('Client')) { ?>
 
         <div class="min-height-300 bg-primary position-absolute w-100"></div>
 

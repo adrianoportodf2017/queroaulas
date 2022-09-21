@@ -1359,7 +1359,7 @@ class Client extends MX_Controller
         $data = array();
         $appointments = $this->appointment_model->getAppointmentByTeacher($teacher_id);
         foreach ($appointments as $appointment) {
-            $client_exists = $this->client_model->getPatientById($appointment->client);
+            $client_exists = $this->client_model->getClientById($appointment->client);
             if (!empty($client_exists)) {
                 $clients[] = $appointment->client;
             }
