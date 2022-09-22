@@ -11,13 +11,12 @@ class Appointment extends MX_Controller
         parent::__construct();
 
         $this->load->model('appointment_model');
-        $this->load->model('doctor/doctor_model');
-        $this->load->model('patient/patient_model');
-        $this->load->model('sms/sms_model');
-        $this->load->module('sms');
+        $this->load->model('teacher/teacher_model');
+        $this->load->model('client/client_model');
+       
 
 
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Teacher', 'Client', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
@@ -25,14 +24,14 @@ class Appointment extends MX_Controller
     public function index()
     {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $id = $this->ion_auth->get_user_id();
-        $data['doctor'] = $this->doctor_model->getDoctorByIonUserId($id);
+        $data['teacher'] = $this->teacher_model->getTeacherByIonUserId($id);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('appointment');
         $this->load->view('home/footer'); // just the header file
@@ -42,8 +41,8 @@ class Appointment extends MX_Controller
     {
 
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('appointment_request', $data);
@@ -52,13 +51,13 @@ class Appointment extends MX_Controller
 
     public function todays()
     {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('todays', $data);
@@ -68,12 +67,12 @@ class Appointment extends MX_Controller
     public function upcoming()
     {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('upcoming', $data);
@@ -82,13 +81,13 @@ class Appointment extends MX_Controller
 
     public function myTodays()
     {
-        if (!$this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('my_todays', $data);
@@ -98,20 +97,20 @@ class Appointment extends MX_Controller
     function calendar()
     {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
-            $data['appointments'] = $this->appointment_model->getAppointmentByDoctor($doctor);
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
+            $data['appointments'] = $this->appointment_model->getAppointmentByteacher($teacher);
         } else {
             $data['appointments'] = $this->appointment_model->getAppointment();
         }
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('calendar', $data);
@@ -121,12 +120,12 @@ class Appointment extends MX_Controller
     public function addNewView()
     {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('add_new', $data);
@@ -136,8 +135,8 @@ class Appointment extends MX_Controller
     public function addNew()
     {
         $id = $this->input->post('id');
-        $patient = $this->input->post('patient');
-        $doctor = $this->input->post('doctor');
+        $client = $this->input->post('client');
+        $teacher = $this->input->post('teacher');
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
@@ -172,7 +171,7 @@ class Appointment extends MX_Controller
 
         $user = $this->ion_auth->get_user_id();
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             $user = '';
         }
 
@@ -181,8 +180,8 @@ class Appointment extends MX_Controller
         if ((empty($id))) {
             $add_date = date('m/d/y');
             $registration_time = time();
-            $patient_add_date = $add_date;
-            $patient_registration_time = $registration_time;
+            $client_add_date = $add_date;
+            $client_registration_time = $registration_time;
         } else {
             $add_date = $this->appointment_model->getAppointmentById($id)->add_date;
             $registration_time = $this->appointment_model->getAppointmentById($id)->registration_time;
@@ -202,20 +201,20 @@ class Appointment extends MX_Controller
         $p_phone = $this->input->post('p_phone');
         $p_age = $this->input->post('p_age');
         $p_gender = $this->input->post('p_gender');
-        $patient_id = rand(10000, 1000000);
+        $client_id = rand(10000, 1000000);
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
-        if ($patient == 'add_new') {
-            $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-            $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        if ($client == 'add_new') {
+            $this->form_validation->set_rules('p_name', 'client Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('p_phone', 'client Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         }
 
         // Validating Name Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('client', 'client', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
-        $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('teacher', 'teacher', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         // Validating Email Field
         $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -230,8 +229,8 @@ class Appointment extends MX_Controller
             if (!empty($id)) {
                 redirect("appointment/editAppointment?id=$id");
             } else {
-                $data['patients'] = $this->patient_model->getPatient();
-                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['clients'] = $this->client_model->getClient();
+                $data['teachers'] = $this->teacher_model->getTeacher();
                 $data['settings'] = $this->settings_model->getSettings();
                 $this->load->view('home/dashboard', $data); // just the header file
                 $this->load->view('add_new', $data);
@@ -239,21 +238,21 @@ class Appointment extends MX_Controller
             }
         } else {
 
-            if ($patient == 'add_new') {
+            if ($client == 'add_new') {
 
                 $data_p = array(
-                    'patient_id' => $patient_id,
+                    'client_id' => $client_id,
                     'name' => $p_name,
                     'email' => $p_email,
                     'phone' => $p_phone,
                     'sex' => $p_gender,
                     'age' => $p_age,
-                    'add_date' => $patient_add_date,
-                    'registration_time' => $patient_registration_time,
+                    'add_date' => $client_add_date,
+                    'registration_time' => $client_registration_time,
                     'how_added' => 'from_appointment'
                 );
                 $username = $this->input->post('p_name');
-                // Adding New Patient
+                // Adding New client
                 if ($this->ion_auth->email_check($p_email)) {
                     $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
                     if (!empty($redirect)) {
@@ -265,20 +264,20 @@ class Appointment extends MX_Controller
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
                     $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
-                    $this->patient_model->insertPatient($data_p);
-                    $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
+                    $this->client_model->insertclient($data_p);
+                    $client_user_id = $this->db->get_where('client', array('email' => $p_email))->row()->id;
                     $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->patient_model->updatePatient($patient_user_id, $id_info);
+                    $this->client_model->updateclient($client_user_id, $id_info);
                 }
 
-                $patient = $patient_user_id;
+                $client = $client_user_id;
                 //    }
             }
             // $error = array('error' => $this->upload->display_errors());
 
-            $patient_phone = $this->patient_model->getPatientById($patient)->phone;
+            $client_phone = $this->client_model->getClientById($client)->phone;
             if (empty($id)) {
-                $room_id = 'hms-meeting-' . $patient_phone . '-' . rand(10000, 1000000);
+                $room_id = 'hms-meeting-' . $client_phone . '-' . rand(10000, 1000000);
                 $live_meeting_link = 'https://meet.jit.si/' . $room_id;
             } else {
                 $appointment_details = $this->appointment_model->getAppointmentById($id);
@@ -287,15 +286,15 @@ class Appointment extends MX_Controller
             }
 
 
-            $patientname = $this->patient_model->getPatientById($patient)->name;
-            $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
+            $clientname = $this->client_model->getClientById($client)->name;
+            $teachername = $this->teacher_model->getTeacherById($teacher)->name;
 
             $data = array();
             $data = array(
-                'patient' => $patient,
-                'patientname' => $patientname,
-                'doctor' => $doctor,
-                'doctorname' => $doctorname,
+                'client' => $client,
+                'clientname' => $clientname,
+                'teacher' => $teacher,
+                'teachername' => $teachername,
                 'date' => $date,
                 's_time' => $s_time,
                 'e_time' => $e_time,
@@ -317,29 +316,29 @@ class Appointment extends MX_Controller
                 $this->appointment_model->insertAppointment($data);
 
                 /* if (!empty($sms)) {
-                  $this->sms->sendSmsDuringAppointment($patient, $doctor, $date, $s_time, $e_time);
+                  $this->sms->sendSmsDuringAppointment($client, $teacher, $date, $s_time, $e_time);
                   } */
 
-                $patient_doctor = $this->patient_model->getPatientById($patient)->doctor;
+                $client_teacher = $this->client_model->getClientById($client)->teacher;
 
-                $patient_doctors = explode(',', $patient_doctor);
+                $client_teachers = explode(',', $client_teacher);
 
 
 
-                if (!in_array($doctor, $patient_doctors)) {
-                    $patient_doctors[] = $doctor;
-                    $doctorss = implode(',', $patient_doctors);
+                if (!in_array($teacher, $client_teachers)) {
+                    $client_teachers[] = $teacher;
+                    $teacherss = implode(',', $client_teachers);
                     $data_d = array();
-                    $data_d = array('doctor' => $doctorss);
-                    $this->patient_model->updatePatient($patient, $data_d);
+                    $data_d = array('teacher' => $teacherss);
+                    $this->client_model->updateclient($client, $data_d);
                 }
-                $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
+                $this->sendSmsDuringAppointment($id, $data, $client, $teacher, $status);
                 $this->session->set_flashdata('feedback', lang('added'));
             } else { // Updating department
                 $previous_status = $this->appointment_model->getAppointmentById($id)->status;
                 if ($previous_status != "Confirmed") {
                     if ($status == "Confirmed") {
-                        $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
+                        $this->sendSmsDuringAppointment($id, $data, $client, $teacher, $status);
                     }
                 }
                 $this->appointment_model->updateAppointment($id, $data);
@@ -356,12 +355,12 @@ class Appointment extends MX_Controller
         }
     }
 
-    function sendSmsDuringAppointment($id, $data, $patient, $doctor, $status)
+    function sendSmsDuringAppointment($id, $data, $client, $teacher, $status)
     {
         //sms
         $set['settings'] = $this->settings_model->getSettings();
-        $patientdetails = $this->patient_model->getPatientById($patient);
-        $doctordetails = $this->doctor_model->getDoctorById($doctor);
+        $clientdetails = $this->client_model->getClientById($client);
+        $teacherdetails = $this->teacher_model->getTeacherById($teacher);
         if (empty($id)) {
             if ($status != 'Confirmed') {
                 $autosms = $this->sms_model->getAutoSmsByType('appoinment_creation');
@@ -376,16 +375,16 @@ class Appointment extends MX_Controller
             $autoemail = $this->email_model->getAutoEmailByType('appoinment_confirmation');
         }
         $message = $autosms->message;
-        $to = $patientdetails->phone;
-        $name1 = explode(' ', $patientdetails->name);
+        $to = $clientdetails->phone;
+        $name1 = explode(' ', $clientdetails->name);
         if (!isset($name1[1])) {
             $name1[1] = null;
         }
         $data1 = array(
             'firstname' => $name1[0],
             'lastname' => $name1[1],
-            'name' => $patientdetails->name,
-            'doctorname' => $doctordetails->name,
+            'name' => $clientdetails->name,
+            'teachername' => $teacherdetails->name,
             'appoinmentdate' => date('d-m-Y', $data['date']),
             'time_slot' => $data['time_slot'],
             'hospital_name' => $set['settings']->system_vendor
@@ -537,7 +536,7 @@ class Appointment extends MX_Controller
             if ($mail_provider == 'Smtp') {
                 $this->email->from($email_Settings->user, $settngs_name);
             }
-            $this->email->to($patientdetails->email);
+            $this->email->to($clientdetails->email);
             $this->email->subject(lang('appointment'));
             $this->email->message($template);
             $this->email->send();
@@ -843,23 +842,23 @@ class Appointment extends MX_Controller
         return $key;
     }
 
-    function getAppointmentByJasonByDoctor()
+    function getAppointmentByJasonByteacher()
     {
 
 
         $id = $this->input->get('id');
 
-        $query = $this->appointment_model->getAppointmentByDoctor($id);
+        $query = $this->appointment_model->getAppointmentByteacher($id);
 
         $jsonevents = array();
 
         foreach ($query as $entry) {
 
-            $doctor = $this->doctor_model->getDoctorById($entry->doctor);
-            if (!empty($doctor)) {
-                $doctor = $doctor->name;
+            $teacher = $this->teacher_model->getTeacherById($entry->teacher);
+            if (!empty($teacher)) {
+                $teacher = $teacher->name;
             } else {
-                $doctor = '';
+                $teacher = '';
             }
             $time_slot = $entry->time_slot;
             $time_slot_new = explode(' To ', $time_slot);
@@ -898,14 +897,14 @@ class Appointment extends MX_Controller
                 }
             }
 
-            $patient_details = $this->patient_model->getPatientById($entry->patient);
+            $client_details = $this->client_model->getClientById($entry->client);
 
-            if (!empty($patient_details)) {
-                $patient_mobile = $patient_details->phone;
-                $patient_name = $patient_details->name;
+            if (!empty($client_details)) {
+                $client_mobile = $client_details->phone;
+                $client_name = $client_details->name;
             } else {
-                $patient_mobile = '';
-                $patient_name = '';
+                $client_mobile = '';
+                $client_name = '';
             }
 
             if ($entry->status == 'Pending Confirmation') {
@@ -920,7 +919,7 @@ class Appointment extends MX_Controller
                 $appointment_status = lang('requested');
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
+            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('client') . ': ' . $client_name . '<br/>' . lang('phone') . ': ' . $client_mobile . '<br/> teacher: ' . $teacher . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
                 $color = 'yellowgreen';
@@ -957,14 +956,14 @@ class Appointment extends MX_Controller
 
 
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
-            $query = $this->appointment_model->getAppointmentByDoctor($doctor);
-        } elseif ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient = $this->db->get_where('patient', array('ion_user_id' => $patient_ion_id))->row()->id;
-            $query = $this->appointment_model->getAppointmentByPatient($patient);
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
+            $query = $this->appointment_model->getAppointmentByteacher($teacher);
+        } elseif ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client = $this->db->get_where('client', array('ion_user_id' => $client_ion_id))->row()->id;
+            $query = $this->appointment_model->getAppointmentByclient($client);
         } else {
             $query = $this->appointment_model->getAppointmentForCalendar();
         }
@@ -972,11 +971,11 @@ class Appointment extends MX_Controller
 
         foreach ($query as $entry) {
 
-            $doctor = $this->doctor_model->getDoctorById($entry->doctor);
-            if (!empty($doctor)) {
-                $doctor = $doctor->name;
+            $teacher = $this->teacher_model->getTeacherById($entry->teacher);
+            if (!empty($teacher)) {
+                $teacher = $teacher->name;
             } else {
-                $doctor = '';
+                $teacher = '';
             }
             $time_slot = $entry->time_slot;
             //var_dump($time_slot);die;
@@ -1016,14 +1015,14 @@ class Appointment extends MX_Controller
                     $day_end_time_second = 12 * 60 * 60 + $end_time_second[0] * 60 * 60 + $end_time_second[1] * 60;
                 }
             }
-            $patient_details = $this->patient_model->getPatientById($entry->patient);
+            $client_details = $this->client_model->getClientById($entry->client);
 
-            if (!empty($patient_details)) {
-                $patient_mobile = $patient_details->phone;
-                $patient_name = $patient_details->name;
+            if (!empty($client_details)) {
+                $client_mobile = $client_details->phone;
+                $client_name = $client_details->name;
             } else {
-                $patient_mobile = '';
-                $patient_name = '';
+                $client_mobile = '';
+                $client_name = '';
             }
 
             if ($entry->status == 'Pending Confirmation') {
@@ -1038,7 +1037,7 @@ class Appointment extends MX_Controller
                 $appointment_status = lang('requested');
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/>';
+            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('client') . ': ' . $client_name . '<br/>' . lang('phone') . ': ' . $client_mobile . '<br/>';
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
                 $color = 'yellowgreen';
@@ -1059,7 +1058,7 @@ class Appointment extends MX_Controller
             $jsonevents[] = array(
                 'id' => $entry->id,
                 'title' => $info,
-                'description' => 'Click to see the patient history',
+                'description' => 'Click to see the client history',
                 'start' => date('Y-m-d H:i:s', $entry->date + $day_start_time_second),
                 'end' => date('Y-m-d H:i:s', $entry->date + $day_end_time_second),
                 'color' => $color,
@@ -1071,17 +1070,17 @@ class Appointment extends MX_Controller
         echo json_encode($jsonevents);
     }
 
-    function getAppointmentByDoctorId()
+    function getAppointmentByteacherId()
     {
         $id = $this->input->get('id');
-        $data['doctor_id'] = $id;
+        $data['teacher_id'] = $id;
         $data['appointments'] = $this->appointment_model->getAppointment();
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['mmrdoctor'] = $this->doctor_model->getDoctorById($id);
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getClient();
+        $data['mmrteacher'] = $this->teacher_model->getTeacherById($id);
+        $data['teachers'] = $this->teacher_model->getTeacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment_by_doctor', $data);
+        $this->load->view('appointment_by_teacher', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
@@ -1092,8 +1091,8 @@ class Appointment extends MX_Controller
 
         $data['settings'] = $this->settings_model->getSettings();
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
-        $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
-        $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+        $data['clients'] = $this->client_model->getClientById($data['appointment']->client);
+        $data['teachers'] = $this->teacher_model->getTeacherById($data['appointment']->teacher);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the footer file 
@@ -1103,15 +1102,15 @@ class Appointment extends MX_Controller
     {
         $id = $this->input->get('id');
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
-        $data['patient'] = $this->patient_model->getPatientById($data['appointment']->patient);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+        $data['client'] = $this->client_model->getClientById($data['appointment']->client);
+        $data['teacher'] = $this->teacher_model->getTeacherById($data['appointment']->teacher);
         echo json_encode($data);
     }
 
     function treatmentReport()
     {
         $data['settings'] = $this->settings_model->getSettings();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['teachers'] = $this->teacher_model->getTeacher();
 
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
@@ -1137,7 +1136,7 @@ class Appointment extends MX_Controller
         $data['appointments'] = $this->appointment_model->getAppointment();
         $data['settings'] = $this->settings_model->getSettings();
         $user_id = $this->ion_auth->user()->row()->id;
-        $data['user_id'] = $this->db->get_where('patient', array('ion_user_id' => $user_id))->row()->id;
+        $data['user_id'] = $this->db->get_where('client', array('ion_user_id' => $user_id))->row()->id;
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('myappointments', $data);
         $this->load->view('home/footer'); // just the header file
@@ -1147,11 +1146,11 @@ class Appointment extends MX_Controller
     {
         $data = array();
         $id = $this->input->get('id');
-        $doctor_id = $this->input->get('doctor_id');
+        $teacher_id = $this->input->get('teacher_id');
         $this->appointment_model->delete($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
-        if (!empty($doctor_id)) {
-            redirect('appointment/getAppointmentByDoctorId?id=' . $doctor_id);
+        if (!empty($teacher_id)) {
+            redirect('appointment/getAppointmentByteacherId?id=' . $teacher_id);
         } else {
             redirect('appointment');
         }
@@ -1253,20 +1252,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1285,30 +1284,30 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             $i = $i + 1;
 
 
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($this->ion_auth->in_group(array('teacher'))) {
                 if ($appointment->status == 'Confirmed') {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -1332,8 +1331,8 @@ class Appointment extends MX_Controller
             }
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1377,20 +1376,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getRequestAppointmentBysearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getRequestAppointmentBysearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getRequestAppointmentByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1409,7 +1408,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
@@ -1417,17 +1416,17 @@ class Appointment extends MX_Controller
             $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
 
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
             if ($appointment->status == 'Pending Confirmation') {
@@ -1443,8 +1442,8 @@ class Appointment extends MX_Controller
             }
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1489,20 +1488,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getPendingAppointmentBysearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getPendingAppointmentBysearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getPendingAppointmentByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1521,7 +1520,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
@@ -1531,17 +1530,17 @@ class Appointment extends MX_Controller
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
 
 
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
             if ($appointment->status == 'Pending Confirmation') {
@@ -1557,8 +1556,8 @@ class Appointment extends MX_Controller
             }
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1603,20 +1602,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentBysearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentBysearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getConfirmedAppointmentByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1635,7 +1634,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //    $i = $i + 1;
@@ -1643,23 +1642,23 @@ class Appointment extends MX_Controller
             $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
 
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($this->ion_auth->in_group(array('teacher'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn btn-info btn-xs btn_width  detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->patient . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn btn-info btn-xs btn_width  detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->client . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -1679,8 +1678,8 @@ class Appointment extends MX_Controller
             }
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1726,20 +1725,20 @@ class Appointment extends MX_Controller
         $order = $values[1];
 
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentBysearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentBysearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getTreatedAppointmentByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1758,7 +1757,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
@@ -1766,22 +1765,22 @@ class Appointment extends MX_Controller
             $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
 
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'teacher'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -1801,8 +1800,8 @@ class Appointment extends MX_Controller
             }
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1847,20 +1846,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentBysearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentBysearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getCancelledAppointmentByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1879,7 +1878,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             // $i = $i + 1;
@@ -1887,17 +1886,17 @@ class Appointment extends MX_Controller
             $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
 
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
             if ($appointment->status == 'Pending Confirmation') {
                 $appointment_status = lang('pending_confirmation');
@@ -1913,8 +1912,8 @@ class Appointment extends MX_Controller
 
             $info[] = array(
                 $appointment->id,
-                $patientname,
-                $doctorname,
+                $clientname,
+                $teachername,
                 date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment_status,
@@ -1959,20 +1958,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -1991,7 +1990,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
@@ -1999,22 +1998,22 @@ class Appointment extends MX_Controller
             $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
 
             $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-            if (!empty($patientdetails)) {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+            $clientdetails = $this->client_model->getClientById($appointment->client);
+            if (!empty($clientdetails)) {
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
             } else {
-                $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
             }
-            $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctordetails)) {
-                $doctorname = $doctordetails->name;
+            $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+            if (!empty($teacherdetails)) {
+                $teachername = $teacherdetails->name;
             } else {
-                $doctorname = $appointment->doctorname;
+                $teachername = $appointment->teachername;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'teacher'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -2035,8 +2034,8 @@ class Appointment extends MX_Controller
             if ($appointment->date == strtotime(date('Y-m-d'))) {
                 $info[] = array(
                     $appointment->id,
-                    $patientname,
-                    $doctorname,
+                    $clientname,
+                    $teachername,
                     date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment_status,
@@ -2046,8 +2045,8 @@ class Appointment extends MX_Controller
             } else {
                 $info1[] = array(
                     $appointment->id,
-                    $appointment->patientname,
-                    $appointment->doctorname,
+                    $appointment->clientname,
+                    $appointment->teachername,
                     date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment_status,
@@ -2092,20 +2091,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -2124,7 +2123,7 @@ class Appointment extends MX_Controller
             }
         }
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
@@ -2144,21 +2143,21 @@ class Appointment extends MX_Controller
                 $appointment_status = lang('requested');
             }
             if ($appointment->date > strtotime(date('Y-m-d'))) {
-                $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-                if (!empty($patientdetails)) {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+                $clientdetails = $this->client_model->getClientById($appointment->client);
+                if (!empty($clientdetails)) {
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
                 } else {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
                 }
-                $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-                if (!empty($doctordetails)) {
-                    $doctorname = $doctordetails->name;
+                $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+                if (!empty($teacherdetails)) {
+                    $teachername = $teacherdetails->name;
                 } else {
-                    $doctorname = $appointment->doctorname;
+                    $teachername = $appointment->teachername;
                 }
-                if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+                if ($this->ion_auth->in_group(array('admin', 'teacher'))) {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -2167,8 +2166,8 @@ class Appointment extends MX_Controller
                 }
                 $info[] = array(
                     $appointment->id,
-                    $patientname,
-                    $doctorname,
+                    $clientname,
+                    $teachername,
                     date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment_status,
@@ -2176,9 +2175,9 @@ class Appointment extends MX_Controller
                 );
                 $i = $i + 1;
             } else {
-                if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+                if ($this->ion_auth->in_group(array('admin', 'teacher'))) {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this client? SMS and Email will be sent to the client.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -2187,8 +2186,8 @@ class Appointment extends MX_Controller
                 }
                 $info1[] = array(
                     $appointment->id,
-                    $appointment->patientname,
-                    $appointment->doctorname,
+                    $appointment->clientname,
+                    $appointment->teachername,
                     date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment_status,
@@ -2233,20 +2232,20 @@ class Appointment extends MX_Controller
         $dir = $values[0];
         $order = $values[1];
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
             if ($limit == -1) {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByDoctor($doctor, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListBySearchByteacher($teacher, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByDoctorWithoutSearch($doctor, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByteacherWithoutSearch($teacher, $order, $dir);
                 }
             } else {
                 if (!empty($search)) {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByDoctor($doctor, $limit, $start, $search, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitBySearchByteacher($teacher, $limit, $start, $search, $order, $dir);
                 } else {
-                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByDoctor($doctor, $limit, $start, $order, $dir);
+                    $data['appointments'] = $this->appointment_model->getAppointmentListByLimitByteacher($teacher, $limit, $start, $order, $dir);
                 }
             }
         } else {
@@ -2267,32 +2266,32 @@ class Appointment extends MX_Controller
 
 
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
 
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
-            $patient_id = $patient_details->id;
-            if ($patient_id == $appointment->patient) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_details = $this->client_model->getClientByIonUserId($client_ion_id);
+            $client_id = $client_details->id;
+            if ($client_id == $appointment->client) {
                 $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"> ' . lang('edit') . '</i></button>';
                 $option2 = '<a class="btn btn-info btn-xs btn_width delete_button" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-                $patientdetails = $this->patient_model->getPatientById($appointment->patient);
-                if (!empty($patientdetails)) {
-                    $patientname = ' <a type="button" class="" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
+                $clientdetails = $this->client_model->getClientById($appointment->client);
+                if (!empty($clientdetails)) {
+                    $clientname = ' <a type="button" class="" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $clientdetails->name . '</a>';
                 } else {
-                    $patientname = ' <a type="button" class="" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $appointment->patientname . '</a>';
+                    $clientname = ' <a type="button" class="" data-toggle = "modal" data-id="' . $appointment->client . '"> ' . $appointment->clientname . '</a>';
                 }
-                $doctordetails = $this->doctor_model->getDoctorById($appointment->doctor);
-                if (!empty($doctordetails)) {
-                    $doctorname = $doctordetails->name;
+                $teacherdetails = $this->teacher_model->getTeacherById($appointment->teacher);
+                if (!empty($teacherdetails)) {
+                    $teachername = $teacherdetails->name;
                 } else {
-                    $doctorname = $appointment->doctorname;
+                    $teachername = $appointment->teachername;
                 }
 
 
-                if ($this->ion_auth->in_group(array('Patient'))) {
+                if ($this->ion_auth->in_group(array('client'))) {
                     if ($appointment->status == 'Confirmed') {
                         $options7 = '<a class="btn btn-info btn-xs btn_width detailsbutton" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting?\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
                     } else {
@@ -2315,8 +2314,8 @@ class Appointment extends MX_Controller
                 if ($appointment->date == strtotime(date('Y-m-d'))) {
                     $info[] = array(
                         $appointment->id,
-                        $patientname,
-                        $doctorname,
+                        $clientname,
+                        $teachername,
                         date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment_status,
@@ -2326,8 +2325,8 @@ class Appointment extends MX_Controller
                 } else {
                     $info1[] = array(
                         $appointment->id,
-                        $appointment->patientname,
-                        $appointment->doctorname,
+                        $appointment->clientname,
+                        $appointment->teachername,
                         date('d-m-Y', $appointment->date) . ' <br> ' . $appointment->s_time . '-' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment_status,

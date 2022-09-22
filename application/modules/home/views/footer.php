@@ -332,17 +332,17 @@ if ($language == 'english') {
 
             },
             eventClick: function (event) {
-                $('#medical_history').html("");
+                $('#client_history').html("");
                 if (event.id) {
                     $.ajax({
-                        url: '<?= base_url()?>patient/getMedicalHistoryByJason?id=' + event.id + '&from_where=calendar',
+                        url: '<?= base_url()?>client/getClientHistoryByJason?id=' + event.id + '&from_where=calendar',
                         method: 'GET',
                         data: '',
                         dataType: 'json',
                     }).success(function (response) {
                         // Populate the form fields with the data returned from server
-                        $('#medical_history').html("");
-                        $('#medical_history').append(response.view);
+                        $('#client_history').html("");
+                        $('#client_history').append(response.view);
                     });
                     //alert(event.id);
 

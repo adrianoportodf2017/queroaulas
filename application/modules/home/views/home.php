@@ -80,7 +80,7 @@
                         </button>
                     </div>
                     -->
-                    <div id='medical_history'>
+                    <div id='client_history'>
                         <div class="col-md-12">
 
                         </div> 
@@ -142,7 +142,7 @@
                                         </td>
                                         <td>
 
-                                            <a class="btn detailsbutton" title="<?php lang('history') ?>" style="color: #fff;" href="patient/medicalHistory?id=<?php echo $appointment->patient ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
+                                            <a class="btn detailsbutton" title="<?php lang('history') ?>" style="color: #fff;" href="patient/clientHistory?id=<?php echo $appointment->patient ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -185,7 +185,7 @@
         <?php echo lang('prescription'); ?> :  <?php echo $this->db->count_all('prescription'); ?> <hr>
                                     </div>
                                     <div class="home_section">
-        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('medical_history'); ?> <hr>
+        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('client_history'); ?> <hr>
                                     </div>
                                     <div class="home_section">
         <?php echo lang('lab_reports'); ?> :  <?php echo $this->db->count_all('lab'); ?> <hr>
@@ -243,7 +243,7 @@
                             <?php } ?>
                             <section class="panel home_sec_blue">
                                 <div class="symbol blue">
-                                    <i class="fa fa-users-medical"></i>
+                                    <i class="fa fa-users-client"></i>
                                 </div>
                                 <div class="value">
                                     <h3 class="">
@@ -284,7 +284,7 @@
                             <?php } ?>
                             <section class="panel home_sec_green">
                                 <div class="symbol blue">
-                                    <i class="fa fa-file-medical"></i>
+                                    <i class="fa fa-file-client"></i>
                                 </div>
                                 <div class="value">
                                     <h3 class="">
@@ -309,7 +309,7 @@
                                 </div>
                                 <div class="value">
                                     <h3 class="">
-                                        <?php echo $this->db->count_all('medical_history'); ?>
+                                        <?php echo $this->db->count_all('client_history'); ?>
                                     </h3>
                                     <p><?php echo lang('case_history'); ?></p>
                                 </div>

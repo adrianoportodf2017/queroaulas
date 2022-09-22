@@ -13,7 +13,7 @@ class Client extends MX_Controller
         $this->load->model('appointment/appointment_model');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->model('teacher/teacher_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'client', 'Teacher', 'Laboratorist', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Client', 'Teacher', 'Laboratorist', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
@@ -688,7 +688,7 @@ class Client extends MX_Controller
     {
         $data['settings'] = $this->settings_model->getSettings();
         $data['clients'] = $this->client_model->getclient();
-        $data['medical_histories'] = $this->client_model->getMedicalHistory();
+        $data['client_histories'] = $this->client_model->getclientHistory();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('case_list', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -708,7 +708,7 @@ class Client extends MX_Controller
         if ($this->ion_auth->in_group(array('client'))) {
             $client_ion_id = $this->ion_auth->get_user_id();
             $client_id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
-            $data['medical_histories'] = $this->client_model->getMedicalHistoryByclientId($client_id);
+            $data['client_histories'] = $this->client_model->getclientHistoryByclientId($client_id);
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('my_case_list', $data);
             $this->load->view('home/footer'); // just the footer file
@@ -1061,7 +1061,7 @@ class Client extends MX_Controller
         $this->load->view('home/footer'); // just the footer fi
     }
 
-    function addMedicalHistory()
+    function addclientHistory()
     {
         $id = $this->input->post('id');
         $client_id = $this->input->post('client_id');
@@ -1082,7 +1082,7 @@ class Client extends MX_Controller
 
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
-            $redirect = 'client/medicalHistory?id=' . $client_id;
+            $redirect = 'client/clientHistory?id=' . $client_id;
         }
 
         // Validating Name Field
@@ -1098,7 +1098,7 @@ class Client extends MX_Controller
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("client/editMedicalHistory?id=$id");
+                redirect("client/editclientHistory?id=$id");
             } else {
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new');
@@ -1130,10 +1130,10 @@ class Client extends MX_Controller
             );
 
             if (empty($id)) {     // Adding New department
-                $this->client_model->insertMedicalHistory($data);
+                $this->client_model->insertclientHistory($data);
                 $this->session->set_flashdata('feedback', lang('added'));
             } else { // Updating department
-                $this->client_model->updateMedicalHistory($id, $data);
+                $this->client_model->updateclientHistory($id, $data);
                 $this->session->set_flashdata('feedback', lang('updated'));
             }
             // Loading View
@@ -1230,18 +1230,18 @@ class Client extends MX_Controller
         $this->load->view('home/footer'); // just the footer file
     }
 
-    function editMedicalHistoryByJason()
+    function editclientHistoryByJason()
     {
         $id = $this->input->get('id');
-        $data['medical_history'] = $this->client_model->getMedicalHistoryById($id);
-        $data['client'] = $this->client_model->getclientById($data['medical_history']->client_id);
+        $data['client_history'] = $this->client_model->getclientHistoryById($id);
+        $data['client'] = $this->client_model->getclientById($data['client_history']->client_id);
         echo json_encode($data);
     }
 
     function getCaseDetailsByJason()
     {
         $id = $this->input->get('id');
-        $data['case'] = $this->client_model->getMedicalHistoryById($id);
+        $data['case'] = $this->client_model->getclientHistoryById($id);
         $client = $data['case']->client_id;
         $data['client'] = $this->client_model->getclientById($client);
         echo json_encode($data);
@@ -1296,7 +1296,7 @@ class Client extends MX_Controller
 
 
         if (empty($redirect)) {
-            $redirect = "client/medicalHistory?id=" . $client_id;
+            $redirect = "client/clientHistory?id=" . $client_id;
         }
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
@@ -1391,13 +1391,13 @@ class Client extends MX_Controller
     {
         $id = $this->input->get('id');
         $redirect = $this->input->get('redirect');
-        $case_history = $this->client_model->getMedicalHistoryById($id);
-        $this->client_model->deleteMedicalHistory($id);
+        $case_history = $this->client_model->getclientHistoryById($id);
+        $this->client_model->deleteclientHistory($id);
         $this->session->set_flashdata('feedback', lang('deleted'));
         if ($redirect == 'case') {
             redirect('client/caseList');
         } else {
-            redirect("client/MedicalHistory?id=" . $case_history->client_id);
+            redirect("client/clientHistory?id=" . $case_history->client_id);
         }
     }
 
@@ -1415,7 +1415,7 @@ class Client extends MX_Controller
         if ($redirect == 'documents') {
             redirect('client/documents');
         } else {
-            redirect("client/MedicalHistory?id=" . $client_material->client);
+            redirect("client/clientHistory?id=" . $client_material->client);
         }
     }
 
@@ -1479,7 +1479,7 @@ class Client extends MX_Controller
 
             $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/clientHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
             $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
@@ -1590,7 +1590,7 @@ class Client extends MX_Controller
 
             $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/clientHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
             $options4 = '<a class="btn invoicebutton" title="' . lang('payment') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
@@ -1701,7 +1701,7 @@ class Client extends MX_Controller
 
             $options2 = '<a class="btn detailsbutton" title="' . lang('info') . '" style="color: #fff;" href="client/clientDetails?id=' . $client->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/medicalHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            $options3 = '<a class="btn green" title="' . lang('history') . '" style="color: #fff;" href="client/clientHistory?id=' . $client->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
             $options4 = '<a class="btn btn-xs green" title="' . lang('payment') . ' ' . lang('history') . '" style="color: #fff;" href="finance/clientPaymentHistory?client=' . $client->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . ' ' . lang('history') . '</a>';
 
@@ -1760,15 +1760,15 @@ class Client extends MX_Controller
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['cases'] = $this->client_model->getMedicalHistoryBySearch($search, $order, $dir);
+                $data['cases'] = $this->client_model->getclientHistoryBySearch($search, $order, $dir);
             } else {
-                $data['cases'] = $this->client_model->getMedicalHistoryWithoutSearch($order, $dir);
+                $data['cases'] = $this->client_model->getclientHistoryWithoutSearch($order, $dir);
             }
         } else {
             if (!empty($search)) {
-                $data['cases'] = $this->client_model->getMedicalHistoryByLimitBySearch($limit, $start, $search, $order, $dir);
+                $data['cases'] = $this->client_model->getclientHistoryByLimitBySearch($limit, $start, $search, $order, $dir);
             } else {
-                $data['cases'] = $this->client_model->getMedicalHistoryByLimit($limit, $start, $order, $dir);
+                $data['cases'] = $this->client_model->getclientHistoryByLimit($limit, $start, $order, $dir);
             }
         }
         //  $data['clients'] = $this->client_model->getclient();
@@ -1807,8 +1807,8 @@ class Client extends MX_Controller
         if (!empty($data['cases'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('medical_history')->num_rows(),
-                "recordsFiltered" => $this->db->get('medical_history')->num_rows(),
+                "recordsTotal" => $this->db->get('client_history')->num_rows(),
+                "recordsFiltered" => $this->db->get('client_history')->num_rows(),
                 "data" => $info
             );
         } else {
@@ -1919,7 +1919,7 @@ class Client extends MX_Controller
         echo json_encode($output);
     }
 
-    function getMedicalHistoryByJason()
+    function getClientHistoryByJason()
     {
         $data = array();
 
@@ -1932,7 +1932,7 @@ class Client extends MX_Controller
         }
 
 
-        if ($this->ion_auth->in_group(array('client'))) {
+        if ($this->ion_auth->in_group(array('Client'))) {
             $client_ion_id = $this->ion_auth->get_user_id();
             $id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
         }
@@ -1941,10 +1941,6 @@ class Client extends MX_Controller
         $appointments = $this->appointment_model->getAppointmentByclient($client->id);
         $clients = $this->client_model->getclient();
         $teachers = $this->teacher_model->getteacher();
-        $data['prescriptions'] = $this->prescription_model->getPrescriptionByclientId($id);
-        $labs = $this->lab_model->getLabByclientId($id);
-        $medical_histories = $this->client_model->getMedicalHistoryByclientId($id);
-        $client_materials = $this->client_model->getclientMaterialByclientId($id);
 
 
 
