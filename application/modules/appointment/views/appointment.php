@@ -14,8 +14,8 @@
                                         <thead>
                                             <tr>
                                                 <th> <?php echo lang('id'); ?></th>
-                                                <th> <?php echo lang('patient'); ?></th>
-                                                <th> <?php echo lang('doctor'); ?></th>
+                                                <th> <?php echo lang('client'); ?></th>
+                                                <th> <?php echo lang('teacher'); ?></th>
                                                 <th> <?php echo lang('date-time'); ?></th>
                                                 <th> <?php echo lang('remarks'); ?></th>
                                                 <th> <?php echo lang('status'); ?></th>
@@ -72,27 +72,27 @@
                 var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
                 // Populate the form fields with the data returned from server
                 $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
-                $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
-                $('#editAppointmentForm').find('[name="doctor"]').val(response.appointment.doctor).end()
+                $('#editAppointmentForm').find('[name="client"]').val(response.appointment.client).end()
+                $('#editAppointmentForm').find('[name="teacher"]').val(response.appointment.teacher).end()
                 $('#editAppointmentForm').find('[name="date"]').val(da).end()
                 $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).end()
                 $('#editAppointmentForm').find('[name="remarks"]').val(response.appointment.remarks).end()
 
-                //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
-                // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
-                var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
-                $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
-                var option1 = new Option(response.doctor.name + '-' + response.doctor.id, response.doctor.id, true, true);
-                $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
+                //$('.js-example-basic-single.teacher').val(response.appointment.teacher).trigger('change');
+                // $('.js-example-basic-single.client').val(response.appointment.client).trigger('change');
+                var option = new Option(response.client.name + '-' + response.client.id, response.client.id, true, true);
+                $('#editAppointmentForm').find('[name="client"]').append(option).trigger('change');
+                var option1 = new Option(response.teacher.name + '-' + response.teacher.id, response.teacher.id, true, true);
+                $('#editAppointmentForm').find('[name="teacher"]').append(option1).trigger('change');
 
 
 
                 var date = $('#date1').val();
-                var doctorr = $('#adoctors1').val();
+                var teacherr = $('#ateachers1').val();
                 var appointment_id = $('#appointment_id').val();
                 // $('#default').trigger("reset");
                 $.ajax({
-                    url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
+                    url: 'schedule/getAvailableSlotByteacherByDateByAppointmentIdByJason?date=' + date + '&teacher=' + teacherr + '&appointment_id=' + appointment_id,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -128,7 +128,7 @@
             console.log(iid);
             $('#editAppointmentForm').trigger("reset");
             $.ajax({
-                url: 'patient/getMedicalHistoryByjason?id=' + iid,
+                url: 'client/getclientHistoryByjason?id=' + iid,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -173,14 +173,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#adoctors").change(function () {
+        $("#ateachers").change(function () {
             // Get the record's ID via attribute  
             var iid = $('#date').val();
-            var doctorr = $('#adoctors').val();
+            var teacherr = $('#ateachers').val();
             $('#aslots').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+                url: 'schedule/getAvailableSlotByteacherByDateByJason?date=' + iid + '&teacher=' + teacherr,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -202,11 +202,11 @@
 
     $(document).ready(function () {
         var iid = $('#date').val();
-        var doctorr = $('#adoctors').val();
+        var teacherr = $('#ateachers').val();
         $('#aslots').find('option').remove();
         // $('#default').trigger("reset");
         $.ajax({
-            url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+            url: 'schedule/getAvailableSlotByteacherByDateByJason?date=' + iid + '&teacher=' + teacherr,
             method: 'GET',
             data: '',
             dataType: 'json',
@@ -241,11 +241,11 @@
     function dateChanged() {
         // Get the record's ID via attribute  
         var iid = $('#date').val();
-        var doctorr = $('#adoctors').val();
+        var teacherr = $('#ateachers').val();
         $('#aslots').find('option').remove();
         // $('#default').trigger("reset");
         $.ajax({
-            url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+            url: 'schedule/getAvailableSlotByteacherByDateByJason?date=' + iid + '&teacher=' + teacherr,
             method: 'GET',
             data: '',
             dataType: 'json',
@@ -284,15 +284,15 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#adoctors1").change(function () {
+        $("#ateachers1").change(function () {
             // Get the record's ID via attribute 
             var id = $('#appointment_id').val();
             var date = $('#date1').val();
-            var doctorr = $('#adoctors1').val();
+            var teacherr = $('#ateachers1').val();
             $('#aslots1').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + id,
+                url: 'schedule/getAvailableSlotByteacherByDateByAppointmentIdByJason?date=' + date + '&teacher=' + teacherr + '&appointment_id=' + id,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -314,11 +314,11 @@
     $(document).ready(function () {
         var id = $('#appointment_id').val();
         var date = $('#date1').val();
-        var doctorr = $('#adoctors1').val();
+        var teacherr = $('#ateachers1').val();
         $('#aslots1').find('option').remove();
         // $('#default').trigger("reset");
         $.ajax({
-            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + id,
+            url: 'schedule/getAvailableSlotByteacherByDateByAppointmentIdByJason?date=' + date + '&teacher=' + teacherr + '&appointment_id=' + id,
             method: 'GET',
             data: '',
             dataType: 'json',
@@ -354,11 +354,11 @@
         // Get the record's ID via attribute  
         var id = $('#appointment_id').val();
         var iid = $('#date1').val();
-        var doctorr = $('#adoctors1').val();
+        var teacherr = $('#ateachers1').val();
         $('#aslots1').find('option').remove();
         // $('#default').trigger("reset");
         $.ajax({
-            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + iid + '&doctor=' + doctorr + '&appointment_id=' + id,
+            url: 'schedule/getAvailableSlotByteacherByDateByAppointmentIdByJason?date=' + iid + '&teacher=' + teacherr + '&appointment_id=' + id,
             method: 'GET',
             data: '',
             dataType: 'json',
@@ -676,10 +676,10 @@
 <script>
     $(document).ready(function () {
         $("#pos_select").select2({
-            placeholder: '<?php echo lang('select_patient'); ?>',
+            placeholder: '<?php echo lang('select_client'); ?>',
             allowClear: true,
             ajax: {
-                url: 'patient/getPatientinfoWithAddNewOption',
+                url: 'client/getclientinfoWithAddNewOption',
                 type: "post",
                 dataType: 'json',
                 delay: 250,
@@ -697,11 +697,11 @@
             }
 
         });
-        $(".patient").select2({
-            placeholder: '<?php echo lang('select_patient'); ?>',
+        $(".client").select2({
+            placeholder: '<?php echo lang('select_client'); ?>',
             allowClear: true,
             ajax: {
-                url: 'patient/getPatientinfo',
+                url: 'client/getclientinfo',
                 type: "post",
                 dataType: 'json',
                 delay: 250,
@@ -719,11 +719,11 @@
             }
 
         });
-        $("#adoctors").select2({
-            placeholder: '<?php echo lang('select_doctor'); ?>',
+        $("#ateachers").select2({
+            placeholder: '<?php echo lang('select_teacher'); ?>',
             allowClear: true,
             ajax: {
-                url: 'doctor/getDoctorInfo',
+                url: 'teacher/getteacherInfo',
                 type: "post",
                 dataType: 'json',
                 delay: 250,
@@ -741,11 +741,11 @@
             }
 
         });
-        $("#adoctors1").select2({
-            placeholder: '<?php echo lang('select_doctor'); ?>',
+        $("#ateachers1").select2({
+            placeholder: '<?php echo lang('select_teacher'); ?>',
             allowClear: true,
             ajax: {
-                url: 'doctor/getDoctorInfo',
+                url: 'teacher/getteacherInfo',
                 type: "post",
                 dataType: 'json',
                 delay: 250,

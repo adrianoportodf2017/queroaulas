@@ -332,7 +332,7 @@ if ($language == 'english') {
 
             },
             eventClick: function (event) {
-                $('#client_history').html("");
+                $('#medical_history').html("");
                 if (event.id) {
                     $.ajax({
                         url: '<?= base_url()?>client/getClientHistoryByJason?id=' + event.id + '&from_where=calendar',
@@ -341,8 +341,8 @@ if ($language == 'english') {
                         dataType: 'json',
                     }).success(function (response) {
                         // Populate the form fields with the data returned from server
-                        $('#client_history').html("");
-                        $('#client_history').append(response.view);
+                        $('#medical_history').html("");
+                        $('#medical_history').append(response.view);
                     });
                     //alert(event.id);
 

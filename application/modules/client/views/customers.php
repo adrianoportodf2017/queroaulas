@@ -1,37 +1,21 @@
 
-  <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-md-12">
-<div class="card">
-<div class="card-body">
-            <header class="panel-heading">
-                <i class="fa fa-user"></i>   <?php echo lang('Client'); ?> <?php echo lang('database'); ?>
-            </header>
-            <div class="panel-body">
-
-                <div class="adv-table editable-table ">
-                    <div class=" no-print">
-                        <a data-toggle="modal" href="#myModal">
-                            <div class="btn-group">
-                            
-                            </div>
-                        </a>
-                        <button class="btn green export no-print" onclick="javascript:window.print();"><?php echo lang('print'); ?></button>  
-                    </div>
-                    <div class="space15"></div>
-                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                        <thead>
-                            <tr>
-                                <th><?php echo lang('id'); ?></th>                        
-                                <th><?php echo lang('name'); ?></th>
-                                <th><?php echo lang('phone'); ?></th>
-                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
-                                    <th><?php echo lang('due_balance'); ?></th>
-                                <?php } ?>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+<div class="container-fluid py-4" style="margin-top: 50px;">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-xl-4">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Clientes</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7""><?php echo lang('Cliente'); ?></th>                                
+                                </tr>
+                            </thead>
+                            <tbody>
                         <style>
                             .img_url{
                                 height:20px;
@@ -61,8 +45,9 @@
                                 ?>
                                 <tr class="">
                                     <td> <?php echo $client->id; ?></td>
-                                    <td> <?php echo $client->name; ?></td>
-                                    <td><?php echo $client->phone; ?></td>
+                                    <td> <?php echo $client->name; ?><br>
+                                    <?php echo $client->phone; ?><br>
+                                    <?php echo $client->email; ?>
 
 
                                     <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
@@ -91,12 +76,13 @@
 
                                             $due_balance = NULL;
                                             ?>
-                                        </td>
+                                       
                                     <?php } ?>
+                                    <br>
 
-                                    <td class="no-print">
-                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="<?= base_url()?>client/clientHistory?id=<?php echo $client->id; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
-                                   </td>
+                                 
+                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="<?= base_url()?>client/clientHistory?id=<?php echo $client->id; ?>"><i class="fa fa-folder"></i> <?php echo lang('history'); ?></a>
+                                  
                                 </tr>
                                 <?php
                             }
@@ -105,6 +91,7 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
         </section>
         <!-- page end-->
