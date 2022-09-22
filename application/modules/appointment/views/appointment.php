@@ -14,12 +14,9 @@
                                         <thead>
                                             <tr>
                                                 <th> <?php echo lang('id'); ?></th>
-                                                <th> <?php echo lang('client'); ?></th>
-                                                <th> <?php echo lang('teacher'); ?></th>
-                                                <th> <?php echo lang('date-time'); ?></th>
-                                                <th> <?php echo lang('remarks'); ?></th>
-                                                <th> <?php echo lang('status'); ?></th>
-                                                <th> <?php echo lang('options'); ?></th>
+                                                <th> <?php echo lang('client'); ?></th>      
+                                                <th> <?php echo lang('client'); ?></th>    
+                                                <th> <?php echo lang('client'); ?></th>                                           
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -45,6 +42,36 @@
                         </div>
                     </div>
           </section>
+          <div class="modal fade" tabindex="-1" role="dialog" id="cmodal">
+            <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
+                <div class="modal-content">
+                  <div class="card">
+                    <!--
+                    <div class="modal-header">
+                        <h5 class="modal-title">Paciente História</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    -->
+                    </div>
+                    <div class="card">
+                    <div class="card-body">
+                    <div id='client_history'>
+                        <div class="col-md-12">
+                    
+                        </div> 
+                        </div> 
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
    
 
 
@@ -133,8 +160,8 @@
                 data: '',
                 dataType: 'json',
             }).success(function (response) {
-                $('#medical_history').html("");
-                $('#medical_history').append(response.view);
+                $('#client_history').html("");
+                $('#client_history').append(response.view);
 
             });
             $('#cmodal').modal('show');
