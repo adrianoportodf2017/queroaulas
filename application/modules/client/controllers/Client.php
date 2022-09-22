@@ -1168,18 +1168,28 @@ class Client extends MX_Controller
 
         if ($this->ion_auth->in_group(array('client'))) {
             $client_ion_id = $this->ion_auth->get_user_id();
-            $id = $this->client_model->getclientByIonUserId($client_ion_id)->id;
+            $id = $this->client_model->getClientByIonUserId($client_ion_id)->id;
         }
+
+        if ($this->ion_auth->in_group(array('Teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $idTeacher = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
+            $data['teacher'] = $this->teacher_model->getteacherById($idTeacher); 
+        } 
+
+        //var_dump($data['teacher']);die;
+
+
 
         $data['client'] = $this->client_model->getclientById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByclient($data['client']->id);
         $data['clients'] = $this->client_model->getclient();
-        $data['teachers'] = $this->teacher_model->getTeacher();
+        
 
 
 
         foreach ($data['appointments'] as $appointment) {
-            $teacher_details = $this->teacher_model->getteacherById($appointment->teacher);
+            $teacher_details = $this->teacher_model->getTeacherById($appointment->teacher);
             if (!empty($teacher_details)) {
                 $teacher_name = $teacher_details->name;
             } else {
@@ -1210,125 +1220,13 @@ class Client extends MX_Controller
                                             </div>
                                         </div>';
         }
-
-        foreach ($data['prescriptions'] as $prescription) {
-            $teacher_details = $this->teacher_model->getteacherById($prescription->teacher);
-            if (!empty($teacher_details)) {
-                $teacher_name = $teacher_details->name;
-            } else {
-                $teacher_name = '';
-            }
-            $timeline[$prescription->date + 2] = '<div class="panel-body profile-activity" >
-                                           <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $prescription->date) . '</h5>
-                                            <div class="activity purple">
-                                                <span>
-                                                    <i class="fa fa-medkit"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-6">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $prescription->date) . '</h4>
-                                                            <p></p>
-                                                            <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $teacher_name . '</h4>
-                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"> View</i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>';
-        }
-
-        foreach ($data['labs'] as $lab) {
-
-            $teacher_details = $this->teacher_model->getteacherById($lab->teacher);
-            if (!empty($teacher_details)) {
-                $lab_teacher = $teacher_details->name;
-            } else {
-                $lab_teacher = '';
-            }
-
-            $timeline[$lab->date + 3] = '<div class="panel-body profile-activity" >
-                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('lab') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $lab->date) . '</h5>
-                                            <div class="activity blue">
-                                                <span>
-                                                    <i class="fa fa-flask"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-6">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $lab->date) . '</h4>
-                                                            <p></p>
-                                                             <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $lab_teacher . '</h4>
-                                                                    <a class="btn btn-xs invoicebutton" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file-text"></i>' . lang('report') . '</a>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>';
-        }
-
-        foreach ($data['medical_histories'] as $medical_history) {
-            $timeline[$medical_history->date + 4] = '<div class="panel-body profile-activity" >
-                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('case_history') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $medical_history->date) . '</h5>
-                                            <div class="activity greenn">
-                                                <span>
-                                                    <i class="fa fa-file"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-6">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $medical_history->date) . '</h4>
-                                                            <p></p>
-                                                             <i class=" fa fa-note"></i> 
-                                                                <p>' . $medical_history->description . '</p>
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>';
-        }
-
-        foreach ($data['client_materials'] as $client_material) {
-            $timeline[$client_material->date + 5] = '<div class="panel-body profile-activity" >
-                                           <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('documents') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $client_material->date) . '</h5>
-                                            <div class="activity purplee">
-                                                <span>
-                                                    <i class="fa fa-file-o"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-6">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $client_material->date) . ' <a class="pull-right" title="' . lang('download') . '"  href="' . $client_material->url . '" download=""> <i class=" fa fa-download"></i> </a> </h4>
-                                                                
-                                                                 <h4>' . $client_material->title . '</h4>
-                                                            
-                                                                
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>';
-        }
+    
 
         if (!empty($timeline)) {
             $data['timeline'] = $timeline;
         }
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('medical_history', $data);
+        $this->load->view('home/dashboard', $data); // just the header file
+       $this->load->view('client_history');
         $this->load->view('home/footer'); // just the footer file
     }
 

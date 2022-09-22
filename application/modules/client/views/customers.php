@@ -95,7 +95,7 @@
                                     <?php } ?>
 
                                     <td class="no-print">
-                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="client/clientHistory?id=<?php echo $client->id; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
+                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="<?= base_url()?>client/clientHistory?id=<?php echo $client->id; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
                                    </td>
                                 </tr>
                                 <?php
