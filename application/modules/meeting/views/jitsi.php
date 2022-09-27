@@ -11,12 +11,12 @@
 
         <?php
         $appointment_details = $this->appointment_model->getAppointmentById($appointmentid);
-        $doctor_details = $this->doctor_model->getDoctorById($appointment_details->doctor);
-        $doctor_name = $doctor_details->name;
-        $patient_details = $this->patient_model->getPatientById($appointment_details->patient);
-        $patient_name = $patient_details->name;
-        $patient_phone = $patient_details->phone;
-        $patient_id = $appointment_details->patient;
+        $teacher_details = $this->teacher_model->getteacherById($appointment_details->teacher);
+        $teacher_name = $teacher_details->name;
+        $client_details = $this->client_model->getclientById($appointment_details->client);
+        $client_name = $client_details->name;
+        $client_phone = $client_details->phone;
+        $client_id = $appointment_details->client;
 
         $display_name = $this->ion_auth->user()->row()->username;
         $email = $this->ion_auth->user()->row()->email;
@@ -44,10 +44,10 @@
 
 
                             <ul class="nav nav-pills nav-stacked">
-                              <!--  <li class="active"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li> -->
-                                <li>  <?php echo lang('doctor'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li>
-                                <li>  <?php echo lang('patient'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $patient_name; ?></span></li>
-                                <li>  <?php echo lang('patient_id'); ?><span class="label pull-right r-activity"><?php echo $patient_id; ?></span></li>
+                              <!--  <li class="active"> <?php echo lang('teacher'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $teacher_name; ?></span></li> -->
+                                <li>  <?php echo lang('teacher'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $teacher_name; ?></span></li>
+                                <li>  <?php echo lang('client'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $client_name; ?></span></li>
+                                <li>  <?php echo lang('client_id'); ?><span class="label pull-right r-activity"><?php echo $client_id; ?></span></li>
                                 <li>  <?php echo lang('appointment'); ?> <?php echo lang('date'); ?> <span class="label pull-right r-activity"><?php echo date('jS F, Y', $appointment_details->date); ?></span></li>
                                 <li>  <?php echo lang('appointment'); ?> <?php echo lang('slot'); ?><span class="label pull-right r-activity"><?php echo $appointment_details->time_slot; ?></span></li>
                             </ul>
@@ -84,9 +84,15 @@
                 email: $('#email').val(),
                 displayName: $('#username').val()
             },
-            enableClosePage: true,
+            configOverwrite: { startWithAudioMuted: true,
+                SHOW_CHROME_EXTENSION_BANNER: false,
+            
+            },
+
+            enableClosePage: true,           
             SHOW_PROMOTIONAL_CLOSE_PAGE: true,
-           // ALWAYS_TRUST_MODE_ENABLED=true
+            ALWAYS_TRUST_MODE_ENABLED: true,
+           
         };
         const api = new JitsiMeetExternalAPI(domain, options);
     });

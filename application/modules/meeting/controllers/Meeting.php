@@ -10,20 +10,19 @@ class Meeting extends MX_Controller {
 
         $this->load->model('meeting_model');
         $this->load->model('appointment/appointment_model');
-        $this->load->model('doctor/doctor_model');
-        $this->load->model('patient/patient_model');
-        $this->load->model('sms/sms_model');
-        $this->load->module('sms');
+        $this->load->model('teacher/teacher_model');
+        $this->load->model('client/client_model');
+      
 
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Teacher', 'client'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('meeting', $data);
@@ -38,8 +37,8 @@ class Meeting extends MX_Controller {
         $data['meeting_id'] = $live_details->meeting_id;
         $data['live_id'] = $live_details->id;
         $data['meeting_password'] = $live_details->meeting_password;
-        $doctor_ion_id = $live_details->doctor_ion_id;
-        $settings = $this->meeting_model->getMeetingSettingsById($doctor_ion_id);
+        $teacher_ion_id = $live_details->teacher_ion_id;
+        $settings = $this->meeting_model->getMeetingSettingsById($teacher_ion_id);
         $data['api_key'] = $settings->api_key;
         $data['secret_key'] = $settings->secret_key;
 
@@ -53,37 +52,42 @@ class Meeting extends MX_Controller {
 
     function jitsiLive() {
         $appointment_id = $this->input->get('id');
+        $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
+        $client = $appointment_details->client;   
+        $teacher_id = $appointment_details->teacher;
+        $data['teacher'] = $this->teacher_model->getTeacherById($teacher_id);
+        //var_dump($data);die;
         $data['appointmentid'] = $appointment_id;
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('jitsi', $data);
+        $this->load->view('home/dashboard', $data); // just the header file
+        $this->load->view('jitsi');
         $this->load->view('home/footer'); // just the header file
     }
 
     function jitsi() {
         $appointment_id = $this->input->get('id');
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
-        $patient = $appointment_details->patient;
-        $doctor = $appointment_details->doctor;
+        $client = $appointment_details->client;
+        $teacher = $appointment_details->teacher;
         $start_date = date('Y-m-d H:i');
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor_details = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id);
-            $doctor_id = $doctor_details->id;
-            if ($doctor_id != $doctor) {
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher_details = $this->teacher_model->getteacherByIonUserId($teacher_ion_id);
+            $teacher_id = $teacher_details->id;
+            if ($teacher_id != $teacher) {
                 $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
-        } elseif ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
-            $patient_id = $patient_details->id;
-            if ($patient_id != $patient) {
+        } elseif ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client_details = $this->client_model->getclientByIonUserId($client_ion_id);
+            $client_id = $client_details->id;
+            if ($client_id != $client) {
                 $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
         }
-        $this->sendSmsDuringMeeting($patient, $doctor, $start_date, $appointment_details);
+        //$this->sendSmsDuringMeeting($client, $teacher, $start_date, $appointment_details);
         redirect('meeting/jitsiLive?id=' . $appointment_id);
     }
 
@@ -92,7 +96,7 @@ class Meeting extends MX_Controller {
         if ($this->settings->live_appointment_type == 'jitsi') {
             redirect('meeting/jitsi?id=' . $appointment_id);
         }
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             $meeting = $this->meeting_model->getMeetingByAppointmentId($appointment_id);
             if (!empty($meeting)) {
                 $status = $this->getMeetingsByMeetingId($meeting->meeting_id);
@@ -107,30 +111,30 @@ class Meeting extends MX_Controller {
                 redirect('appointment/myTodays');
             }
         }
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'teacher'))) {
             redirect('home/permission');
         }
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
-        $patient = $appointment_details->patient;
-        $patient_details = $this->patient_model->getPatientById($patient);
-        $patient_name = $patient_details->name;
-        $patient_ion_id = $patient_details->ion_user_id;
+        $client = $appointment_details->client;
+        $client_details = $this->client_model->getclientById($client);
+        $client_name = $client_details->name;
+        $client_ion_id = $client_details->ion_user_id;
 
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor_details = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id);
-            $doctor = $doctor_details->id;
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher_details = $this->teacher_model->getteacherByIonUserId($teacher_ion_id);
+            $teacher = $teacher_details->id;
         } else {
-            $doctor = $appointment_details->doctor;
-            $doctor_details = $this->doctor_model->getDoctorById($doctor);
-            $doctor_ion_id = $doctor_details->ion_user_id;
+            $teacher = $appointment_details->teacher;
+            $teacher_details = $this->teacher_model->getteacherById($teacher);
+            $teacher_ion_id = $teacher_details->ion_user_id;
         }
 
-        $doctorname = $doctor_details->name;
+        $teachername = $teacher_details->name;
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            if ($doctor != $appointment_details->doctor) {
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            if ($teacher != $appointment_details->teacher) {
                 redirect('home/permission');
             }
         }
@@ -139,13 +143,13 @@ class Meeting extends MX_Controller {
         $start_date = date('Y-m-d H:i');
         $data = array(
             'appointment_id' => $appointment_id,
-            'patient' => $patient,
-            'patientname' => $patient_name,
-            'patient_ion_id' => $patient_ion_id,
-            'doctor' => $doctor,
-            'doctorname' => $doctorname,
-            'doctor_ion_id' => $doctor_ion_id,
-            'topic' => lang('doctor') . ' ' . lang('appointment'),
+            'client' => $client,
+            'clientname' => $client_name,
+            'client_ion_id' => $client_ion_id,
+            'teacher' => $teacher,
+            'teachername' => $teachername,
+            'teacher_ion_id' => $teacher_ion_id,
+            'topic' => lang('teacher') . ' ' . lang('appointment'),
             'type' => 2,
             'start_time' => $start_date,
             'timezone' => 'UTC',
@@ -163,7 +167,7 @@ class Meeting extends MX_Controller {
             $data2 = array_merge($data, $data1);
             $this->meeting_model->insertMeeting($data2);
             $live_id = $this->db->insert_id();
-            $this->sendSmsDuringMeeting($patient, $doctor, $start_date);
+            $this->sendSmsDuringMeeting($client, $teacher, $start_date);
             redirect('meeting/live?id=' . $live_id . '&meeting_id=' . $response->id);
         } else {
             $this->session->set_flashdata('feedback', lang('error'));
@@ -175,8 +179,8 @@ class Meeting extends MX_Controller {
     public function getMeetingsByMeetingId($meeting_id) {
         $start_time = NULL;
         $data = array();
-        $doctor_ion_id = $this->meeting_model->getMeetingByZoomMeetingId($meeting_id)->doctor_ion_id;
-        $data['doctor_ion_id'] = $doctor_ion_id;
+        $teacher_ion_id = $this->meeting_model->getMeetingByZoomMeetingId($meeting_id)->teacher_ion_id;
+        $data['teacher_ion_id'] = $teacher_ion_id;
         $data['start_time'] = $start_time;
         $request_url = 'https://api.zoom.us/v2/meetings/' . $meeting_id;
         $response = $this->sendGetMeetingsRequest($data, $request_url);
@@ -186,7 +190,7 @@ class Meeting extends MX_Controller {
     public function createAMeeting($data = array(), $meeting_id) {
         $start_time = $data['start_time'];
         $createAMeetingArray = array();
-        $createAMeetingArray['doctor_ion_id'] = $data['doctor_ion_id'];
+        $createAMeetingArray['teacher_ion_id'] = $data['teacher_ion_id'];
         $createAMeetingArray['topic'] = $data['topic'];
         $createAMeetingArray['agenda'] = !empty($data['agenda']) ? $data['agenda'] : "";
         $createAMeetingArray['type'] = !empty($data['type']) ? $data['type'] : 2; //Scheduled
@@ -212,8 +216,8 @@ class Meeting extends MX_Controller {
     public function deleteMeeting($meeting_id) {
         $start_time = NULL;
         $data = array();
-        $doctor_ion_id = $this->meeting_model->getMeetingByZoomMeetingId($meeting_id)->doctor_ion_id;
-        $data['doctor_ion_id'] = $doctor_ion_id;
+        $teacher_ion_id = $this->meeting_model->getMeetingByZoomMeetingId($meeting_id)->teacher_ion_id;
+        $data['teacher_ion_id'] = $teacher_ion_id;
         $data['start_time'] = $start_time;
         $request_url = 'https://api.zoom.us/v2/meetings/' . $meeting_id;
         return $this->sendDeleteRequest($data, $request_url);
@@ -312,7 +316,7 @@ class Meeting extends MX_Controller {
     }
 
     function generateJWT($data = array()) {
-        $settings = $this->meeting_model->getMeetingSettingsById($data['doctor_ion_id']);
+        $settings = $this->meeting_model->getMeetingSettingsById($data['teacher_ion_id']);
         $api_key = $settings->api_key;
         $api_secret = $settings->secret_key;
         if (!empty($data['start_time'])) {
@@ -340,7 +344,7 @@ class Meeting extends MX_Controller {
 
     function settings() {
 
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('teacher'))) {
             redirect('home/permission');
         }
 
@@ -380,7 +384,7 @@ class Meeting extends MX_Controller {
                 $this->meeting_model->updateMeetingSettings($id, $data);
                 $this->session->set_flashdata('feedback', lang('updated'));
             }
-            if ($this->ion_auth->in_group('Doctor')) {
+            if ($this->ion_auth->in_group('teacher')) {
                 $data['settings'] = $this->meeting_model->getMeetingSettingsById($this->ion_auth->get_user_id());
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('settings', $data);
@@ -395,8 +399,8 @@ class Meeting extends MX_Controller {
 
 
     public function request() {
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('meeting_request', $data);
@@ -404,11 +408,11 @@ class Meeting extends MX_Controller {
     }
 
     public function todays() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('todays', $data);
@@ -416,8 +420,8 @@ class Meeting extends MX_Controller {
     }
 
     public function upcoming() {
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('upcoming', $data);
@@ -425,8 +429,8 @@ class Meeting extends MX_Controller {
     }
 
     public function previous() {
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('previous', $data);
@@ -434,18 +438,18 @@ class Meeting extends MX_Controller {
     }
 
     function calendar() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
-            $data['meetings'] = $this->meeting_model->getMeetingByDoctor($doctor);
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
+            $data['meetings'] = $this->meeting_model->getMeetingByteacher($teacher);
         } else {
             $data['meetings'] = $this->meeting_model->getMeeting();
         }
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('calendar', $data);
@@ -453,11 +457,11 @@ class Meeting extends MX_Controller {
     }
 
     public function addNewView() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('add_new', $data);
@@ -465,22 +469,22 @@ class Meeting extends MX_Controller {
     }
 
     public function addNew() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
         $id = $this->input->post('id');
-        $patient = $this->input->post('patient');
+        $client = $this->input->post('client');
 
         if (empty($id)) {
-            if ($this->ion_auth->in_group('Doctor')) {
-                $doctor_ion_id = $this->ion_auth->get_user_id();
-                $doctor = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+            if ($this->ion_auth->in_group('teacher')) {
+                $teacher_ion_id = $this->ion_auth->get_user_id();
+                $teacher = $this->teacher_model->getteacherByIonUserId($teacher_ion_id)->id;
             } else {
-                $doctor = $this->input->post('doctor');
+                $teacher = $this->input->post('teacher');
             }
         } else {
-            $doctor = $this->meeting_model->getMeetingById($id)->doctor;
+            $teacher = $this->meeting_model->getMeetingById($id)->teacher;
         }
 
         $topic = $this->input->post('topic');
@@ -507,14 +511,14 @@ class Meeting extends MX_Controller {
         $remarks = $this->input->post('remarks');
         $redirect = $this->input->post('redirect');
         $user = $this->ion_auth->get_user_id();
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             $user = '';
         }
         if ((empty($id))) {
             $add_date = date('m/d/y');
             $registration_time = time();
-            $patient_add_date = $add_date;
-            $patient_registration_time = $registration_time;
+            $client_add_date = $add_date;
+            $client_registration_time = $registration_time;
         } else {
             $add_date = $this->meeting_model->getMeetingById($id)->add_date;
             $registration_time = $this->meeting_model->getMeetingById($id)->registration_time;
@@ -535,7 +539,7 @@ class Meeting extends MX_Controller {
         $p_phone = $this->input->post('p_phone');
         $p_age = $this->input->post('p_age');
         $p_gender = $this->input->post('p_gender');
-        $patient_id = rand(10000, 1000000);
+        $client_id = rand(10000, 1000000);
 
 
 
@@ -544,17 +548,17 @@ class Meeting extends MX_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
-        if ($patient == 'add_new') {
-            $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-            $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        if ($client == 'add_new') {
+            $this->form_validation->set_rules('p_name', 'client Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('p_phone', 'client Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         }
 
         // Validating Name Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('client', 'client', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if (empty($id)) {
-            // Validating Doctor Field
-            if (!$this->ion_auth->in_group('Doctor')) {
-                $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            // Validating teacher Field
+            if (!$this->ion_auth->in_group('teacher')) {
+                $this->form_validation->set_rules('teacher', 'teacher', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             }
         }
         // Validating Topic Field
@@ -574,8 +578,8 @@ class Meeting extends MX_Controller {
             if (!empty($id)) {
                 redirect("meeting/editMeeting?id=$id");
             } else {
-                $data['patients'] = $this->patient_model->getPatient();
-                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['clients'] = $this->client_model->getclient();
+                $data['teachers'] = $this->teacher_model->getteacher();
                 $data['settings'] = $this->settings_model->getSettings();
                 $this->load->view('home/dashboard', $data); // just the header file
                 $this->load->view('add_new', $data);
@@ -583,54 +587,54 @@ class Meeting extends MX_Controller {
             }
         } else {
 
-            // Patient Registration
-            if ($patient == 'add_new') {
+            // client Registration
+            if ($client == 'add_new') {
                 $data_p = array(
-                    'patient_id' => $patient_id,
+                    'client_id' => $client_id,
                     'name' => $p_name,
                     'email' => $p_email,
                     'phone' => $p_phone,
                     'sex' => $p_gender,
                     'age' => $p_age,
-                    'add_date' => $patient_add_date,
-                    'registration_time' => $patient_registration_time,
+                    'add_date' => $client_add_date,
+                    'registration_time' => $client_registration_time,
                     'how_added' => 'from_meeting'
                 );
                 $username = $this->input->post('p_name');
-                // Adding New Patient
+                // Adding New client
                 if ($this->ion_auth->email_check($p_email)) {
                     $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
                     $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
-                    $this->patient_model->insertPatient($data_p);
-                    $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
+                    $this->client_model->insertclient($data_p);
+                    $client_user_id = $this->db->get_where('client', array('email' => $p_email))->row()->id;
                     $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->patient_model->updatePatient($patient_user_id, $id_info);
+                    $this->client_model->updateclient($client_user_id, $id_info);
                 }
-                $patient = $patient_user_id;
+                $client = $client_user_id;
                 //    }
             }
 
-            // patient Registration
+            // client Registration
             //$error = array('error' => $this->upload->display_errors());
-            $patientname = $this->patient_model->getPatientById($patient)->name;
-            $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
-            if ($this->ion_auth->in_group('Doctor')) {
-                $doctor_ion_id = $this->ion_auth->get_user_id();
+            $clientname = $this->client_model->getclientById($client)->name;
+            $teachername = $this->teacher_model->getteacherById($teacher)->name;
+            if ($this->ion_auth->in_group('teacher')) {
+                $teacher_ion_id = $this->ion_auth->get_user_id();
             } else {
-                $doctor_ion_id = $this->doctor_model->getDoctorById($doctor)->ion_user_id;
+                $teacher_ion_id = $this->teacher_model->getteacherById($teacher)->ion_user_id;
             }
-            $patient_ion_id = $this->patient_model->getPatientById($patient)->ion_user_id;
+            $client_ion_id = $this->client_model->getclientById($client)->ion_user_id;
             $data = array();
             $data = array(
-                'patient' => $patient,
-                'patientname' => $patientname,
-                'patient_ion_id' => $patient_ion_id,
-                'doctor' => $doctor,
-                'doctorname' => $doctorname,
-                'doctor_ion_id' => $doctor_ion_id,
+                'client' => $client,
+                'clientname' => $clientname,
+                'client_ion_id' => $client_ion_id,
+                'teacher' => $teacher,
+                'teachername' => $teachername,
+                'teacher_ion_id' => $teacher_ion_id,
                 'topic' => $topic,
                 'type' => $type,
                 'start_time' => $start_date,
@@ -649,7 +653,7 @@ class Meeting extends MX_Controller {
                     $data1 = array('meeting_id' => $response->id);
                     $data2 = array_merge($data, $data1);
                     $this->meeting_model->insertMeeting($data2);
-                    $this->sendSmsDuringMeeting($patient, $doctor, $start_date);
+                    $this->sendSmsDuringMeeting($client, $teacher, $start_date);
                     $this->session->set_flashdata('feedback', lang('added'));
                 } else {
                     $this->session->set_flashdata('feedback', lang('error'));
@@ -660,7 +664,7 @@ class Meeting extends MX_Controller {
                 $response = $this->createAMeeting($data, $meeting_details->meeting_id);
                 if ($response == "") {
                     $this->meeting_model->updateMeeting($id, $data);
-                    $this->sendSmsDuringMeeting($patient, $doctor, $start_date);
+                    $this->sendSmsDuringMeeting($client, $teacher, $start_date);
                     $this->session->set_flashdata('feedback', lang('updated'));
                 } else {
                     $this->session->set_flashdata('feedback', lang('error'));
@@ -677,25 +681,25 @@ class Meeting extends MX_Controller {
         }
     }
 
-    function sendSmsDuringMeeting($patient, $doctor, $start_time, $appointment_details) {
+    function sendSmsDuringMeeting($client, $teacher, $start_time, $appointment_details) {
         //sms
         $set['settings'] = $this->settings_model->getSettings();
-        $patient_details = $this->patient_model->getPatientById($patient);
-        $doctor_details = $this->doctor_model->getDoctorById($doctor);
+        $client_details = $this->client_model->getclientById($client);
+        $teacher_details = $this->teacher_model->getteacherById($teacher);
 
         $autosms = $this->sms_model->getAutoSmsByType('meeting_creation');
 
         $autoemail = $this->email_model->getAutoEmailByType('meeting_creation');
 
         $message = $autosms->message;
-        $to = $patient_details->phone;
-        $name1 = explode(' ', $patient_details->name);
+        $to = $client_details->phone;
+        $name1 = explode(' ', $client_details->name);
         if (!isset($name1[1])) {
             $name1[1] = null;
         }
         $data1 = array(
-            'patient_name' => $patient_details->name,
-            'doctor_name' => $doctor_details->name,
+            'client_name' => $client_details->name,
+            'teacher_name' => $teacher_details->name,
             'start_time' => $start_time,
             'hospital_name' => $set['settings']->system_vendor,
             'meeting_link' => $appointment_details->live_meeting_link
@@ -839,14 +843,14 @@ class Meeting extends MX_Controller {
              </div>  
            ' ;
        
-            $subject = lang('doctor') . ' ' . lang('appointment');
+            $subject = lang('teacher') . ' ' . lang('appointment');
             if ($mail_provider == 'Domain Email') {
                 $this->email->from($email_Settings->admin_email);
             }
             if ($mail_provider == 'Smtp') {
                 $this->email->from($email_Settings->user, $settngs_name);
             }
-            $this->email->to($patient_details->email);
+            $this->email->to($client_details->email);
             $this->email->subject($subject);
             $this->email->message($template);
             $this->email->send();
@@ -1151,17 +1155,17 @@ class Meeting extends MX_Controller {
         return $key;
     }
 
-    function getMeetingByJasonByDoctor() {
+    function getMeetingByJasonByteacher() {
         $id = $this->input->get('id');
-        $query = $this->meeting_model->getMeetingByDoctor($id);
+        $query = $this->meeting_model->getMeetingByteacher($id);
         $jsonevents = array();
         foreach ($query as $entry) {
 
-            $doctor = $this->doctor_model->getDoctorById($entry->doctor);
-            if (!empty($doctor)) {
-                $doctor = $doctor->name;
+            $teacher = $this->teacher_model->getteacherById($entry->teacher);
+            if (!empty($teacher)) {
+                $teacher = $teacher->name;
             } else {
-                $doctor = '';
+                $teacher = '';
             }
             $time_slot = $entry->time_slot;
             $time_slot_new = explode(' To ', $time_slot);
@@ -1184,17 +1188,17 @@ class Meeting extends MX_Controller {
                 $day_end_time_second = 12 * 60 * 60 + $end_time_second[0] * 60 * 60 + $end_time_second[1] * 60;
             }
 
-            $patient_details = $this->patient_model->getPatientById($entry->patient);
+            $client_details = $this->client_model->getclientById($entry->client);
 
-            if (!empty($patient_details)) {
-                $patient_mobile = $patient_details->phone;
-                $patient_name = $patient_details->name;
+            if (!empty($client_details)) {
+                $client_mobile = $client_details->phone;
+                $client_name = $client_details->name;
             } else {
-                $patient_mobile = '';
-                $patient_name = '';
+                $client_mobile = '';
+                $client_name = '';
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $entry->status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
+            $info = '<br/>' . lang('status') . ': ' . $entry->status . '<br>' . lang('client') . ': ' . $client_name . '<br/>' . lang('phone') . ': ' . $client_mobile . '<br/> teacher: ' . $teacher . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
                 $color = 'yellowgreen';
@@ -1225,18 +1229,18 @@ class Meeting extends MX_Controller {
 
     function getMeetingByJason() {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
-            $query = $this->meeting_model->getMeetingByDoctor($doctor);
-        } elseif ($this->ion_auth->in_group(array('Patient'))) {
-            $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient = $this->db->get_where('patient', array('ion_user_id' => $patient_ion_id))->row()->id;
-            $query = $this->meeting_model->getMeetingByPatient($patient);
+        if ($this->ion_auth->in_group(array('teacher'))) {
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $teacher = $this->db->get_where('teacher', array('ion_user_id' => $teacher_ion_id))->row()->id;
+            $query = $this->meeting_model->getMeetingByteacher($teacher);
+        } elseif ($this->ion_auth->in_group(array('client'))) {
+            $client_ion_id = $this->ion_auth->get_user_id();
+            $client = $this->db->get_where('client', array('ion_user_id' => $client_ion_id))->row()->id;
+            $query = $this->meeting_model->getMeetingByclient($client);
         } else {
             $query = $this->meeting_model->getMeetingForCalendar();
         }
@@ -1244,11 +1248,11 @@ class Meeting extends MX_Controller {
 
         foreach ($query as $entry) {
 
-            $doctor = $this->doctor_model->getDoctorById($entry->doctor);
-            if (!empty($doctor)) {
-                $doctor = $doctor->name;
+            $teacher = $this->teacher_model->getteacherById($entry->teacher);
+            if (!empty($teacher)) {
+                $teacher = $teacher->name;
             } else {
-                $doctor = '';
+                $teacher = '';
             }
             $time_slot = $entry->time_slot;
             $time_slot_new = explode(' To ', $time_slot);
@@ -1271,17 +1275,17 @@ class Meeting extends MX_Controller {
                 $day_end_time_second = 12 * 60 * 60 + $end_time_second[0] * 60 * 60 + $end_time_second[1] * 60;
             }
 
-            $patient_details = $this->patient_model->getPatientById($entry->patient);
+            $client_details = $this->client_model->getclientById($entry->client);
 
-            if (!empty($patient_details)) {
-                $patient_mobile = $patient_details->phone;
-                $patient_name = $patient_details->name;
+            if (!empty($client_details)) {
+                $client_mobile = $client_details->phone;
+                $client_name = $client_details->name;
             } else {
-                $patient_mobile = '';
-                $patient_name = '';
+                $client_mobile = '';
+                $client_name = '';
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $entry->status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
+            $info = '<br/>' . lang('status') . ': ' . $entry->status . '<br>' . lang('client') . ': ' . $client_name . '<br/>' . lang('phone') . ': ' . $client_mobile . '<br/> teacher: ' . $teacher . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
                 $color = 'yellowgreen';
@@ -1299,7 +1303,7 @@ class Meeting extends MX_Controller {
             $jsonevents[] = array(
                 'id' => $entry->id,
                 'title' => $info,
-                'description' => 'Click to see the patient history',
+                'description' => 'Click to see the client history',
                 'start' => date('Y-m-d H:i:s', $entry->date + $day_start_time_second),
                 'end' => date('Y-m-d H:i:s', $entry->date + $day_end_time_second),
                 'color' => $color,
@@ -1311,16 +1315,16 @@ class Meeting extends MX_Controller {
         //  echo json_encode($data);
     }
 
-    function getMeetingByDoctorId() {
+    function getMeetingByteacherId() {
         $id = $this->input->get('id');
-        $data['doctor_id'] = $id;
+        $data['teacher_id'] = $id;
         $data['meetings'] = $this->meeting_model->getMeeting();
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['mmrdoctor'] = $this->doctor_model->getDoctorById($id);
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['clients'] = $this->client_model->getclient();
+        $data['mmrteacher'] = $this->teacher_model->getteacherById($id);
+        $data['teachers'] = $this->teacher_model->getteacher();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('meeting_by_doctor', $data);
+        $this->load->view('meeting_by_teacher', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
@@ -1330,8 +1334,8 @@ class Meeting extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
         $data['meeting'] = $this->meeting_model->getMeetingById($id);
-        $data['patients'] = $this->patient_model->getPatientById($data['meeting']->patient);
-        $data['doctors'] = $this->doctor_model->getDoctorById($data['meeting']->doctor);
+        $data['clients'] = $this->client_model->getclientById($data['meeting']->client);
+        $data['teachers'] = $this->teacher_model->getteacherById($data['meeting']->teacher);
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the footer file 
@@ -1340,8 +1344,8 @@ class Meeting extends MX_Controller {
     function editMeetingByJason() {
         $id = $this->input->get('id');
         $data['meeting'] = $this->meeting_model->getMeetingById($id);
-        $data['patient'] = $this->patient_model->getPatientById($data['meeting']->patient);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['meeting']->doctor);
+        $data['client'] = $this->client_model->getclientById($data['meeting']->client);
+        $data['teacher'] = $this->teacher_model->getteacherById($data['meeting']->teacher);
         echo json_encode($data);
     }
 
@@ -1349,14 +1353,14 @@ class Meeting extends MX_Controller {
         $data['meetings'] = $this->meeting_model->getMeeting();
         $data['settings'] = $this->settings_model->getSettings();
         $user_id = $this->ion_auth->user()->row()->id;
-        $data['user_id'] = $this->db->get_where('patient', array('ion_user_id' => $user_id))->row()->id;
+        $data['user_id'] = $this->db->get_where('client', array('ion_user_id' => $user_id))->row()->id;
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('mymeetings', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('client'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1374,9 +1378,9 @@ class Meeting extends MX_Controller {
             $this->meeting_model->delete($id);
             $this->session->set_flashdata('feedback', lang('deleted'));
         }
-        $doctor_id = $this->input->get('doctor_id');
-        if (!empty($doctor_id)) {
-            redirect('meeting/getMeetingByDoctorId?id=' . $doctor_id);
+        $teacher_id = $this->input->get('teacher_id');
+        if (!empty($teacher_id)) {
+            redirect('meeting/getMeetingByteacherId?id=' . $teacher_id);
         } else {
             redirect('meeting/upcoming');
         }
@@ -1405,7 +1409,7 @@ class Meeting extends MX_Controller {
 
 
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['meetings'] as $meeting) {
             $status = $this->getMeetingsByMeetingId($meeting->meeting_id);
@@ -1414,17 +1418,17 @@ class Meeting extends MX_Controller {
                 $option1 = '<a class="" href="meeting/editMeeting?id=' . $meeting->id . '"> ' . lang('edit') . '</i></a>';
                 $option2 = '<a class="" href="meeting/delete?id=' . $meeting->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"> ' . lang('delete') . ' </a>';
                 $option3 = '<a class="btn btn-info btn-xs btn_width green" href="meeting/live?id=' . $meeting->id . '&meeting_id=' . $meeting->meeting_id . '" target="_blank"><i class="fa fa-headphones"> </i> ' . lang('join_live') . ' </a>';
-                $patientdetails = $this->patient_model->getPatientById($meeting->patient);
-                if (!empty($patientdetails)) {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $patientdetails->name . '</a>';
+                $clientdetails = $this->client_model->getclientById($meeting->client);
+                if (!empty($clientdetails)) {
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $clientdetails->name . '</a>';
                 } else {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $meeting->patientname . '</a>';
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $meeting->clientname . '</a>';
                 }
-                $doctordetails = $this->doctor_model->getDoctorById($meeting->doctor);
-                if (!empty($doctordetails)) {
-                    $doctorname = $doctordetails->name;
+                $teacherdetails = $this->teacher_model->getteacherById($meeting->teacher);
+                if (!empty($teacherdetails)) {
+                    $teachername = $teacherdetails->name;
                 } else {
-                    $doctorname = ' ';
+                    $teachername = ' ';
                 }
 
                 if (empty($meeting->meeting_id)) {
@@ -1441,7 +1445,7 @@ class Meeting extends MX_Controller {
 
                 $new_option = '<br><br>' . $option1 . ' | ' . $option2;
 
-                if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
+                if ($this->ion_auth->in_group(array('admin', 'teacher', 'client'))) {
                     $new_option = '';
                 }
 
@@ -1452,8 +1456,8 @@ class Meeting extends MX_Controller {
 
                 $info[] = array(
                     $meeting->topic . $new_option,
-                    $patientname,
-                    $doctorname,
+                    $clientname,
+                    $teachername,
                     $meeting_id,
                     $meeting->start_time,
                     $meeting->duration,
@@ -1504,7 +1508,7 @@ class Meeting extends MX_Controller {
 
 
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['meetings'] as $meeting) {
 
@@ -1527,17 +1531,17 @@ class Meeting extends MX_Controller {
 
                 $option3 = '<a class="btn btn-info btn-xs btn_width green" href="meeting/live?id=' . $meeting->id . '&meeting_id=' . $meeting->meeting_id . '" target="_blank"><i class="fa fa-headphones"> </i> ' . lang($join_or_start) . ' </a>';
 
-                $patientdetails = $this->patient_model->getPatientById($meeting->patient);
-                if (!empty($patientdetails)) {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $patientdetails->name . '</a>';
+                $clientdetails = $this->client_model->getclientById($meeting->client);
+                if (!empty($clientdetails)) {
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $clientdetails->name . '</a>';
                 } else {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $meeting->patientname . '</a>';
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $meeting->clientname . '</a>';
                 }
-                $doctordetails = $this->doctor_model->getDoctorById($meeting->doctor);
-                if (!empty($doctordetails)) {
-                    $doctorname = $doctordetails->name;
+                $teacherdetails = $this->teacher_model->getteacherById($meeting->teacher);
+                if (!empty($teacherdetails)) {
+                    $teachername = $teacherdetails->name;
                 } else {
-                    $doctorname = $meeting->doctorname;
+                    $teachername = $meeting->teachername;
                 }
 
                 if (empty($meeting->meeting_id)) {
@@ -1555,7 +1559,7 @@ class Meeting extends MX_Controller {
 
                 $new_option = '<br><br>' . $option1 . ' | ' . $option2;
 
-                if ($this->ion_auth->in_group('Patient')) {
+                if ($this->ion_auth->in_group('client')) {
                     $new_option = '';
                 }
 
@@ -1563,8 +1567,8 @@ class Meeting extends MX_Controller {
 
                 $info[] = array(
                     $meeting->topic . $new_option,
-                    $patientname,
-                    $doctorname,
+                    $clientname,
+                    $teachername,
                     $meeting_id,
                     $meeting->start_time,
                     $meeting->duration,
@@ -1614,14 +1618,14 @@ class Meeting extends MX_Controller {
         }
 
 
-        if ($this->ion_auth->in_group('Patient')) {
+        if ($this->ion_auth->in_group('client')) {
             $join_or_start = 'join_live';
         } else {
             $join_or_start = 'start_live';
         }
 
 
-        //  $data['patients'] = $this->patient_model->getVisitor();
+        //  $data['clients'] = $this->client_model->getVisitor();
         $i = 0;
         foreach ($data['meetings'] as $meeting) {
 
@@ -1635,17 +1639,17 @@ class Meeting extends MX_Controller {
 
                 $option3 = '<a class="btn btn-info btn-xs btn_width green" href="meeting/live?id=' . $meeting->id . '&meeting_id=' . $meeting->meeting_id . '" target="_blank"><i class="fa fa-headphones"> </i> ' . lang($join_or_start) . ' </a>';
 
-                $patientdetails = $this->patient_model->getPatientById($meeting->patient);
-                if (!empty($patientdetails)) {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $patientdetails->name . '</a>';
+                $clientdetails = $this->client_model->getclientById($meeting->client);
+                if (!empty($clientdetails)) {
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $clientdetails->name . '</a>';
                 } else {
-                    $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->patient . '"> ' . $meeting->patientname . '</a>';
+                    $clientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $meeting->client . '"> ' . $meeting->clientname . '</a>';
                 }
-                $doctordetails = $this->doctor_model->getDoctorById($meeting->doctor);
-                if (!empty($doctordetails)) {
-                    $doctorname = $doctordetails->name;
+                $teacherdetails = $this->teacher_model->getteacherById($meeting->teacher);
+                if (!empty($teacherdetails)) {
+                    $teachername = $teacherdetails->name;
                 } else {
-                    $doctorname = $meeting->doctorname;
+                    $teachername = $meeting->teachername;
                 }
 
                 if (empty($meeting->meeting_id)) {
@@ -1664,7 +1668,7 @@ class Meeting extends MX_Controller {
 
                 $new_option = '<br><br>' . $option1 . ' | ' . $option2;
 
-                if ($this->ion_auth->in_group('Patient')) {
+                if ($this->ion_auth->in_group('client')) {
                     $new_option = '';
                 }
 
@@ -1672,8 +1676,8 @@ class Meeting extends MX_Controller {
 
                 $info[] = array(
                     $meeting->topic . $new_option,
-                    $patientname,
-                    $doctorname,
+                    $clientname,
+                    $teachername,
                     $meeting_id,
                     $meeting->start_time,
                     $meeting->duration,
