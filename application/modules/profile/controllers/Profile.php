@@ -8,6 +8,7 @@ class Profile extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('profile_model');
+        $this->load->model('category/category_model');
         $this->load->model('teacher/teacher_model');
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
@@ -23,7 +24,7 @@ class Profile extends MX_Controller {
         $data = array();
         $id = $this->ion_auth->get_user_id();
         $data['profile'] = $this->profile_model->getProfileById($id);
-        $data['teacher'] = $this->teacher_model->getteacherByIonUserId($id);
+        $data['teacher'] = $this->teacher_model->getteacherByIonUserId($id);        
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('profile');
         $this->load->view('home/footer'); // just the footer file
