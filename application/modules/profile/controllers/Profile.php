@@ -31,6 +31,25 @@ class Profile extends MX_Controller {
     }
 
     public function addNew() {
+
+
+
+       if($_POST['categoria']) {
+        $categorias = '';
+      foreach ($_POST['categoria'] as $categoria){
+
+        $categorias .= $categoria.',';
+
+
+      }
+      $categorias = substr($categorias, 0, -1);
+    
+    }
+
+      
+
+     // print_r($categorias);die;
+
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $password = $this->input->post('password');
@@ -48,10 +67,11 @@ class Profile extends MX_Controller {
         $date_of_birth = $this->input->post('date_of_birth');
         $biography = $this->input->post('biography');
         $profile = $this->input->post('profile');
-        $specialties = $this->input->post('specialties');
+        $specialties =  $categorias;
         $facebook = $this->input->post('facebook');
         $instagram = $this->input->post('instagram');
         $amount_to_pay = $this->input->post('amount_to_pay');
+   
 
         $data['profile'] = $this->profile_model->getProfileById($id);
         if ($data['profile']->email != $email) {
@@ -140,7 +160,7 @@ class Profile extends MX_Controller {
                     'date_of_birth' => $date_of_birth,
                     'biography' => $biography,
                     'profile' => $profile,
-                    'specialties' => $specialties,
+                    'specialties' => $categorias,
                     'facebook' => $facebook,
                     'instagram' => $instagram,
                     //'linkedin' => $linkedin,
@@ -170,7 +190,7 @@ class Profile extends MX_Controller {
                     'date_of_birth' => $date_of_birth,
                     'biography' => $biography,
                     'profile' => $profile,
-                    'specialties' => $specialties,
+                    'specialties' => $categorias,
                     'facebook' => $facebook,
                     'instagram' => $instagram,
                    // 'linkedin' => $linkedin,

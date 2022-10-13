@@ -17,14 +17,10 @@ $site_name = $this->db->get('settings')->row()->title;
     <title><?php echo $site_name; ?></title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" />
     <!-- Font-awesome -->
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <!-- jQuery Plugins -->
-    <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/magnific-popup/magnific-popup.css'); ?>" />
-    <link rel="stylesheet" href="<?php echo site_url('common/assets/bootstrap-datepicker/css/bootstrap-datepicker.css'); ?>" />
-    <!--external css-->
+     <!--external css-->
     <!-- Nucleo Icons -->
     <link href="<?php echo base_url(); ?>assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/nucleo-svg.css" rel="stylesheet" />
@@ -32,13 +28,15 @@ $site_name = $this->db->get('settings')->row()->title;
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   
     <!-- CSS Files -->
-    <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
     <!-- CSS Stylesheet -->
-    <link href="<?php echo site_url('front/site_assets/css/style.css'); ?>" rel="stylesheet" />
-    <link href="<?php echo site_url('front/site_assets/css/responsive.css') ?>" rel="stylesheet" />
     <link rel="stylesheet" href="<?php echo site_url('common/toastr/toastr.css'); ?>" />
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick.css">
-    <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">  
+      <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
+
+    <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" />
+
+
 
 </head>
 

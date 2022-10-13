@@ -10,11 +10,12 @@ class Frontend extends MX_Controller
     {
         parent::__construct();
         $this->load->model('frontend_model');    
-        $this->load->model('payment/payment_model');
         $this->load->model('teacher/teacher_model');
         $this->load->model('schedule/schedule_model');
         $this->load->model('client/client_model');
-        $this->load->model('email/email_model');    
+        $this->load->model('email/email_model');   
+        $this->load->model('category/category_model');
+ 
         $language = $this->db->get('settings')->row()->language;
         $this->lang->load('system_syntax', $language);
     }

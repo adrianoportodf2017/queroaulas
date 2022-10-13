@@ -1,32 +1,20 @@
 <script src="<?= base_url() ?>assets/payment/js/vendor.min.js"></script>
-<script src="<?= base_url() ?>assets/payment/js/card.min.js"></script>
-<script src="<?= base_url() ?>assets/payment/js/theme.min.js"></script>
-<script src="<?= base_url() ?>assets/payment/js/busca_cep.js"></script>
-<script src="<?= base_url() ?>assets/payment/js/sweetalert.min.js"></script><!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>assets/js/core/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/core/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/plugins/smooth-scrollbar.min.js"></script>
 <!-- Bootstrap core JavaScript  -->
 <script src="<?php echo site_url('front/site_assets/vendor/jquery/jquery.min.js'); ?>"></script>
-<script src="<?php echo site_url('front/site_assets/vendor/jquery/popper.min.js'); ?>"></script>
 <script src="<?php echo site_url('front/site_assets/vendor/owl-carousel/owl.carousel.min.js'); ?>"></script>
-<script src="<?php echo site_url('front/site_assets/vendor/magnific-popup/jquery.magnific-popup.min.js'); ?>"></script>
 <!-- JS Main File -->
 <script src="<?php echo site_url('front/site_assets/js/main.js'); ?>"></script>
-<script src="<?php echo site_url('common/toastr/toastr.js'); ?>"></script>
-<script src="front/js/smoothscroll/jquery.smoothscroll.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery-2.2.0.min.js"></script>
 <!--footer end-->
 </section>
 <!-- js placed at the end of the document so the pages load faster -->
-<script src="<?php echo base_url(); ?>common/js/jquery.scrollTo.min.js"></script>
 <script src="<?php echo base_url(); ?>common/js/moment.min.js"></script>
 <!--
 <script src="<?php echo base_url(); ?>common/js/jquery.nicescroll.js" type="text/javascript"></script>
 -->
 <script src="<?php echo base_url(); ?>common/js/respond.min.js"></script>
-<script src="<?php echo base_url(); ?>common/js/jquery.cookie.js"></script>
-<script src="<?php echo base_url(); ?>common/js/lightbox.js"></script>
 <!--script for this page only-->
 <!--script da agenda slide-->
 <script src="<?php echo base_url('app-assets/slick/slick.js') ?>" type="text/javascript" charset="utf-8"></script>
@@ -313,8 +301,8 @@
             swal("A senha deve conter no minímo 8 digitos!");
             //document.formulario.senha.focus();
             validateState = false;
-                return false;
-        } 
+            return false;
+        }
         validateState = true;
 
 
@@ -409,49 +397,48 @@
                 $(this).addClass('is-valid');
                 validateState = true;
             }
-       
-     })
 
-     if (validateState == true) {
-         //alert('teste');
-               // $('#btn_img_loader').show();
-               // $('#btn_bt_loader').hide();
-                var formulario = document.getElementById('myform');
-                var dados = new FormData(formulario);
-                $.ajax({
-                    type: 'POST',
-                    url: "<?php echo base_url('frontend/salvarProfissional/'); ?>?ajax=true",
-                    data: dados,
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    // async: false,
-                    success: function(data) {
-                        if (data.situacao === true) {
-                            // Remove todos os css da classe
-                          //  $(".divPedido").hide();
-                          //  $('.divRecibo').html(data.html);
-                         //   $(".divRecibo").fadeTo(2000, 500);
-                        } else if (data.redirect === true) {
-                            // Remove todos os css da classe
-                            // $('#btn_bt_loader').hide();
-                            // $(".divPedido").hide();
-                            // $('.divRecibo').html(data.html);
-                            // $(".divRecibo").fadeTo(2000, 500);
-                            window.location.href = data.html;
-                        } else {
-                            swal("Erro", data.mensagem, "error");
-                          //  $('#btn_bt_loader').show();
-                          //  $('#btn_img_loader').hide();
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        swal("Erro", "Error ao tentar realizar o cadastro: " + errorThrown + ' Por favor entre em contato com a nossa Equipe, para mais detalhes.', "error");
-                      //  $('#btn_bt_loader').hide();
-                      //  $('#btn_img_loader').show();
+        })
+
+        if (validateState == true) {
+            //alert('teste');
+            // $('#btn_img_loader').show();
+            // $('#btn_bt_loader').hide();
+            var formulario = document.getElementById('myform');
+            var dados = new FormData(formulario);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo base_url('frontend/salvarProfissional/'); ?>?ajax=true",
+                data: dados,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                // async: false,
+                success: function(data) {
+                    if (data.situacao === true) {
+                        // Remove todos os css da classe
+                        //  $(".divPedido").hide();
+                        //  $('.divRecibo').html(data.html);
+                        //   $(".divRecibo").fadeTo(2000, 500);
+                    } else if (data.redirect === true) {
+                        // Remove todos os css da classe
+                        // $('#btn_bt_loader').hide();
+                        // $(".divPedido").hide();
+                        // $('.divRecibo').html(data.html);
+                        // $(".divRecibo").fadeTo(2000, 500);
+                        window.location.href = data.html;
+                    } else {
+                        swal("Erro", data.mensagem, "error");
+                        //  $('#btn_bt_loader').show();
+                        //  $('#btn_img_loader').hide();
                     }
-                });
-            } 
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    swal("Erro", "Error ao tentar realizar o cadastro: " + errorThrown + ' Por favor entre em contato com a nossa Equipe, para mais detalhes.', "error");
+                    //  $('#btn_bt_loader').hide();
+                    //  $('#btn_img_loader').show();
+                }
+            });
         }
-    
+    }
 </script>
