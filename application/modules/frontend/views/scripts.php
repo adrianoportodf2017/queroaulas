@@ -1,6 +1,9 @@
 <script src="<?= base_url() ?>assets/payment/js/vendor.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/core/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="<?= base_url() ?>assets/payment/js/sweetalert.min.js"></script><!--   Core JS Files   -->
+<script src="<?php echo site_url('front/site_assets/vendor/magnific-popup/jquery.magnific-popup.min.js'); ?>"></script>
+
 <!-- Bootstrap core JavaScript  -->
 <script src="<?php echo site_url('front/site_assets/vendor/jquery/jquery.min.js'); ?>"></script>
 <script src="<?php echo site_url('front/site_assets/vendor/owl-carousel/owl.carousel.min.js'); ?>"></script>
