@@ -101,7 +101,7 @@
                     if(!data){
                         $("#msg" + id + "").html('<div class="alert alert-danger" role="alert"> Nenhum Horário Disponível!</div>');
                     }else{
-                        $("#msg" + id + "").html('<div class="alert alert-primary" role="alert"> Horário Disponível!</div>');
+                        $("#msg" + id + "").html('<div class="alert alert-warning" role="alert"> Horário Disponível!</div>');
                     }
                     $("#" + id + "").html(data);
                     // document.getElementById(" "+id+" ").innerHTML = data;
