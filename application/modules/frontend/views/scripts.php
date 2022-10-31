@@ -98,6 +98,7 @@
                     // $('.listhours').html = data;
                     $("#" + id + "").slideDown();
                     $("#msg" + id + "").html('');
+                    $("#msg" + id + "").html('Horário Disponível!');
                     $("#" + id + "").html(data);
                     // document.getElementById(" "+id+" ").innerHTML = data;
                     $(".listhours").slick($opts);

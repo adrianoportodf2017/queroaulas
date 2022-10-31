@@ -61,12 +61,12 @@ if($teachers){
                                             <div class="row">
                                                 <div class="col-4">
                                                     <?php if (!empty($teacher->img_url) && file_exists($teacher->img_url)) { ?>
-                                                        <a href="#">
+                                                        <a href="<?= site_url() . 'frontend/profile/' . $teacher->id; ?>">
                                                             <div class="m-b-25"> <img src="<?= $teacher->img_url ?>" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;"> </div>
                                                         </a>
                                                     <?php } else {
                                                     ?>
-                                                        <a href="#">
+                                                        <a href="<?= site_url() . 'frontend/profile/' . $teacher->id; ?>">
                                                             <div class="m-b-25"> <img src="<?= base_url() ?>uploads/semfoto.gif" class="img-radius" alt="User-Profile-Image" style="max-width: 150px; width: 100%; border-radius: 50%;"> </div>
                                                         </a><?php } ?>
                                                 </div>
@@ -121,10 +121,7 @@ if($teachers){
                                         <div>
                                             <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+8 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+8 day', strtotime(date("D-m-y"))))))); ?> </button>
                                         </div>
-                                    </div>
-                                    <b>
-                                        <h3>Horários disponíveis:</h3>
-                                    </b>
+                                    </div>                                   
                                     <div class="listhours slider" id="<?= $teacher->id ?>" name="listhours">
 
                                     </div>
@@ -152,6 +149,6 @@ if($teachers){
             </div>
         </div>
     </div>
-
+    </div>
 
     </section>
