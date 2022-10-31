@@ -98,7 +98,11 @@
                     // $('.listhours').html = data;
                     $("#" + id + "").slideDown();
                     $("#msg" + id + "").html('');
-                    $("#msg" + id + "").html('Horário Disponível!');
+                    if(!data){
+                        $("#msg" + id + "").html('<div class="alert alert-danger" role="alert"> Nenhum Horário Disponível!</div>');
+                    }else{
+                        $("#msg" + id + "").html('<div class="alert alert-primary" role="alert"> Horário Disponível!</div>');
+                    }
                     $("#" + id + "").html(data);
                     // document.getElementById(" "+id+" ").innerHTML = data;
                     $(".listhours").slick($opts);
