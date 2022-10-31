@@ -206,6 +206,7 @@ $site_name = $this->db->get('settings')->row()->title;
         margin-left: 10px;
         width: 97%;
         border-style: 5px solid red;
+        padding: 3px;
 
     }
 

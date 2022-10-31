@@ -8,24 +8,29 @@
         <div class="search-bar SearchForm_inputsContainer" style="-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 		-moz-box-shadow:    9px 7px 5px rgba(50, 50, 50, 0.77);
 		box-shadow:         9px 7px 5px rgba(50, 50, 50, 0.77); min-height: 45px; ">
-            <form method="post" action="/form-search.html" data-type="search" class="search-box-v3-2 js-search-form hello">
+            <form method="post" action="" data-type="search" class="search-box-v3-2 js-search-form hello">
                 <div class="SearchForm_inputs">
                     <div class="Grid Grid-guttersSmall Grid-guttersVertical Search_box_clear flex-that">
                         <div class="Grid_cell Grid_cell-1-3 Grid_cell-1-1@mobile SearchForm_subjectContainer Search_box_clear">
                             <div class="autocomplete">
-                                <select id="search_subject" type="text" placeholder="Qual matéria?" name="search_subject" class="SearchForm_input Search_box_input autocomplete-input js-search-form-subject border-0">
-                                    <option class="border-0" selected>Matérias...</option>
-                                    <?php
-                                    $categorys = $this->category_model->getCategory();
-                                    foreach ($categorys  as $categoria) {
-                                        echo   '<option>' . $categoria->name . '</option>';
-                                    }
-                                    ?>
+                            
+                                <select id="categorias" type="text" placeholder="Qual matéria?" name="categorias" class="SearchForm_input Search_box_input autocomplete-input js-search-form-subject border-0">
+                                    <option class="border-0" value="" selected>Matérias...</option>
+                                    <?php $categorys = $this->category_model->getCategory();                                                   
+                                           foreach ($categorys as $category) { ?>                                                       
+                                                              <?php
+                                                              echo '<b>' . $category->name . '</b>';
+                                                              $subCategorys =  $this->category_model->getSubCategory($category->id);
+                                                              foreach ($subCategorys as $subCategory) {  ?>
+                                                                <option   value="<?= $subCategory->name ?>"> <?= '<b>' . $category->name . '</b>: '. $subCategory->name ?> </option>                                                                
+                                                                  <?php } ?>
+                                                          </div>
+                                                      <?php } ?>
                                 </select>
                             </div>
                         </div>
                         <div class="Grid_cell Grid_cell-1-3 Grid_cell-1-1@mobile SearchForm_locationInputContainer Search_box_clear">
-                            <input name="search_city" id="search_city" type="text" placeholder="Oque você deseja estudar?" class="SearchForm_input Search_box_input js-search-form-gmap-autocomplete pac-target-input">
+                            <input name="termos" id="termos" type="text" placeholder="Oque você deseja estudar?" class="SearchForm_input Search_box_input js-search-form-gmap-autocomplete pac-target-input">
                         </div>
                         <div class="Grid_cell Grid_cell-1-6 Grid_cell-1-1@mobile Search_box_div_button"><button type="submit" class="button SearchForm_submit button-topHide">Procurar</button>
 

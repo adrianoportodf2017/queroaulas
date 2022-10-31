@@ -29,10 +29,16 @@ class Frontend extends MX_Controller
         $this->load->view('scripts');
     }
 
-    public function search($search = NULL, $order = NULL, $dir = NULL)
+    public function search($search = NULL, $categoria = NULL, $order = NULL, $dir = NULL)
     {
         $data = array();
-        $data['teachers'] = $this->teacher_model->getTeacherBySearch($search, $order, $dir);
+        var_dump($this->input->post());
+       
+       if($this->input->post()){
+        $data['teachers'] = $this->teacher_model->getTeacherBySearch($this->input->post('termos'), $this->input->post('categorias'), $order, $dir);
+       }else{
+        $data['teachers'] = $this->teacher_model->getTeacherBySearch($search, $categoria, $order, $dir);
+      }
         $this->load->view('header', $data);
         $this->load->view('search');
         $this->load->view('footer');

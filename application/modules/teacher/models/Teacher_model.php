@@ -3,31 +3,37 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Teacher_model extends CI_model {
+class Teacher_model extends CI_model
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
         $this->load->database();
     }
 
-    function insertTeacher($data) {
+    function insertTeacher($data)
+    {
         $this->db->insert('teacher', $data);
     }
 
-    function getTeacher() {
+    function getTeacher()
+    {
         $this->db->where('role_id', '2');
         $query = $this->db->get('users');
         return $query->result();
     }
 
-    function getTeacherId() {
+    function getTeacherId()
+    {
         $this->db->where('role_id', '2');
         $this->db->where('id', $id);
         $query = $this->db->get('users');
         return $query->result();
     }
 
-    function getTeacherWithoutSearch($order, $dir) {
+    function getTeacherWithoutSearch($order, $dir)
+    {
         $this->db->where('role_id', '2');
         if ($order != null) {
             $this->db->order_by($order, $dir);
@@ -38,15 +44,24 @@ class Teacher_model extends CI_model {
         return $query->result();
     }
 
-    function getTeacherBySearch($search, $order, $dir) {
-        
-        $this->db->where('status', 'active');
+    function getTeacherBySearch($search, $categoria, $order, $dir)
+    {
 
+        $this->db->select('*');
+        $this->db->where('status', 'active');
+        if ($categoria != '') {
+            $this->db->where("specialties like '%" . $categoria . "%' ");
+      }
+        if ($search != '') {
+            $this->db->like('profile', $search);
+            $this->db->or_like('biography', $search);
+        }
         $query = $this->db->get('teacher');
         return $query->result();
     }
 
-    function getTeacherByLimit($limit, $start, $order, $dir) {
+    function getTeacherByLimit($limit, $start, $order, $dir)
+    {
         if ($order != null) {
             $this->db->order_by($order, $dir);
         } else {
@@ -57,7 +72,8 @@ class Teacher_model extends CI_model {
         return $query->result();
     }
 
-    function getTeacherByLimitBySearch($limit, $start, $search, $order, $dir) {
+    function getTeacherByLimitBySearch($limit, $start, $search, $order, $dir)
+    {
 
         $this->db->like('id', $search);
 
@@ -78,29 +94,34 @@ class Teacher_model extends CI_model {
         return $query->result();
     }
 
-    function getTeacherById($id) {
+    function getTeacherById($id)
+    {
         $this->db->where('id', $id);
         $query = $this->db->get('teacher');
         return $query->row();
     }
 
-    function getTeacherByIonUserId($id) {
+    function getTeacherByIonUserId($id)
+    {
         $this->db->where('ion_user_id', $id);
         $query = $this->db->get('teacher');
         return $query->row();
     }
 
-    function updateTeacher($id, $data) {
+    function updateTeacher($id, $data)
+    {
         $this->db->where('id', $id);
         $this->db->update('teacher', $data);
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         $this->db->where('id', $id);
         $this->db->delete('teacher');
     }
 
-    function updateIonUser($username, $email, $password, $ion_user_id) {
+    function updateIonUser($username, $email, $password, $ion_user_id)
+    {
         $uptade_ion_user = array(
             'username' => $username,
             'email' => $email,
@@ -110,7 +131,8 @@ class Teacher_model extends CI_model {
         $this->db->update('users', $uptade_ion_user);
     }
 
-    function getTeacherInfo($searchTerm) {
+    function getTeacherInfo($searchTerm)
+    {
         if (!empty($searchTerm)) {
             $this->db->select('*');
             $this->db->where("name like '%" . $searchTerm . "%' ");
@@ -144,7 +166,8 @@ class Teacher_model extends CI_model {
         return $data;
     }
 
-    function getTeacherWithAddNewOption($searchTerm) {
+    function getTeacherWithAddNewOption($searchTerm)
+    {
         if (!empty($searchTerm)) {
             $this->db->select('*');
             $this->db->where("name like '%" . $searchTerm . "%' ");
@@ -179,5 +202,4 @@ class Teacher_model extends CI_model {
         }
         return $data;
     }
-
 }
