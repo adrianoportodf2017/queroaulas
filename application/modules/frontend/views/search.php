@@ -15,7 +15,7 @@
                             <div class="autocomplete">
                             
                                 <select id="categorias" type="text" placeholder="Qual matéria?" name="categorias" class="SearchForm_input Search_box_input autocomplete-input js-search-form-subject border-0">
-                                    <option class="border-0" value="" selected>Matérias...</option>
+                                    <option class="border-0" value="<?php if($this->input->post('categorias') != ''){ echo $this->input->post('categorias');}else{?><?php }?>" selected><?php if($this->input->post('categorias') != ''){ echo $this->input->post('categorias');}else{?>Matérias...<?php }?></option>
                                     <?php $categorys = $this->category_model->getCategory();                                                   
                                            foreach ($categorys as $category) { ?>                                                       
                                                               <?php
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="Grid_cell Grid_cell-1-3 Grid_cell-1-1@mobile SearchForm_locationInputContainer Search_box_clear">
-                            <input name="termos" id="termos" type="text" placeholder="Oque você deseja estudar?" class="SearchForm_input Search_box_input js-search-form-gmap-autocomplete pac-target-input">
+                            <input name="termos" id="termos" value="<?php if($this->input->post('termos') != ''){ echo $this->input->post('termos');}else{?><?php }?>" type="text" placeholder="<?php if($this->input->post('termos') != ''){ echo 'Oque você deseja estudar?...';}else{?>Oque você deseja estudar?...<?php }?>" class="SearchForm_input Search_box_input js-search-form-gmap-autocomplete pac-target-input">
                         </div>
                         <div class="Grid_cell Grid_cell-1-6 Grid_cell-1-1@mobile Search_box_div_button"><button type="submit" class="button SearchForm_submit button-topHide">Procurar</button>
 
@@ -49,7 +49,7 @@
 
 
                 <?php
-
+if($teachers){
                 foreach ($teachers as $teacher) { ?>
 
                     <div class="card">
@@ -137,7 +137,17 @@
                         </div>
                     </div>
                     <br>
-                <?php } ?>
+                <?php } }else {?>
+                    <div class="card">
+                        <div class="card-body ">
+                            <div class="row " style=" margin: 0;   text-align: center;">
+                                <div class="col-md-7">                                   
+                                <h1>Nenhum resultado encontrado!</h1>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <?php }?>
 
             </div>
         </div>

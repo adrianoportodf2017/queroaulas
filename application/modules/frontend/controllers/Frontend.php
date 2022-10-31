@@ -32,8 +32,7 @@ class Frontend extends MX_Controller
     public function search($search = NULL, $categoria = NULL, $order = NULL, $dir = NULL)
     {
         $data = array();
-        var_dump($this->input->post());
-       
+      
        if($this->input->post()){
         $data['teachers'] = $this->teacher_model->getTeacherBySearch($this->input->post('termos'), $this->input->post('categorias'), $order, $dir);
        }else{
