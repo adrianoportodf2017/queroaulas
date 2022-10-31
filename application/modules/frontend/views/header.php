@@ -33,6 +33,7 @@ $site_name = $this->db->get('settings')->row()->title;
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">  
       <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
+      <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/search.css?v=2.0.2" rel="stylesheet" />
 
     <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" />
 
