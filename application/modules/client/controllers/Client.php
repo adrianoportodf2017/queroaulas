@@ -1164,11 +1164,17 @@ class Client extends MX_Controller
     function clientHistory()
     {
         $data = array();
-        $id = $this->input->get('id');
+        $id = $this->session->userdata['user_id'];
+        $client =  $this->client_model->getClientByIonUserId($id);
+        $data['client'] = $this->client_model->getclientById($client->id);
+       // var_dump($data['client']);
+       // var_dump($client->id);
+      
 
         if ($this->ion_auth->in_group(array('client'))) {
-            $client_ion_id = $this->ion_auth->get_user_id();
-            $id = $this->client_model->getClientByIonUserId($client_ion_id)->id;
+            $client_ion_id = $this->session->userdata['user_id'];
+            $id = $client->id;
+           // var_dump( $this->ion_auth->get_user_id());die;
         }
 
         if ($this->ion_auth->in_group(array('Teacher'))) {
@@ -1177,17 +1183,10 @@ class Client extends MX_Controller
             $data['teacher'] = $this->teacher_model->getteacherById($idTeacher); 
         } 
 
-        //var_dump($data['teacher']);die;
-
-
-
-        $data['client'] = $this->client_model->getclientById($id);
-        $data['appointments'] = $this->appointment_model->getAppointmentByclient($data['client']->id);
-        $data['clients'] = $this->client_model->getclient();
+        //var_dump($data['teacher']);die;    
         
-
-
-
+        $data['appointments'] = $this->appointment_model->getAppointmentByclient($client->id);
+        $data['first_name'] = $data['client']->name;    
         foreach ($data['appointments'] as $appointment) {
             $teacher_details = $this->teacher_model->getTeacherById($appointment->teacher);
             if (!empty($teacher_details)) {

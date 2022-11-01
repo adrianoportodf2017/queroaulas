@@ -449,4 +449,156 @@
             });
         }
     }
+
+
+    function validateClient() {
+
+
+var senha = $('#password').val();
+var regex = /^(?=(?:.*?[A-Z]){3})(?=(?:.*?[0-9]){2})(?=(?:.*?[!@#$%*()_+^&}{:;?.]){1})(?!.*\s)[0-9a-zA-Z!@#$%;*(){}_+^&]*$/;
+
+if (senha.length < 8) {
+    swal("A senha deve conter no minímo 8 digitos!");
+    //document.formulario.senha.focus();
+    validateState = false;
+    return false;
+}
+validateState = true;
+
+
+$('#myform :input').each(function() {
+    /* required */
+    if ($(this).hasClass('required') && $.trim($(this).val()) === "") {
+        $(this).addClass('is-invalid');
+        $(this).focus();
+        $('#msgjs').html(validateRequiredMsg);
+        $("#msgjs").fadeTo(2000, 500).slideUp(500, function() {
+            $("#msgjs").slideUp(10000);
+        });
+        validateState = false;
+        return false;
+    } else {
+        $(this).removeClass('is-invalid');
+        $(this).addClass('is-valid');
+        validateState = true;
+    }
+
+    /* numeric value */
+    if ($(this).hasClass('required') && $(this).hasClass('numeric')) {
+        var nan = new RegExp(/(^-?\d\d*\.\d*$)|(^-?\d\d*$)|(^-?\.\d\d*$)/);
+        if (!nan.test($.trim($(this).val()))) {
+            $(this).addClass('invalid');
+            $(this).focus();
+            $('#msgjs').html(validateNumericMsg);
+            $("#msgjs").fadeTo(2000, 500).slideUp(500, function() {
+                $("#msgjs").slideUp(500);
+            });
+            validateState = false;
+            return false;
+        } else {
+            $(this).removeClass('is-invalid');
+            $(this).addClass('is-valid');
+            validateState = true;
+        }
+    }
+    /* mail */
+    if ($(this).hasClass('email')) {
+        var er = new RegExp(/^[A-Za-z0-9_\-\.]+@[A-Za-z0-9_\-\.]{2,}\.[A-Za-z0-9]{2,}(\.[A-Za-z0-9])?/);
+        if (!er.test($.trim($(this).val()))) {
+            $(this).addClass('invalid');
+            $(this).focus();
+            $('#msgjs').html(validateMailMsg);
+            $("#msgjs").fadeTo(2000, 500).slideUp(500, function() {
+                $("#msgjs").slideUp(500);
+            });
+            validateState = false;
+            return false;
+        }
+    }
+    /* min value */
+    if ($(this).attr('min')) {
+        if ($.trim($(this).val()).length < $(this).attr('min')) {
+            $(this).addClass('invalid');
+            $(this).focus();
+            $('#msgjs').html(validateMinMsg);
+            $("#msgjs").fadeTo(2000, 500).slideUp(500, function() {
+                $("#msgjs").slideUp(500);
+            });
+            validateState = false;
+            return false;
+        }
+    }
+    /* max value */
+    if ($(this).attr('max') && $(this).hasClass('required')) {
+        if ($.trim($(this).val()).length > $(this).attr('max')) {
+            $(this).addClass('invalid');
+            $(this).focus();
+            $('#msgjs').html(validateMaxMsg + $(this).attr('max'));
+            validateState = false;
+            return false;
+        } else {
+            $('#msgjs').html('');
+            $(this).removeClass('is-invalid');
+            $(this).addClass('is-valid');
+            validateState = true;
+        }
+    }
+    if ($(this).hasClass('card') && $.trim($(this).val()) === "") {
+        $(this).addClass('is-invalid');
+        $(this).focus();
+        $('#msgjs').html(validateRequiredMsg);
+        $("#msgjs").fadeTo(2000, 500).slideUp(500, function() {
+            $("#msgjs").slideUp(10000);
+        });
+        validateState = false;
+        return false;
+    } else {
+        $(this).removeClass('is-invalid');
+        $(this).addClass('is-valid');
+        validateState = true;
+    }
+
+})
+
+if (validateState == true) {
+    //alert('teste');
+    // $('#btn_img_loader').show();
+    // $('#btn_bt_loader').hide();
+    var formulario = document.getElementById('myform');
+    var dados = new FormData(formulario);
+    $.ajax({
+        type: 'POST',
+        url: "<?php echo base_url('frontend/salvarClient/'); ?>?ajax=true",
+        data: dados,
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        // async: false,
+        success: function(data) {
+            if (data.situacao === true) {
+                // Remove todos os css da classe
+                //  $(".divPedido").hide();
+                //  $('.divRecibo').html(data.html);
+                //   $(".divRecibo").fadeTo(2000, 500);
+            } else if (data.redirect === true) {
+                // Remove todos os css da classe
+                // $('#btn_bt_loader').hide();
+                // $(".divPedido").hide();
+                // $('.divRecibo').html(data.html);
+                // $(".divRecibo").fadeTo(2000, 500);
+                window.location.href = data.html;
+            } else {
+                swal("Erro", data.mensagem, "error");
+                //  $('#btn_bt_loader').show();
+                //  $('#btn_img_loader').hide();
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            swal("Erro", "Error ao tentar realizar o cadastro: " + errorThrown + ' Por favor entre em contato com a nossa Equipe, para mais detalhes.', "error");
+            //  $('#btn_bt_loader').hide();
+            //  $('#btn_img_loader').show();
+        }
+    });
+}
+}
 </script>
