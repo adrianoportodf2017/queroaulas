@@ -25,7 +25,7 @@ class Home extends MX_Controller {
             $data['appointments'] = $this->appointment_model->getAppointment();
         }
        if ($this->ion_auth->in_group(array('Client'))) {
-           // redirect('client/medicalHistory');
+            redirect('client/client_history');
         }
 
 
