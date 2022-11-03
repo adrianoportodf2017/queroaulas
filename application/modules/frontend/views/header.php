@@ -5,6 +5,9 @@
 $settings = $this->db->get('settings')->row();
 $title = explode(' ', $settings->title);
 $site_name = $this->db->get('settings')->row()->title;
+setlocale(LC_ALL,'pt_BR.UTF8');
+mb_internal_encoding('UTF8'); 
+mb_regex_encoding('UTF8');
 
 ?>
 
