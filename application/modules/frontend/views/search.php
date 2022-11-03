@@ -43,7 +43,7 @@
     </div>
 
     <div class="container-fluid py-4">
-        <div class="row">
+        <div class="row m-1 p-1">
             <div class="col-1"></div>
             <div class="col-xl-10" style="margin: 0px;">
 
@@ -54,7 +54,7 @@ if($teachers){
 
                     <div class="card">
                         <div class="card-body ">
-                            <div class="row " style=" margin: 0;   text-align: center;">
+                            <div class="row " style="text-align: center;">
                                 <div class="col-md-7">
                                     <aside class="profile-nav ">
                                         <div class="user-heading round">
@@ -71,7 +71,7 @@ if($teachers){
                                                         </a><?php } ?>
                                                 </div>
                                                 <div class="col-8" style="text-align: left;">
-                                                    <h5><?php echo $teacher->name ?> </b></h5>
+                                                     <a href="<?= site_url() . 'frontend/profile/' . $teacher->id; ?>"> <h5><?php echo $teacher->name ?> </b></h5></a>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
@@ -86,7 +86,7 @@ if($teachers){
                                         <div class="card-block">
                                             <p style="margin: 30px;  margin: 0;  text-align: justify; font-size: small;"><?= mb_substr($teacher->profile, 0, 300, 'UTF-8'); ?>
                                     </aside>
-                                    <a href="<?= site_url() . 'frontend/profile/' . $teacher->id; ?>" class="btn btn-outline-info  d-none d-lg-block w-100" style="margin: 2px">Quero Saber Mais <i class="fa fa-heart-o"></i></a>
+                                    <a href="<?= site_url() . 'frontend/profile/' . $teacher->id; ?>" class="btn button m-2 ">Quero Saber Mais <i class="fa fa-heart-o"></i></a>
                                 </div>
                                 <div class="col-md-5">
                                     <b>

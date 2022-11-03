@@ -20,20 +20,20 @@ $site_name = $this->db->get('settings')->row()->title;
     <!-- Font-awesome -->
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-     <!--external css-->
+    <!--external css-->
     <!-- Nucleo Icons -->
     <link href="<?php echo base_url(); ?>assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  
+
     <!-- CSS Files -->
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="<?php echo site_url('common/toastr/toastr.css'); ?>" />
     <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick.css">
-    <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">  
-      <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
-      <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/search.css?v=2.0.2" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url(''); ?>app-assets/slick/slick-theme.css">
+    <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/argon-dashboard.css?v=2.0.2" rel="stylesheet" />
+    <link id="pagestyle" href="<?php echo base_url(); ?>assets/css/search.css?v=2.0.2" rel="stylesheet" />
 
     <link rel="stylesheet" href="<?php echo site_url('front/site_assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" />
 
@@ -98,7 +98,7 @@ $site_name = $this->db->get('settings')->row()->title;
         height: 90px;
         border-radius: 0.8rem;
         margin-right: 1.6rem;
-        font: 400 0.9rem  roboto;
+        font: 400 0.9rem roboto;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -133,7 +133,7 @@ $site_name = $this->db->get('settings')->row()->title;
 
     .total-connections img {
         margin: 0.8rem;
-        width: 30px;       
+        width: 30px;
     }
 
 
@@ -223,6 +223,19 @@ $site_name = $this->db->get('settings')->row()->title;
         width: 90%;
 
     }
+
+    .button {
+        background-color: #712cf9;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+
+    }
+
+    .button:hover {
+        background-color: #4c0bce;
+        color: white;
+    }
 </style>
 
 
@@ -248,37 +261,36 @@ $site_name = $this->db->get('settings')->row()->title;
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2" href="<?php echo base_url(); ?>frontend/search">
-                            
+
                             Professores
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2" href="<?php echo base_url('auth'); ?>">
-                           
+
                             Acessar Sua Conta
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-2" href="<?php echo base_url('frontend/querodaraulas'); ?>">
-                           
-                           Quero dar Aulas
+
+                            Quero dar Aulas
                         </a>
                     </li>
 
                 </ul>
-                
+
             </div>
         </div>
     </nav>
     <div class="page-header position-relative" style="background: var(--color-primary);">
-            <div class="container pb-lg-3 pb-5 pt-7 postion-relative z-index-2">
-                <div class="row mt-4">
-                    <div class="col-md-6 mx-auto text-center">
-                        <br>
-                        <h3 class="text-white"> Sua plataforma de estudos online
-                        </h3>                      
-                    </div>
+        <div class="container pb-lg-3 pb-5 pt-7 postion-relative z-index-2">
+            <div class="row mt-4">
+                <div class="col-md-6 mx-auto text-center">
+                    <br>
+                    <h3 class="text-white"> Sua plataforma de estudos online
+                    </h3>
                 </div>
             </div>
         </div>
-        
+    </div>
