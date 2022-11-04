@@ -9,6 +9,9 @@ setlocale(LC_ALL,'pt_BR.UTF8');
 mb_internal_encoding('UTF8'); 
 mb_regex_encoding('UTF8');
 header('Content-Type: text/html; charset=utf-8');
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
+echo strftime('%A, %d de %B de %Y', strtotime('+1 day', strtotime(date('D-m-y'))));
 
 
 ?>

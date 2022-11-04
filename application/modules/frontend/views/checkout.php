@@ -1,35 +1,35 @@
 <style>
         :root {
-    --bd-purple: #4c0bce;
-    --bd-violet: #712cf9;
-    --bd-accent: #ffe484;
-    --bd-violet-rgb: 112.520718,44.062154,249.437846;
-    --bd-accent-rgb: 255,228,132;
-    --bd-pink-rgb: 214,51,132;
-    --bd-teal-rgb: 32,201,151;
-    --docsearch-primary-color: var(--bd-violet);
-    --docsearch-logo-color: var(--bd-violet);
-}
-:root {
-    --base00: #fff;
-    --base01: #f5f5f5;
-    --base02: #c8c8fa;
-    --base03: #565c64;
-    --base04: #030303;
-    --base05: #333;
-    --base06: #fff;
-    --base07: #9a6700;
-    --base08: #bc4c00;
-    --base09: #087990;
-    --base0A: #795da3;
-    --base0B: #183691;
-    --base0C: #183691;
-    --base0D: #795da3;
-    --base0E: #a71d5d;
-    --base0F: #333;
-}
-       
-        </style>
+                --bd-purple: #4c0bce;
+                --bd-violet: #712cf9;
+                --bd-accent: #ffe484;
+                --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+                --bd-accent-rgb: 255, 228, 132;
+                --bd-pink-rgb: 214, 51, 132;
+                --bd-teal-rgb: 32, 201, 151;
+                --docsearch-primary-color: var(--bd-violet);
+                --docsearch-logo-color: var(--bd-violet);
+        }
+
+        :root {
+                --base00: #fff;
+                --base01: #f5f5f5;
+                --base02: #c8c8fa;
+                --base03: #565c64;
+                --base04: #030303;
+                --base05: #333;
+                --base06: #fff;
+                --base07: #9a6700;
+                --base08: #bc4c00;
+                --base09: #087990;
+                --base0A: #795da3;
+                --base0B: #183691;
+                --base0C: #183691;
+                --base0D: #795da3;
+                --base0E: #a71d5d;
+                --base0F: #333;
+        }
+</style>
 
 
 
@@ -41,7 +41,7 @@
                                         <div class="card-body">
                                                 <div class="row">
                                                         <div class="col-7">
-                                                                <h6 class="text-dark"><b>Data: </b><b class="text-bold-700"> <?= mb_strtoupper(utf8_encode(date('%a, %d de %B de %Y', strtotime($date)))); ?> às <?= $hour; ?>h</b></h6>
+                                                                <h6 class="text-dark"><b>Data: </b><b class="text-bold-700"> <?= mb_strtoupper(utf8_encode(strftime('%a, %d de %B de %Y', strtotime($date)))); ?> às <?= $hour; ?>h</b></h6>
                                                                 <h6 class="text-dark"><b>Horário de Brasília</b></h6>
                                                         </div>
                                                         <div class="col-5">
@@ -63,39 +63,39 @@
                                                 //  var_dump($this->ion_auth->logged_in());die;
                                                 if (!$this->ion_auth->logged_in()) { ?>
                                                         <div class="card card-profile">
-                                                <div class="card-body">
-                                                        <div class="card card-plain">
                                                                 <div class="card-body">
-                                                                        <?php if ($message) { ?><div id="infoMessage" class="alert alert-light"><?= $message ?></div><?php } ?>
-                                                                        <form method="post" action="auth/loginClient">
-                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="id" value="<?= $id ?>">
-                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="date" value="<?= $date ?>">
-                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="hour" value="<?= $hour ?>">
+                                                                        <div class="card card-plain">
+                                                                                <div class="card-body">
+                                                                                        <?php if ($message) { ?><div id="infoMessage" class="alert alert-light"><?= $message ?></div><?php } ?>
+                                                                                        <form method="post" action="auth/loginClient">
+                                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="id" value="<?= $id ?>">
+                                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="date" value="<?= $date ?>">
+                                                                                                <input type="hidden" class="form-control form-control-lg" aria-label="" name="hour" value="<?= $hour ?>">
 
-                                                                                <div class="mb-3">
-                                                                                        <input type="email" class="form-control form-control-lg" aria-label="Email" name="identity" placeholder="Email" autofocus>
+                                                                                                <div class="mb-3">
+                                                                                                        <input type="email" class="form-control form-control-lg" aria-label="Email" name="identity" placeholder="Email" autofocus>
+                                                                                                </div>
+                                                                                                <div class="mb-3">
+                                                                                                        <input type="password" class="form-control form-control-lg" name="password" placeholder="Senha">
+                                                                                                </div>
+                                                                                                <div class="form-check form-switch">
+                                                                                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                                                                                        <label class="form-check-label" for="rememberMe">Lembrar-me</label>
+                                                                                                </div>
+                                                                                                <div class="text-center">
+                                                                                                        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Acessar</button>
+                                                                                                </div>
+                                                                                        </form>
                                                                                 </div>
-                                                                                <div class="mb-3">
-                                                                                        <input type="password" class="form-control form-control-lg" name="password" placeholder="Senha">
+                                                                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                                                                        <p><a data-toggle="modal" href="#myModal"> Esqueci minha senha</a></p>
                                                                                 </div>
-                                                                                <div class="form-check form-switch">
-                                                                                        <input class="form-check-input" type="checkbox" id="rememberMe">
-                                                                                        <label class="form-check-label" for="rememberMe">Lembrar-me</label>
+                                                                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                                                                        <p><a data-toggle="modal" href="#myCadastro"> Cadastrar</a></p>
                                                                                 </div>
-                                                                                <div class="text-center">
-                                                                                        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Acessar</button>
-                                                                                </div>
-                                                                        </form>
-                                                                </div>
-                                                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                                                        <p><a data-toggle="modal" href="#myModal"> Esqueci minha senha</a></p>
-                                                                </div>
-                                                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                                                        <p><a data-toggle="modal" href="#myCadastro"> Cadastrar</a></p>
+                                                                        </div>
                                                                 </div>
                                                         </div>
-                                                </div>
-                                        </div>
 
                                                 <?php } else {
                                                         //  var_dump($this->session->userdata->git) 
@@ -103,11 +103,11 @@
                                                         <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
                                                                 <div class="card p-4">
                                                                         <div class=" image d-flex flex-column justify-content-center align-items-center">
-                                                                               <img src="<?= base_url() ?>uploads/semfoto.gif" height="100" width="100" />
+                                                                                <img src="<?= base_url() ?>uploads/semfoto.gif" height="100" width="100" />
                                                                                 <span class="name mt-3"><?php
-                                                                                                                        // var_dump($this->session->userdata);
+                                                                                                        // var_dump($this->session->userdata);
 
-                                                                                                                        echo  $this->session->userdata['username'] ?></span>
+                                                                                                        echo  $this->session->userdata['username'] ?></span>
                                                                                 <span class="idd"><?= $this->session->userdata['email'] ?></span>
                                                                                 <div class="d-flex flex-row justify-content-center align-items-center gap-2">
                                                                                 </div>
@@ -165,37 +165,48 @@
                                 </div>
                                 <div class="card card-profile mt-1">
                                         <div class="card-body">
-
+                                                <?php $translate = array(
+                                                       
+                                                        1 => "Seg ",
+                                                        2 => "Ter ",
+                                                        3 => "Qua ",
+                                                        4 => "Qui ",
+                                                        5 => "Sex ",
+                                                        6 => "Sab ",
+                                                        7 => "Dom ",
+                                                );
+                                                ?>
                                                 <h3>Escolher outra data</h3>
                                                 </b>
                                                 <div class="center slider">
                                                         <div>
-                                                                <button id="" onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+0 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round button-week" value="teste"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('HOJE, %d/%m', strtotime('+0 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button id="" onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+0 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round button-week" value="teste"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('HOJE, %d/%m', strtotime('+0 day', strtotime(date("D-m-y"))))))); ?> </button>
 
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+1 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+1 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+1 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+1 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                                                                                echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+1 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+2 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+2 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+2 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+2 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+2 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+3 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+3 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+3 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+3 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+3 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+4 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+4 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+4 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+4 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+4 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+5 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+5 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+5 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+5 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+5 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+6 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+6 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+6 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+6 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+6 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+7 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+7 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+7 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+7 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+7 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                         <div>
-                                                                <button onclick="verificarHoras('<?php echo date('%u - %Y-%m-%d', strtotime('+8 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(date('%a, %d/%m', strtotime('+8 day', strtotime(date("D-m-y"))))))); ?> </button>
+                                                                <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+8 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+8 day', strtotime(date('D-m-y'))))]; echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+8 day', strtotime(date("D-m-y"))))))); ?> </button>
                                                         </div>
                                                 </div>
                                                 <div class="listhours slider" id="<?= $teacher->id ?>" name="listhours">
