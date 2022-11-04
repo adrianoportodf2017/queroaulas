@@ -284,6 +284,7 @@ class Frontend extends MX_Controller
         'name' => $_POST['first_name'],
         'email' => $_POST['email'],
         'phone' => $_POST['phone'],
+        'teacher' => ','.$this->input->post('id'),
       );
 
       $username = $_POST['email'];
@@ -311,6 +312,7 @@ class Frontend extends MX_Controller
       $get = 'id=' . $id . '&date=' . $date . '&hour=' . $hour;
       $data['settings'] = $this->frontend_model->getSettings();
       $data['teacher'] = $this->teacher_model->getTeacherById($this->input->post('id'));
+    //  var_dump($id);die;
 
       if ($this->ion_auth->login($this->input->post('email'), $this->input->post('password'))) {
         //if the login is successful
