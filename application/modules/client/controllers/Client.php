@@ -20,7 +20,7 @@ class Client extends MX_Controller
 
     public function index()
     {
-        if ($this->ion_auth->in_group(array('client'))) {
+        if ($this->ion_auth->in_group(array('Client'))) {
             redirect('home/permission');
         }
         $data['teachers'] = $this->teacher_model->getTeacher();

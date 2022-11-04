@@ -357,7 +357,7 @@ class Frontend extends MX_Controller
           'registration_time' => $registration_time,
           'status' => 'Confirmed',
           's_time_key' => '120',
-          'user' => $user->id,
+          'user' => $client,
           'request' => 'Yes',
           'room_id' => $room_id,
           'live_meeting_link' => $live_meeting_link,
@@ -375,7 +375,7 @@ class Frontend extends MX_Controller
         $data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');      
         redirect('frontend/checkout?' . $get, 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
       }
-      $redirect = base_url() . 'frontend/auth/login';
+      $redirect = base_url() . '/auth/login';
 
       // echo 'deu certo';
       echo json_encode(array('html' => $redirect, 'redirect' => true));

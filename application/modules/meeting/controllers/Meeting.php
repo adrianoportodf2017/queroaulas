@@ -15,7 +15,7 @@ class Meeting extends MX_Controller {
       
 
 
-        if (!$this->ion_auth->in_group(array('admin', 'Teacher', 'client'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Teacher', 'Client'))) {
             redirect('home/permission');
         }
     }
@@ -53,7 +53,10 @@ class Meeting extends MX_Controller {
     function jitsiLive() {
         $appointment_id = $this->input->get('id');
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
-        $client = $appointment_details->client;   
+        $id = $this->session->userdata['user_id'];
+        $client =  $this->client_model->getClientByIonUserId($id);
+        $data['client'] = $this->client_model->getclientById($client->id);
+        $data['first_name'] =  $data['client']->name;
         $teacher_id = $appointment_details->teacher;
         $data['teacher'] = $this->teacher_model->getTeacherById($teacher_id);
         //var_dump($data);die;
