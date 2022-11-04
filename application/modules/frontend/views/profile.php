@@ -112,7 +112,7 @@
                 7 => "Dom ",
               );
               ?>
-              <h3>Escolher outra data</h3>
+              <h3>Escolher uma data:</h3>
               </b>
               <div class="center slider">
                 <div>
