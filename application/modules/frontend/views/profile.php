@@ -22,7 +22,7 @@
           <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
             <div class="d-flex justify-content-center">
               <a href="<?= site_url() ?>frontend/profile/<?= $teacher->id ?>#agenda" class="btn btn-sm btn-info mb-0 ">Agendar uma Aula</a>
-              </div>
+            </div>
           </div>
           <div class="card-body pt-0">
             <div class="row">
@@ -31,7 +31,7 @@
                   <div class="d-grid text-center">
                     <span class="text-lg font-weight-bolder">22</span>
                     <span class="text-sm opacity-8">Aulas</span>
-                  </div>               
+                  </div>
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>)
               <span class="text-lg font-weight-bolder">10</span>
-                    <span class="text-sm opacity-8">Avaliações</span>
+              <span class="text-sm opacity-8">Avaliações</span>
               <div>
                 <i class="ni education_hat mr-2"></i><?= $teacher->department ?>
               </div>
@@ -101,8 +101,18 @@
           <div class="row " style=" margin: 0;   text-align: center;">
             <div class="col-md-2"> </div>
             <div class="col-md-8" id="agenda" name="agenda">
-              <b>
-                <h3>Selecione uma data</h3>
+              <?php $translate = array(
+
+                1 => "Seg ",
+                2 => "Ter ",
+                3 => "Qua ",
+                4 => "Qui ",
+                5 => "Sex ",
+                6 => "Sáb ",
+                7 => "Dom ",
+              );
+              ?>
+              <h3>Escolher outra data</h3>
               </b>
               <div class="center slider">
                 <div>
@@ -110,28 +120,36 @@
 
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+1 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+1 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+1 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+1 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+1 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+2 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+2 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+2 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+2 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+2 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+3 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+3 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+3 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+3 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+3 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+4 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+4 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+4 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+4 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+4 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+5 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+5 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+5 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+5 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+5 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+6 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+6 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+6 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+6 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+6 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+7 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+7 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+7 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+7 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+7 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
                 <div>
-                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+8 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%a, %d/%m', strtotime('+8 day', strtotime(date("D-m-y"))))))); ?> </button>
+                  <button onclick="verificarHoras('<?php echo strftime('%u - %Y-%m-%d', strtotime('+8 day', strtotime(date('D-m-y')))) . ',' . $teacher->id; ?> ')" class="btn btn-info round buttonhours"> <?php echo $translate[strftime('%u', strtotime('+8 day', strtotime(date('D-m-y'))))];
+                                                                                                                                                                                                            echo str_replace(',', '<p>', mb_strtoupper(utf8_encode(strftime('%d/%m', strtotime('+8 day', strtotime(date("D-m-y"))))))); ?> </button>
                 </div>
               </div>
 
