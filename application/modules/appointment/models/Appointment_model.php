@@ -102,6 +102,13 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getAppointmentClientByTeacher($clientId, $teacherId) {
+        $this->db->where('client', $clientId);
+        $this->db->where('teacher', $teacherId);
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
     function getAppointmentByClient($client) {
         $this->db->order_by('id', 'desc');
         $this->db->where('client', $client);

@@ -45,7 +45,15 @@
                                                                 <h6 class="text-dark"><b>Horário de Brasília</b></h6>
                                                         </div>
                                                         <div class="col-5">
-                                                                <button class="btn button">Confirmar pedido de Aula</button>
+                                                       <?php  if ($this->ion_auth->logged_in()) {?>
+                                                        <form method="post" action="frontend/appoiment">
+                                                         <input type="text" class="form-control form-control-lg" aria-label="" name="id" value="<?= $id ?>">
+                                                         <input type="text" class="form-control form-control-lg" aria-label="" name="date" value="<?= $date ?>">
+                                                          <input type="text" class="form-control form-control-lg" aria-label="" name="hour" value="<?= $hour ?>">
+                                                          <button class="btn button" onclick="finalizarPedido()">Confirmar pedido de Aula</button>
+
+                                                       </form>
+                                                          <?php }?>
                                                         </div>
                                                 </div>
                                         </div>

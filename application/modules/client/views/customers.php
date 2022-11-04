@@ -81,7 +81,7 @@
                                     <br>
 
                                  
-                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="<?= base_url()?>client/clientHistory?id=<?php echo $client->id; ?>"><i class="fa fa-folder"></i> <?php echo lang('history'); ?></a>
+                                        <a class="btn green" title="<?php echo lang('history'); ?>" href="<?= base_url()?>client/clientTeacherHistory/<?php echo $client->id; ?>"><i class="fa fa-folder"></i> <?php echo lang('history'); ?></a>
                                   
                                 </tr>
                                 <?php

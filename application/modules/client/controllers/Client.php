@@ -1161,6 +1161,45 @@ class Client extends MX_Controller
         $this->load->view('home/footer'); // just the header file
     }
 
+
+
+    function clientTeacherHistory($clientId)
+    {
+        if ($this->ion_auth->in_group(array('Teacher'))) {
+        //var_dump($clientId);die;
+        $data = array();
+        $id = $this->session->userdata['user_id'];
+        $client =  $this->client_model->getClientByIonUserId($id);
+        $data['client'] = $this->client_model->getclientById($clientId);      
+
+      
+            $teacher_ion_id = $this->ion_auth->get_user_id();
+            $idTeacher = $this->teacher_model->getTeacherByIonUserId($teacher_ion_id)->id;
+            $data['teacher'] = $this->teacher_model->getteacherById($idTeacher); 
+      
+
+        //var_dump($data['teacher']);die;    
+        
+        $data['appointments'] = $this->appointment_model->getAppointmentClientByTeacher($clientId, $idTeacher);
+        $data['first_name'] = $data['client']->name;    
+        foreach ($data['appointments'] as $appointment) {
+            if (!empty($teacher_details)) {
+                $teacher_name = $teacher_details->name;
+            } else {
+                $teacher_name = '';
+            }       
+        if (!empty($timeline)) {
+            $data['timeline'] = $timeline;
+        }
+      
+    } 
+    $this->load->view('home/dashboard', $data); // just the header file
+    $this->load->view('clientHistoryTeacher');
+     $this->load->view('home/footer'); // just the footer file
+} 
+}
+
+
     function clientHistory()
     {
         $data = array();

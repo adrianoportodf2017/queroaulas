@@ -54,12 +54,10 @@ class Meeting extends MX_Controller {
         $appointment_id = $this->input->get('id');
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
         $id = $this->session->userdata['user_id'];
-        $client =  $this->client_model->getClientByIonUserId($id);
-        $data['client'] = $this->client_model->getclientById($client->id);
+        $data['client'] = $this->client_model->getclientById($appointment_details->client);
         $data['first_name'] =  $data['client']->name;
         $teacher_id = $appointment_details->teacher;
         $data['teacher'] = $this->teacher_model->getTeacherById($teacher_id);
-        //var_dump($data);die;
         $data['appointmentid'] = $appointment_id;
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('jitsi');

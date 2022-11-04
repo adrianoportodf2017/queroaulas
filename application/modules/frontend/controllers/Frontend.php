@@ -272,6 +272,81 @@ class Frontend extends MX_Controller
   }
 
 
+
+  function appoiment()
+  {
+   
+    
+
+  
+     
+      $data['date'] =   $date = $this->input->post('date');
+      $data['hour'] =  $hour = $this->input->post('hour');
+      $data['id'] =  $id = $this->input->post('id');
+      $get = 'id=' . $id . '&date=' . $date . '&hour=' . $hour;
+      $data['settings'] = $this->frontend_model->getSettings();
+      $data['teacher'] = $this->teacher_model->getTeacherById($this->input->post('id'));
+     $cliendId = $this->db->get_where('client', array('email' =>  $this->session->userdata['email']))->row()->id;
+      $this->session->userdata['user_id'];
+    
+
+        $data = array();
+        $date = $date;
+        $s_time = $hour;
+        $e_time = date('H:i', strtotime('+1 hour', strtotime($s_time)));
+        //$e_time = $post['hour'] + '1';
+        // var_dump($e_time);die;
+
+
+        $clientname = $this->client_model->getClientById($cliendId)->name;
+        $client_phone = $this->client_model->getClientById($cliendId)->phone;
+        $teachername = $this->teacher_model->getTeacherById($id)->name;
+        $room_id = 'hms-meeting-' . $client_phone . '-' . rand(10000, 1000000);
+        $live_meeting_link = 'https://meet.jit.si/' . $room_id;
+        $app_time = strtotime($date . ' ' . $s_time);
+        //var_dump(date("Y-m-d H:i:s", $app_time));die;
+        $app_time_full_format = date('d-m-Y', strtotime($date)) . ' ' . $s_time . ' AM-' . $e_time . ' PM';
+        $time_slot = date("h:i A", strtotime($s_time)) . ' To ' . date("h:i A", strtotime($e_time));
+        $add_date = date('m/d/y');
+        $registration_time = time();
+        $client_add_date = $add_date;
+        $client_registration_time = $registration_time;
+        $client =  $cliendId;
+        $user =  $this->db->get_where('users', array('email =' =>  $this->session->userdata['email']))->row();
+
+
+        $data = array(
+          'client' => $client,
+          'clientname' => $clientname,
+          'teacher' => $id,
+          'teachername' => $teachername,
+          'date' => strtotime($date),
+          's_time' => date("h:i A", strtotime($s_time)),
+          'e_time' => date("h:i A", strtotime($e_time)),
+          'time_slot' => $time_slot,
+          //'remarks' => $remarks,
+          'add_date' =>  $add_date,
+          'registration_time' => $registration_time,
+          'status' => 'Confirmed',
+          's_time_key' => '120',
+          'user' => $client,
+          'request' => 'Yes',
+          'room_id' => $room_id,
+          'live_meeting_link' => $live_meeting_link,
+          'app_time' => $app_time,
+          'app_time_full_format' => $app_time_full_format,
+        );
+        $username = $clientname;
+        // Adding New department
+        $this->frontend_model->insertAppointment($data);
+        $redirect = base_url() . '/auth/login';
+        redirect('/auth/login', 'refresh'); //use redirects instead of loading views for compatibility with MY_Controller libraries
+       
+      // echo 'deu certo';
+    
+    }
+  
+
   function salvarClient()
   {
     // var_dump($_POST);
