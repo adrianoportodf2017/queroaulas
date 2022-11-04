@@ -47,9 +47,9 @@
                                                         <div class="col-5">
                                                        <?php  if ($this->ion_auth->logged_in()) {?>
                                                         <form method="post" action="frontend/appoiment">
-                                                         <input type="text" class="form-control form-control-lg" aria-label="" name="id" value="<?= $id ?>">
-                                                         <input type="text" class="form-control form-control-lg" aria-label="" name="date" value="<?= $date ?>">
-                                                          <input type="text" class="form-control form-control-lg" aria-label="" name="hour" value="<?= $hour ?>">
+                                                         <input type="hidden" class="form-control form-control-lg" aria-label="" name="id" value="<?= $id ?>">
+                                                         <input type="hidden" class="form-control form-control-lg" aria-label="" name="date" value="<?= $date ?>">
+                                                          <input type="hidden" class="form-control form-control-lg" aria-label="" name="hour" value="<?= $hour ?>">
                                                           <button class="btn button" onclick="finalizarPedido()">Confirmar pedido de Aula</button>
 
                                                        </form>
