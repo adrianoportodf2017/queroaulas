@@ -3,6 +3,9 @@
 </style>
 
 <div class="row">
+
+
+
     <div class="col-1"></div>
     <div class="col-lg-8 ml-2">
         <div class="search-bar SearchForm_inputsContainer" style="-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -13,24 +16,9 @@
                     <div class="Grid Grid-guttersSmall Grid-guttersVertical Search_box_clear flex-that">
                         <div class="Grid_cell Grid_cell-1-3 Grid_cell-1-1@mobile SearchForm_subjectContainer Search_box_clear">
                             <div class="autocomplete">
+                            <input type="text" id="myAutocomplete" placeholder="<?php if($this->input->post('categorias')){ echo $this->input->post('categorias');} else {echo 'Qual matéria?';}?>" name="categorias" class="form-control" class="SearchForm_input Search_box_input autocomplete-input js-search-form-subject border-0"/>
 
-                                <select id="categorias" type="text" placeholder="Qual matéria?" name="categorias" class="SearchForm_input Search_box_input autocomplete-input js-search-form-subject border-0">
-                                    <option class="border-0" value="<?php if ($this->input->post('categorias') != '') {
-                                                                        echo $this->input->post('categorias');
-                                                                    } else { ?><?php } ?>" selected><?php if ($this->input->post('categorias') != '') {
-                                                                                                                                                                                            echo $this->input->post('categorias');
-                                                                                                                                                                                        } else { ?>Matérias...<?php } ?></option>
-                                    <?php $categorys = $this->category_model->getCategory();
-                                    foreach ($categorys as $category) { ?>
-                                        <?php
-                                        echo '<b>' . $category->name . '</b>';
-                                        $subCategorys =  $this->category_model->getSubCategory($category->id);
-                                        foreach ($subCategorys as $subCategory) {  ?>
-                                            <option value="<?= $subCategory->name ?>"> <?= '<b>' . $category->name . '</b>: ' . $subCategory->name ?> </option>
-                                        <?php } ?>
-                            </div>
-                        <?php } ?>
-                        </select>
+                             
                         </div>
                     </div>
                     <div class="Grid_cell Grid_cell-1-3 Grid_cell-1-1@mobile SearchForm_locationInputContainer Search_box_clear">
@@ -179,5 +167,159 @@
         </div>
     </div>
 </div>
+<div class="container">
+        <div id="parent" class="form-group">
+            <label for="myAutocomplete">Bootstrap 4 Autocomplete</label>
+        </div>
+        <div id="output"></div>
+    </div>
 
+    <!-- Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script>
+    (function ($) {
+    var defaults = {
+        treshold: 1,
+        maximumItems: 5,
+        highlightTyped: true,
+        highlightClass: 'text-primary'
+    };
+    function createItem(lookup, item, opts) {
+        var label;
+        if (opts.highlightTyped) {
+            var idx = item.label.toLowerCase().indexOf(lookup.toLowerCase());
+            label = item.label.substring(0, idx)
+                + '<span class="' + expandClassArray(opts.highlightClass) + '">' + item.label.substring(idx, idx + lookup.length) + '</span>'
+                + item.label.substring(idx + lookup.length, item.label.length);
+        }
+        else {
+            label = item.label;
+        }
+        return '<button type="button" class="dropdown-item" data-value="' + item.value + '"><span style="color: black">' + label + '</span></button>';
+    }
+    function expandClassArray(classes) {
+        if (typeof classes == "string") {
+            return classes;
+        }
+        if (classes.length == 0) {
+            return '';
+        }
+        var ret = '';
+        for (var _i = 0, classes_1 = classes; _i < classes_1.length; _i++) {
+            var clas = classes_1[_i];
+            ret += clas + ' ';
+        }
+        return ret.substring(0, ret.length - 1);
+    }
+    function createItems(field, opts) {
+        var lookup = field.val();
+        if (lookup.length < opts.treshold) {
+            field.dropdown('hide');
+            return 0;
+        }
+        var items = field.next();
+        items.html('');
+        var count = 0;
+        var keys = Object.keys(opts.source);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var object = opts.source[key];
+            var item = {
+                label: opts.label ? object[opts.label] : key,
+                value: opts.value ? object[opts.value] : object
+            };
+            if (item.label.toLowerCase().indexOf(lookup.toLowerCase()) >= 0) {
+                items.append(createItem(lookup, item, opts));
+                if (opts.maximumItems > 0 && ++count >= opts.maximumItems) {
+                    break;
+                }
+            }
+        }
+        // option action
+        field.next().find('.dropdown-item').click(function () {
+            field.val($(this).text());
+            if (opts.onSelectItem) {
+                opts.onSelectItem({
+                    value: $(this).data('value'),
+                    label: $(this).text()
+                }, field[0]);
+            }
+        });
+        return items.children().length;
+    }
+    $.fn.autocomplete = function (options) {
+        // merge options with default
+        var opts = {};
+        $.extend(opts, defaults, options);
+        var _field = $(this);
+        // clear previously set autocomplete
+        _field.parent().removeClass('dropdown');
+        _field.removeAttr('data-toggle');
+        _field.removeClass('dropdown-toggle');
+        _field.parent().find('.dropdown-menu').remove();
+        _field.dropdown('dispose');
+        // attach dropdown
+        _field.parent().addClass('dropdown');
+        _field.attr('data-toggle', 'dropdown');
+        _field.addClass('dropdown-toggle');
+        var dropdown = $('<div class="dropdown-menu" ></div>');
+        // attach dropdown class
+        if (opts.dropdownClass)
+            dropdown.addClass(opts.dropdownClass);
+        _field.after(dropdown);
+        _field.dropdown(opts.dropdownOptions);
+        this.off('click.autocomplete').click('click.autocomplete', function (e) {
+            if (createItems(_field, opts) == 0) {
+                // prevent show empty
+                e.stopPropagation();
+                _field.dropdown('hide');
+            }
+            ;
+        });
+        // show options
+        this.off('keyup.autocomplete').keyup('keyup.autocomplete', function () {
+            if (createItems(_field, opts) > 0) {
+                _field.dropdown('show');
+            }
+            else {
+                // sets up positioning
+                _field.click();
+            }
+        });
+        return this;
+    };
+}(jQuery));
+</script>
+
+    <script>
+    var src = {
+
+
+<?php $categorys = $this->category_model->getCategory();
+                                    foreach ($categorys as $category) { ?>
+                                        <?php
+                                    $subCategorys =  $this->category_model->getSubCategory($category->id);
+                                        foreach ($subCategorys as $subCategory) {  ?>
+                                     "<?= $subCategory->name ?>" :    "<?= $category->name ?>",                                       
+                                     <?php } ?>
+
+                                           <?php } ?>
+                                        }
+        
+
+        function onSelectItem(item, element) {
+            $('#output').html(
+                'Element <b>' + $(element).attr('id') + '</b> was selected<br/>' +
+                '<b>Value:</b> ' + item.value + ' - <b>Label:</b> ' + item.label
+            );
+        }
+
+        $('#myAutocomplete').autocomplete({
+            source: src,
+            onSelectItem: onSelectItem,
+            highlightClass: 'text-danger'
+        });
+    </script>
 </section>

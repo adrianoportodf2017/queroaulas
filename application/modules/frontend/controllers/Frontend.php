@@ -1089,6 +1089,21 @@ class Frontend extends MX_Controller
     }
     echo json_encode($data);
   }
+
+
+  function searchMaterias(){
+  $data = array(
+    'Produtos' => 'Produtos',
+    'Produtos' => 'Produtos',
+
+
+  );
+    echo json_encode($data);
+
+
+
+
+  }
 }
 
 /* End of file appointment.php */
