@@ -22,11 +22,8 @@ class Frontend extends MX_Controller
 
   public function index()
   {
-    $data = array();
-    $this->load->view('header', $data);
-    $this->load->view('home');
-    $this->load->view('footer');
-    $this->load->view('scripts');
+    header("Location: https://queroaulas.com.br");
+    die();
   }
 
   public function search($search = NULL, $categoria = NULL, $order = NULL, $dir = NULL)
